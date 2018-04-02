@@ -1,0 +1,58 @@
+Entity(token):
+    /**
+     * {"access_token":"2db3e8fa-cc96-4513-9cd0-7f8523a432d1","refresh_token":"41bf7b67-340e-4dab-9147-6fbc80d8e67d","uid":3725152,"token_type":"bearer","expires_in":604799}
+     */
+    protected String access_token;
+    protected String refresh_token;
+    protected String uid;
+    protected String token_type;
+    protected String expires_in;
+
+
+ User(用户)
+    /**
+      * uid : 89964
+      * name : 彭博
+      * gender : 1
+      * province : 广东
+      * city : 深圳
+      * platforms : ["Java EE","Java SE","JavaScript","HTML/CSS"]
+      * expertise : ["WEB开发","桌面软件开发","服务器端开发"]
+      * joinTime : 2010-07-14 17:15:55
+      * lastLoginTime : 2013-10-21 10:55:36
+      * portrait : http://www.oschina.net/uploads/user/44/89964_50.jpg?t=1376365607000
+      * fansCount : 19
+      * favoriteCount : 176
+      * followersCount : 14
+      * notice : {"replyCount":0,"msgCount":0,"fansCount":0,"referCount":0}
+      */
+
+     private long uid;
+     private String name;
+     private int gender;
+     private String province;
+     private String city;
+     private String joinTime;
+     private String lastLoginTime;
+     private String portrait;
+     private int fansCount;
+     private int favoriteCount;
+     private int followersCount;
+     private NoticeBean notice;
+     private List<String> platforms;
+     private List<String> expertise;
+
+Version(版本)
+    /**
+     * code : 1
+     * message : success
+     * notice : {"like":0,"review":0,"letter":0,"mention":0,"fans":0}
+     * result : [{"code":"410","downloadUrl":"https://www.oschina.net/uploads/osc-android-v4.1.0-release.apk","message":"1. 新增英文模块 <br>\n2. 文章详情新增字数与阅读时间提示 <br>\n3. 修复部分机型状态栏适配问题 <br>\n <br>\n大小：14.6M","name":"v4.1.0(1801241000)","status":"release"}]
+     * time : 2018-02-02 15:48:54
+     */
+
+    private int code;
+    private String message;
+    private NoticeBean notice;
+    private String time;
+    private List<ResultBean> result;

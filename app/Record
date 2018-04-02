@@ -1,0 +1,8 @@
+
+RecyclerRefreshLayout 继承SwipeRefreshLayout，上拉加载和下拉刷新功能，支持RecyclerView
+
+NoticeService 在MainActivity中启动，若用户未登录，User中启动
+NoticeNotify接口：NoticeManager单例模式，NoticeService轮询服务器，查询消息状态。当有新消失时，发出广播，通过NoticeNotify接口传递数据
+UserMessage UserInfo NavFragment通过NoticeNotify接口接口来更新数据状态。
+清除红点同一个广播FLAG_BROADCAST_REFRESH，判断当前NoticeBean数据总和。
+同时发出清除消息广播FLAG_ACTION_CLEAR，删除服务器上的数据。

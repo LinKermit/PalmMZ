@@ -1,0 +1,99 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!--user-->
+    <!-- 横向线条 -->
+    <style name="h_line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1px</item>
+        <item name="android:background">@color/divider_color</item>
+    </style>
+
+    <style name="new_user_information_counts">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:background">@drawable/selector_user_info_tab_item</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="user_formation_text">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="user_formation_info" parent="@style/user_formation_text">
+        <item name="android:textSize">@dimen/text_size_12</item>
+    </style>
+
+    <style name="option_item_rl">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/ic_material</item>
+        <item name="android:clickable">true</item>
+        <item name="android:padding">@dimen/space_12</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+
+    <style name="option_item_text_parent">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginRight">@dimen/space_4</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/main_black</item>
+        <item name="android:clickable">false</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+    </style>
+
+
+    <style name="option_item_text" parent="@style/option_item_text_parent">
+        <item name="android:drawablePadding">@dimen/space_8</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <!--Dialog-->
+    <style name="App.Theme.Dialog.Alert" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="android:textColorPrimary">@color/black_alpha_240</item>
+    </style>
+
+
+    <!--状态栏一体式-->
+    <style name="PubTheme" parent="AppTheme">
+        <item name="windowNoTitle">true</item><!-- 无标题 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item><!-- 背景透明 -->
+        <item name="android:backgroundDimEnabled">true</item><!-- 模糊 -->
+        <item name="windowActionBar">false</item>
+        <item name="android:windowAnimationStyle">@style/ActivityAnimation</item>
+    </style>
+
+    <!--指定activity动画-->
+    <style name="ActivityAnimation">
+        <item name="android:activityOpenEnterAnimation">@null</item>
+        <item name="android:activityOpenExitAnimation">@null</item>
+        <item name="android:activityCloseEnterAnimation">@null</item>
+        <item name="android:activityCloseExitAnimation">@null</item>
+        <item name="android:taskOpenEnterAnimation">@null</item>
+        <item name="android:taskOpenExitAnimation">@null</item>
+        <item name="android:taskCloseEnterAnimation">@null</item>
+        <item name="android:taskCloseExitAnimation">@null</item>
+        <item name="android:taskToFrontEnterAnimation">@null</item>
+        <item name="android:taskToFrontExitAnimation">@null</item>
+        <item name="android:taskToBackEnterAnimation">@null</item>
+        <item name="android:taskToBackExitAnimation">@null</item>
+    </style>
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <com.lin.palmmz.weight.TweetPicturesLayout
+        android:id="@+id/tweet_pics_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="@dimen/lay_8"
+        app:column="3"
+        app:horizontalSpace="@dimen/lay_4"
+        app:verticalSpace="@dimen/lay_4" />
+</LinearLayout>

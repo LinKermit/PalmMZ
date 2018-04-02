@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.lin.palmmz">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- 在SDCard中创建与删除文件权限 -->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/App.Theme.Light">
+        <activity
+            android:name=".main.MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/App.Theme.Light">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!--登录-->
+        <activity
+            android:name=".main.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:theme="@style/Account_Base.App.Theme.NoTitle"/>
+
+        <activity
+            android:name=".user.WebViewActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="网页登录"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".user.UserDataActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="我的资料"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".publish.PubActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/PubTheme" />
+
+        <!-- 发送动态 -->
+        <activity
+            android:name=".publish.tweet.TweetPublishActivity"
+            android:label="@string/tweet_public"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- 写博客 -->
+        <activity
+            android:name=".publish.tweet.ShopPublishActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/write_blog"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".main.back.SimpleBackActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|stateUnchanged" />
+
+        <!-- 检查更新 -->
+        <activity
+            android:name=".user.update.UpdateActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/PubTheme" />
+
+        <service
+            android:name=".user.update.DownloadService"
+            android:exported="false" />
+
+        <!-- 主线程为包名，process又创建了一个线程 -->
+        <service
+            android:name=".main.notice.NoticeServer"
+            android:exported="false"
+            android:process="com.lin.palm.notice.NoticeServer" />
+
+        <!--安装apk
+        android:authorities="net.oschina.app.provider"-包名+provider-->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.lin.palmmz.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
+
+    </application>
+
+</manifest>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="App.Theme.Light" parent="Base.App.Theme.Light">
+        <item name="android:elevation">0dp</item>
+    </style>
+
+
+    <style name="Base.App.Theme" parent="Base.App.Theme.Light">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+
+</resources>
