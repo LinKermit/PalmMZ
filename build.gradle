@@ -19,6 +19,7 @@ allprojects {
             url 'https://dl.bintray.com/oschinaapp/maven/'
         }
         maven { url "https://jitpack.io" }
+//        maven{url 'http://maven.aliyun.com/nexus/content/groups/public/'}//jcenter()替换成阿里云服务器
     }
 
 }

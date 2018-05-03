@@ -1,6 +1,7 @@
 package com.lin.palmmz.base;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -78,9 +79,9 @@ public abstract class BaseFragment extends Fragment {
         return super.getActivity();
     }
     @Override
-    public void onAttach(Activity activity){
-        super.onAttach(activity);
-        this.mContext = (FragmentActivity) activity;
+    public void onAttach(Context context){
+        super.onAttach(context);
+        this.mContext = (FragmentActivity) context;
     }
 
     @Override

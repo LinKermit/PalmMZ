@@ -93,7 +93,11 @@ public class NoticeManager {
         instance().notifies.add(notify);
         instance().check(notify);
     }
-    //绑定消息变化接口时进行一次检查，直接通知一次最新状态
+
+    /**
+     * 绑定消息变化接口时进行一次检查，直接通知一次最新状态
+     * @param noticeNotify
+     */
     private void check(NoticeNotify noticeNotify) {
         if (mNotice != null){
             noticeNotify.onNoticeArrived(mNotice);

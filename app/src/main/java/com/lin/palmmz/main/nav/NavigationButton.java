@@ -53,6 +53,7 @@ public class NavigationButton extends FrameLayout {
      *e
      * @param isSelected
      */
+    @Override
     public void setSelected(boolean isSelected){
         mIconView.setSelected(isSelected);
         mTitleView.setSelected(isSelected);

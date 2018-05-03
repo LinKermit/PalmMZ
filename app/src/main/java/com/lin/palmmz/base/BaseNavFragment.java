@@ -75,6 +75,7 @@ public abstract class BaseNavFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mBundle = null;
+        unbinder.unbind();
     }
 
     protected abstract int getLayoutId();

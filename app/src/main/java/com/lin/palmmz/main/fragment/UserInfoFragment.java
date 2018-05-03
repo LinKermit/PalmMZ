@@ -125,6 +125,7 @@ public class UserInfoFragment extends BaseNavFragment implements View.OnClickLis
             R.id.rl_data,R.id.rl_blog,
             R.id.rl_info_question, R.id.rl_info_activities, R.id.rl_team
     })
+
     @Override
     public void onClick(View view) {
         int id = view.getId();
