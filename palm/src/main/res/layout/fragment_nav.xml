@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    tools:context="com.newland.palm.ui.nav.NavFragment">
+
+    <com.newland.palm.ui.nav.NavigationButton
+        android:id="@+id/nav_item_news"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:paddingLeft="@dimen/lay_12"
+        android:paddingRight="@dimen/lay_12"/>
+
+    <com.newland.palm.ui.nav.NavigationButton
+        android:id="@+id/nav_item_tweet"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:paddingLeft="@dimen/lay_12"
+        android:paddingRight="@dimen/lay_12"/>
+
+    <ImageView
+        android:id="@+id/nav_item_add"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:padding="2dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_nav_add_selector"/>
+
+    <com.newland.palm.ui.nav.NavigationButton
+        android:id="@+id/nav_item_explore"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:paddingLeft="@dimen/lay_12"
+        android:paddingRight="@dimen/lay_12"/>
+
+    <com.newland.palm.ui.nav.NavigationButton
+        android:id="@+id/nav_item_me"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:paddingLeft="@dimen/lay_12"
+        android:paddingRight="@dimen/lay_12"/>
+</LinearLayout>

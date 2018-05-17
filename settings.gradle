@@ -1,1 +1,1 @@
-include ':app', ':oschina', ':open', ':library', ':palmim', ':other'
+include ':app', ':oschina', ':open', ':library', ':palm'

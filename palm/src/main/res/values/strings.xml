@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Palm</string>
+    <string name="main_tab_info">资讯</string>
+
+    <!--底部tab-->
+    <string name="nav_text_new">资讯</string>
+    <string name="nav_text_tweet">动弹</string>
+    <string name="nav_text_explore">发现</string>
+    <string name="nav_text_me">我的</string>
+</resources>

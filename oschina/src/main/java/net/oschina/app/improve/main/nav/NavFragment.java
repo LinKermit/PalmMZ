@@ -37,6 +37,7 @@ import butterknife.OnLongClick;
  * A simple {@link Fragment} subclass.
  */
 public class NavFragment extends BaseFragment implements View.OnClickListener, NoticeManager.NoticeNotify,View.OnLongClickListener {
+
     @Bind(R.id.nav_item_news)
     NavigationButton mNavNews;
     @Bind(R.id.nav_item_tweet)

@@ -129,8 +129,8 @@ public class NavFragment extends BaseNavFragment implements View.OnClickListener
         if (newNavButton != null){
             if (newNavButton.getFragment() == null){
                 //Create a new instance of a Fragment with the given class name.
-                //把实例化的fragment 放到了一个SimpleArrayMap集合
-                Fragment fragment = Fragment.instantiate(mContext,newNavButton.getClx().getName(),null);//newNavButton.getClx().getName()加载的fragment
+                //把实例化的fragment 放到了一个SimpleArrayMap集合//newNavButton.getClx().getName()加载的fragment
+                Fragment fragment = Fragment.instantiate(mContext,newNavButton.getClx().getName(),null);
                 ft.add(mContainerId,fragment,newNavButton.getTag());
                 newNavButton.setFragment(fragment);
             }else {//获取不等null，直接把原来fragment提交

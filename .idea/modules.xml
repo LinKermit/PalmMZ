@@ -7,8 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/open/open.iml" filepath="$PROJECT_DIR$/open/open.iml" />
       <module fileurl="file://$PROJECT_DIR$/oschina/oschina.iml" filepath="$PROJECT_DIR$/oschina/oschina.iml" />
-      <module fileurl="file://$PROJECT_DIR$/other/other.iml" filepath="$PROJECT_DIR$/other/other.iml" />
-      <module fileurl="file://$PROJECT_DIR$/palmim/palmim.iml" filepath="$PROJECT_DIR$/palmim/palmim.iml" />
+      <module fileurl="file://$PROJECT_DIR$/palm/palm.iml" filepath="$PROJECT_DIR$/palm/palm.iml" />
     </modules>
   </component>
 </project>
