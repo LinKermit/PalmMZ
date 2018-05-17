@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.newland.palm.R;
 import com.newland.palm.base.BaseFragment;
+import com.newland.palm.ui.nav.NavFragment;
 
 /**
  * Created by lin on 2017/11/18.
@@ -22,5 +23,6 @@ public class UserFragment extends BaseFragment {
     protected void initWidget(View root) {
         super.initWidget(root);
         Log.e(TAG, "initWidget: "  );
+
     }
 }

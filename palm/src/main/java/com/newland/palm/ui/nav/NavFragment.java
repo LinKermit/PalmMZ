@@ -36,11 +36,17 @@ public class NavFragment extends BaseFragment implements View.OnClickListener,Vi
     @BindView(R.id.nav_item_add)
     ImageView mNavPub;
 
-    private NavigationButton navigationButton;
     private Context context;
     private FragmentManager fragmentManager;
     private int contentId;
 
+    /**
+     * 初始化fragment
+     * @param context
+     * @param fragmentManager
+     * @param contentId
+     * @param listener
+     */
     public void init(Context context, FragmentManager fragmentManager, int contentId ,OnNavigationReselectListener listener){
         this.context =  context;
         this.fragmentManager = fragmentManager;
@@ -111,6 +117,11 @@ public class NavFragment extends BaseFragment implements View.OnClickListener,Vi
         currentButton = navButton;
     }
 
+    /**
+     * 选择fragment界面，每次点击都会初始化
+     * @param oldButton
+     * @param navButton
+     */
     private void doTabChange(NavigationButton oldButton, NavigationButton navButton) {
         FragmentTransaction ft = fragmentManager.beginTransaction();
 
@@ -137,7 +148,9 @@ public class NavFragment extends BaseFragment implements View.OnClickListener,Vi
 
     private OnNavigationReselectListener listener;
 
-
+    /**
+     * 两次点击同一个button 接口
+     */
     public interface OnNavigationReselectListener {
         void onReselect(NavigationButton navigationButton);
     }
