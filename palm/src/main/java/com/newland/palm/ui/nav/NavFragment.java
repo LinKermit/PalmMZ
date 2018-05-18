@@ -12,6 +12,7 @@ import com.newland.palm.R;
 import com.newland.palm.base.BaseFragment;
 import com.newland.palm.ui.dynamic.DynamicFragment;
 import com.newland.palm.ui.explore.ExploreFragment;
+import com.newland.palm.ui.publish.PublishActivity;
 import com.newland.palm.ui.tweet.TweetFragment;
 import com.newland.palm.ui.user.UserFragment;
 
@@ -93,7 +94,7 @@ public class NavFragment extends BaseFragment implements View.OnClickListener,Vi
             NavigationButton button = (NavigationButton) view;
             doSelected(button);
         }else if (view.getId() == R.id.nav_item_add){
-
+            PublishActivity.show(context);
         }
     }
 

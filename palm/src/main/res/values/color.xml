@@ -21,6 +21,8 @@
     <color name="actionbar_background">@color/main_green</color>
     <color name="transparent">#00000000</color>
     <color name="window_background">#f2f2f2</color>
+    <color name="black_alpha_128">#80000000</color>
+
 
 
     <color name="comment_yellow">#FFFFEE</color>

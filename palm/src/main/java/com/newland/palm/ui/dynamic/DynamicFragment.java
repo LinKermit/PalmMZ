@@ -8,6 +8,7 @@ import com.newland.palm.base.BaseFragment;
 
 /**
  * Created by lin on 2017/11/18.
+ * 1-咨询
  */
 
 public class DynamicFragment extends BaseFragment {

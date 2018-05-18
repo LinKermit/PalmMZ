@@ -7,6 +7,7 @@ import com.newland.palm.base.BaseFragment;
 
 /**
  * Created by lin on 2017/11/18.
+ * 2-动态
  */
 
 public class TweetFragment extends BaseFragment {

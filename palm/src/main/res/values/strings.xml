@@ -7,4 +7,7 @@
     <string name="nav_text_tweet">动弹</string>
     <string name="nav_text_explore">发现</string>
     <string name="nav_text_me">我的</string>
+
+    <string name="public_publish_tweet">发动态</string>
+    <string name="public_write_blog">写博客</string>
 </resources>
