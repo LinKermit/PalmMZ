@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -35,6 +36,12 @@ public class PublishActivity extends BaseActivity implements View.OnClickListene
 
     @BindView(R.id.ll_pub_tweet)
     LinearLayout mLaysTweet;
+
+    @Override
+    protected void onBeforeSetContentView() {
+        super.onBeforeSetContentView();
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
 
     @Override
     protected int getLayoutId() {

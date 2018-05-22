@@ -15,6 +15,7 @@ import com.newland.palm.ui.explore.ExploreFragment;
 import com.newland.palm.ui.publish.PublishActivity;
 import com.newland.palm.ui.tweet.TweetFragment;
 import com.newland.palm.ui.user.UserFragment;
+import com.newland.palm.utils.LogUtils;
 
 import butterknife.BindView;
 
@@ -107,7 +108,7 @@ public class NavFragment extends BaseFragment implements View.OnClickListener,Vi
             oldButton.setSelected(false);
 
             if (oldButton == navButton){
-                Log.e(TAG, "doSelected: " + "the same");
+                LogUtils.e(TAG, "doSelected: " + "the same");
                 if (listener != null){
                     listener.onReselect(navButton);
                 }
@@ -138,7 +139,7 @@ public class NavFragment extends BaseFragment implements View.OnClickListener,Vi
         }else {
             ft.detach(navButton.getFragment());
         }
-
+        
         ft.commitAllowingStateLoss();
     }
 

@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.newland.palm.R;
 import com.newland.palm.ui.nav.NavFragment;
@@ -30,6 +31,6 @@ public class MainActivity extends AppCompatActivity implements NavFragment.OnNav
 
     @Override
     public void onReselect(NavigationButton navigationButton) {
-        Log.e(TAG, "onReselect: " + navigationButton.getFragment());
+        Toast.makeText(this,navigationButton.getmTag(),Toast.LENGTH_SHORT).show();
     }
 }

@@ -47,6 +47,7 @@ public class User implements Serializable{
     private NoticeBean notice;
     private List<String> platforms;
     private List<String> expertise;
+    private String access_token;
 
     public String getAccess_token() {
         return access_token;
@@ -56,7 +57,7 @@ public class User implements Serializable{
         this.access_token = access_token;
     }
 
-    private String access_token;
+
 
     public long getUid() {
         return uid;

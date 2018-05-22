@@ -224,7 +224,7 @@ public class UserInfoFragment extends BaseNavFragment implements View.OnClickLis
     }
 
     /**
-     * 注册监听webactivity登录成功
+     * 注册监听WebActivity登录成功
      */
     private void registerLocalReceiver() {
         IntentFilter intentFilter = new IntentFilter();
@@ -253,7 +253,6 @@ public class UserInfoFragment extends BaseNavFragment implements View.OnClickLis
     @Override
     public void onDestroy() {
         super.onDestroy();
-        //利用LocalBroadcastManager的接口，进行反注册
         LocalBroadcastManager.getInstance(mContext)
                 .unregisterReceiver(mReceiver);
         NoticeManager.unBindNotify(this);

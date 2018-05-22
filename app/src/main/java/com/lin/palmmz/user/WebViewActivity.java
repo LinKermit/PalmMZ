@@ -68,16 +68,20 @@ public class WebViewActivity extends AppCompatActivity {
                 LogUtils.e(TAG,url);
                 //解析url，取出code值
 //                showFocusWaitDialog(getResources().getString(R.string.logining));
-                pareseUrl(url);
+                parseUrl(url);
                 return true;
             }
         });
-        webView.loadUrl(url);
+        webView.loadUrl(url);//网页授权--url 返回code
 
 
     }
 
-    private void pareseUrl(String url) {
+    /**
+     * 解析url，取code值，传code值取access_token，用access_token获取数据
+     * @param url
+     */
+    private void parseUrl(String url) {
         int start = url.indexOf("code");
         int end = url.indexOf("state");
         String code = url.substring(start+5,end-1);
@@ -87,7 +91,7 @@ public class WebViewActivity extends AppCompatActivity {
         }
     }
 
-    private void getEntityFromNet(String code){
+    private void getEntityFromNet(String code){//
 
         RetrofitHelper.getEntityApi().getEntityData(code,"json").enqueue(new Callback<Entity>() {//异步
             @Override
