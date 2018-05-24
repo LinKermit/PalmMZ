@@ -126,7 +126,7 @@ public class UserFragment extends BaseFragment implements View.OnClickListener{
             }
             switch (id){
                 case R.id.iv_portrait:
-                    uploadPortrait();
+//                    uploadPortrait();
                     break;
             }
         }
