@@ -7,7 +7,7 @@ import com.newland.palm.data.AccountHelper;
 
 /**
  * @author lin
- * @version 2018/5/18 0018
+ * @version 2018/5/18 0018 9012
  */
 public class MyApplication extends Application {
 
