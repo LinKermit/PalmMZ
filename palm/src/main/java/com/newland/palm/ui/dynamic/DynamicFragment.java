@@ -13,7 +13,7 @@ import butterknife.OnClick;
 
 /**
  * Created by lin on 2017/11/18.
- * 1-咨询
+ * 1-资讯
  */
 
 public class DynamicFragment extends BaseFragment implements View.OnClickListener{
