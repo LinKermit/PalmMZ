@@ -139,6 +139,18 @@ public class SubTab implements Serializable{
         }
     }
 
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj != null && obj instanceof SubTab) {
+            SubTab tab = (SubTab) obj;
+            if (tab.getToken() == null) return false;
+            if (this.token == null) return false;
+            return tab.getToken().equals(this.token);
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
         return "SubTab{" +

@@ -88,6 +88,9 @@ android {
             manifestPlaceholders = [UMENG_CHANNEL: "oschina"]
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+    }
 }
 
 repositories {
@@ -132,7 +135,7 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.google.code.gson:gson:2.8.0'
     //noinspection GradleDependency
-    compile 'com.umeng.analytics:analytics:latest.integration'
+//    compile 'com.umeng.analytics:analytics:latest.integration'
     //noinspection GradleDependency
     compile 'com.android.support:multidex:1.0.1'
     compile 'net.oschina.common:common:0.2.1'

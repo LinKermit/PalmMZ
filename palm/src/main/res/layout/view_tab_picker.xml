@@ -9,7 +9,7 @@
     <RelativeLayout
         android:id="@+id/layout_top"
         android:layout_width="match_parent"
-        android:layout_height="32dp"
+        android:layout_height="48dp"
         android:layout_marginRight="40dp"
         android:background="#F6F6F6"
         android:clickable="true">
