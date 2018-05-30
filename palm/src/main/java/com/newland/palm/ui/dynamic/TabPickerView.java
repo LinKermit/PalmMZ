@@ -34,6 +34,7 @@ import java.util.List;
 /**
  * @author lin
  * @version 2018/5/24 0024
+ * 添加tab 界面
  */
 public class TabPickerView extends FrameLayout {
 
@@ -105,7 +106,7 @@ public class TabPickerView extends FrameLayout {
             }
 
             @Override
-            public void onBindViewHolder(@NonNull TabViewHolder holder, int position) {
+            public void onBindViewHolder(@NonNull final TabViewHolder holder, final int position) {
                 SubTab item = items.get(position);
                 holder.mViewTab.setText(item.getName());
                 if (item.isFixed()) {
@@ -124,6 +125,57 @@ public class TabPickerView extends FrameLayout {
                     holder.mViewDel.setVisibility(GONE);
                 }
 
+                //删除
+                holder.mViewDel.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        SubTab tab = mActiveAdapter.getItem(holder.getAdapterPosition());
+                        if (tab == null || tab.isFixed()) return;
+                        int oldCount = mActiveAdapter.getItemCount();
+                        tab = mActiveAdapter.removeItem(holder.getAdapterPosition());
+                        // 放到下面需要根据Original DataSet重排序
+                        for (SubTab item : mTabManager.mOriginalDataSet) {
+                            if (!item.getToken().equals(tab.getToken())) continue;
+                            tab.setOrder(item.getOrder());
+                            break;
+                        }
+
+                        int i = 0;
+                        for (; i < mTabManager.mInactiveDataSet.size(); i++) {
+                            SubTab item = mTabManager.mInactiveDataSet.get(i);
+                            if (item.getOrder() < tab.getOrder()) continue;
+                            break;
+                        }
+                        mTabManager.mInactiveDataSet.add(i, tab);
+                        mInactiveAdapter.notifyItemInserted(i);
+
+                        if (mSelectedIndex == holder.getAdapterPosition()) {
+                            mSelectedIndex = holder.getAdapterPosition() == oldCount - 1 ? mSelectedIndex - 1 : mSelectedIndex;
+                            mActiveAdapter.notifyItemChanged(mSelectedIndex);
+                        } else if (mSelectedIndex > holder.getAdapterPosition()) {
+                            --mSelectedIndex;
+                            mActiveAdapter.notifyItemChanged(mSelectedIndex);
+                        }
+                        if (mTabPickingListener != null) {
+                            mTabPickingListener.onRemove(holder.getAdapterPosition(), tab);
+                        }
+                    }
+                });
+
+                holder.mViewTab.setOnLongClickListener(new OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        return false;
+                    }
+                });
+
+                holder.mViewTab.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mSelectedIndex = holder.getAdapterPosition();
+                        hide();
+                    }
+                });
             }
 
             @Override
@@ -143,16 +195,17 @@ public class TabPickerView extends FrameLayout {
             }
 
             @Override
-            public void onBindViewHolder(@NonNull TabViewHolder holder, final int position) {
+            public void onBindViewHolder(@NonNull final TabViewHolder holder, int position) {
                 holder.mViewTab.setText(items.get(position).getName());
 
                 holder.mViewTab.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        SubTab tab = mInactiveAdapter.removeItem(position);
+
+                        SubTab tab = mInactiveAdapter.removeItem(holder.getAdapterPosition());
                         mActiveAdapter.addItem(tab);
                         if (mTabPickingListener!=null){
-                            mTabPickingListener.onRemove(position,items.get(position));
+                            mTabPickingListener.onRemove(holder.getAdapterPosition(),tab);
                         }
                     }
                 });
@@ -201,16 +254,21 @@ public class TabPickerView extends FrameLayout {
         }
 
         public SubTab removeItem(int i) {
+            //recycler 中使用notifyItemRemoved(),已经在画面中不会再调用onBind，position 改为 holder.getAdapterPosition()
             SubTab subTab = items.remove(i);
-            notifyItemChanged(i);
+            notifyItemRemoved(i);
             return subTab;
         }
 
         public void addItem(SubTab tab) {
             items.add(tab);
-            notifyItemChanged(items.size() - 1);
+            notifyItemInserted(items.size() - 1);
         }
 
+        SubTab getItem(int position) {
+            if (position < 0 || position >= items.size()) return null;
+            return items.get(position);
+        }
 
         public class TabViewHolder extends RecyclerView.ViewHolder{
             TextView mViewTab;

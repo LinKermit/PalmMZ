@@ -13,6 +13,7 @@ import com.google.gson.reflect.TypeToken;
 import com.newland.palm.R;
 import com.newland.palm.base.BaseFragment;
 import com.newland.palm.data.bean.SubTab;
+import com.newland.palm.ui.AppOperator;
 import com.newland.palm.utils.LogUtils;
 import com.newland.palm.utils.StreamUtil;
 
@@ -47,6 +48,7 @@ public class DynamicFragment extends BaseFragment implements View.OnClickListene
     ImageView mViewArrowDown;
 
     TabPickerView.TabPickerDataManager mTabPickerDataManager;
+    List<SubTab> subTabs;
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_dynamic;
@@ -59,29 +61,55 @@ public class DynamicFragment extends BaseFragment implements View.OnClickListene
 
         mViewTabPicker.setTabPickerManager(initTabPickerManager());
         mViewTabPicker.setTabPickingListener(new TabPickerView.OnTabPickingListener() {
+
+            private boolean isChangeIndex = false;
             @Override
             public void onSelected(int position) {
-
+                //跳转主界面position tab
+                mViewArrowDown.setRotation(0);
             }
 
             @Override
             public void onRemove(int position, SubTab tab) {
-
+                isChangeIndex = true;
             }
 
             @Override
             public void onInsert(SubTab tab) {
-
+                isChangeIndex = true;
             }
 
             @Override
             public void onMove(int op, int np) {
-
+                isChangeIndex = true;
             }
 
             @Override
-            public void onRestore(List<SubTab> activeTabs) {
+            public void onRestore(final List<SubTab> activeTabs) {
+                if (!isChangeIndex){
+                    return;
+                }
+                AppOperator.runOnThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        OutputStreamWriter writer = null;
+                        try {
+                            writer = new OutputStreamWriter(
+                                    mContext.openFileOutput("sub_tab_active.json", Context.MODE_PRIVATE)
+                                    , "UTF-8");
+                            new Gson().toJson(activeTabs,writer);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            StreamUtil.close(writer);
+                        }
+                    }
+                });
 
+                isChangeIndex = false;
+                subTabs.clear();
+                subTabs.addAll(activeTabs);
+//                mAdapter.notifyDataSetChanged();
             }
         });
     }
