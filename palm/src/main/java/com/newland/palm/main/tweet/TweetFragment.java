@@ -1,4 +1,4 @@
-package com.newland.palm.ui.tweet;
+package com.newland.palm.main.tweet;
 import android.util.Log;
 import android.view.View;
 

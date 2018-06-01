@@ -1,4 +1,4 @@
-package com.newland.palm.ui.user;
+package com.newland.palm.main.user;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -18,9 +18,9 @@ import com.newland.palm.data.AccountHelper;
 import com.newland.palm.data.bean.Portrait;
 import com.newland.palm.data.bean.User;
 import com.newland.palm.data.net.RetrofitHelper;
-import com.newland.palm.ui.user.zxing.MyQRCodeDialog;
+import com.newland.palm.main.user.zxing.MyQRCodeDialog;
 import com.newland.palm.utils.LogUtils;
-import com.newland.palm.weight.CircleImageView;
+import com.newland.palm.ui.CircleImageView;
 
 import java.io.File;
 

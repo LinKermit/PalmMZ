@@ -1,17 +1,14 @@
-package com.newland.palm.ui.dynamic;
+package com.newland.palm.main.dynamic;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.print.PrinterId;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +21,9 @@ import android.widget.TextView;
 import com.newland.palm.R;
 import com.newland.palm.data.bean.SubTab;
 import com.newland.palm.utils.LogUtils;
-import com.newland.palm.weight.MyGridLayoutManager;
+import com.newland.palm.ui.MyGridLayoutManager;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**

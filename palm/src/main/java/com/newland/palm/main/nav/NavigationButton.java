@@ -1,4 +1,4 @@
-package com.newland.palm.ui.nav;
+package com.newland.palm.main.nav;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

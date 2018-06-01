@@ -54,7 +54,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <com.newland.palm.weight.CircleImageView
+                <com.newland.palm.ui.CircleImageView
                     android:id="@+id/iv_portrait"
                     android:layout_width="72dp"
                     android:layout_height="72dp"

@@ -1,4 +1,4 @@
-package com.newland.palm.ui.publish;
+package com.newland.palm.main.publish;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

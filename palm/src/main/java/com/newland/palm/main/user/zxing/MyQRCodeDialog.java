@@ -1,4 +1,4 @@
-package com.newland.palm.ui.user.zxing;
+package com.newland.palm.main.user.zxing;
 
 import android.app.Activity;
 import android.app.Dialog;

@@ -1,4 +1,4 @@
-package com.newland.palm.ui;
+package com.newland.palm.main;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

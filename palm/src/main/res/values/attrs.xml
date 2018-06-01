@@ -8,4 +8,9 @@
         <attr name="border_overlay" format="boolean" />
     </declare-styleable>
 
+
+    <declare-styleable name="TitleBar">
+        <attr name="aTitle" format="string"/>
+        <attr name="aIcon" format="reference"/>
+    </declare-styleable>
 </resources>

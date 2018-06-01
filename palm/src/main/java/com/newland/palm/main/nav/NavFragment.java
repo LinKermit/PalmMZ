@@ -1,4 +1,4 @@
-package com.newland.palm.ui.nav;
+package com.newland.palm.main.nav;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -10,11 +10,11 @@ import android.widget.ImageView;
 
 import com.newland.palm.R;
 import com.newland.palm.base.BaseFragment;
-import com.newland.palm.ui.dynamic.DynamicFragment;
-import com.newland.palm.ui.explore.ExploreFragment;
-import com.newland.palm.ui.publish.PublishActivity;
-import com.newland.palm.ui.tweet.TweetFragment;
-import com.newland.palm.ui.user.UserFragment;
+import com.newland.palm.main.dynamic.DynamicFragment;
+import com.newland.palm.main.explore.ExploreFragment;
+import com.newland.palm.main.publish.PublishActivity;
+import com.newland.palm.main.tweet.TweetFragment;
+import com.newland.palm.main.user.UserFragment;
 import com.newland.palm.utils.LogUtils;
 
 import butterknife.BindView;

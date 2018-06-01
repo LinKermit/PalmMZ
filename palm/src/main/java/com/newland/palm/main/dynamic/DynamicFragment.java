@@ -1,4 +1,4 @@
-package com.newland.palm.ui.dynamic;
+package com.newland.palm.main.dynamic;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -13,7 +13,7 @@ import com.google.gson.reflect.TypeToken;
 import com.newland.palm.R;
 import com.newland.palm.base.BaseFragment;
 import com.newland.palm.data.bean.SubTab;
-import com.newland.palm.ui.AppOperator;
+import com.newland.palm.main.AppOperator;
 import com.newland.palm.utils.LogUtils;
 import com.newland.palm.utils.StreamUtil;
 

@@ -1,4 +1,4 @@
-package com.newland.palm.ui.user;
+package com.newland.palm.main.user;
 
 import android.content.Context;
 import android.content.Intent;

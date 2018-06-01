@@ -1,4 +1,4 @@
-package com.newland.palm.ui;
+package com.newland.palm.main;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -8,8 +8,8 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.newland.palm.R;
-import com.newland.palm.ui.nav.NavFragment;
-import com.newland.palm.ui.nav.NavigationButton;
+import com.newland.palm.main.nav.NavFragment;
+import com.newland.palm.main.nav.NavigationButton;
 
 import butterknife.BindView;
 

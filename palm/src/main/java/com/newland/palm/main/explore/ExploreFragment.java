@@ -1,4 +1,4 @@
-package com.newland.palm.ui.explore;
+package com.newland.palm.main.explore;
 
 
 import android.util.Log;

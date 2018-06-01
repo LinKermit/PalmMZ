@@ -1,4 +1,4 @@
-package com.newland.palm.weight;
+package com.newland.palm.ui;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

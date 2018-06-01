@@ -58,7 +58,7 @@
     </LinearLayout>
 
 
-    <com.newland.palm.ui.dynamic.TabPickerView
+    <com.newland.palm.main.dynamic.TabPickerView
         android:id="@+id/view_tab_picker"
         android:visibility="invisible"
         android:layout_width="match_parent"
