@@ -29,7 +29,7 @@
             android:layout_marginTop="8dp"
             android:layout_weight="1"
             android:background="@drawable/ic_bg_edit"
-            android:hint="发表评论"
+            android:hint="发送私信"
             android:maxLength="160"
             android:maxLines="4"
             android:paddingBottom="6dp"
@@ -37,7 +37,7 @@
             android:paddingRight="8dp"
             android:paddingTop="6dp"
             android:textSize="14sp"
-            tools:ignore="RtlHardcoded" />
+            tools:ignore="HardcodedText,RtlHardcoded,TextFields" />
 
         <ImageView
             android:id="@+id/iv_emoji"
@@ -50,7 +50,8 @@
             android:scaleType="fitCenter"
             android:src="@drawable/btn_emoji_selector"
             android:visibility="gone"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            tools:ignore="RtlHardcoded,RtlSymmetry" />
 
         <LinearLayout
             android:id="@+id/ll_bottom"
@@ -70,7 +71,8 @@
                 android:scaleType="fitCenter"
                 android:src="@drawable/btn_pic_selector"
                 android:visibility="gone"
-                tools:visibility="visible" />
+                tools:visibility="visible"
+                tools:ignore="RtlHardcoded,RtlSymmetry" />
 
 
             <ImageView
@@ -82,7 +84,8 @@
                 android:paddingRight="16dp"
                 android:src="@drawable/ic_fav"
                 android:visibility="gone"
-                tools:visibility="visible" />
+                tools:visibility="visible"
+                tools:ignore="RtlHardcoded,RtlSymmetry" />
 
             <ImageView
                 android:id="@+id/iv_share"
@@ -93,7 +96,8 @@
                 android:paddingRight="16dp"
                 android:src="@drawable/share_ic_selector"
                 android:visibility="gone"
-                tools:visibility="visible" />
+                tools:visibility="visible"
+                tools:ignore="RtlHardcoded,RtlSymmetry" />
         </LinearLayout>
 
         <Button
@@ -106,7 +110,8 @@
             android:background="@drawable/ic_bg_btn_blue"
             style="?android:attr/borderlessButtonStyle"
             android:text="发送"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:ignore="HardcodedText,RtlHardcoded" />
     </LinearLayout>
 
     <View

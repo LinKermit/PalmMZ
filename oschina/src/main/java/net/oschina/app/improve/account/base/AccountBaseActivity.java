@@ -69,7 +69,11 @@ public class AccountBaseActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        hideKeyBoard(getCurrentFocus().getWindowToken());
+        try {
+            hideKeyBoard(getCurrentFocus().getWindowToken());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         if (mManager != null) {
             if (mReceiver != null)
                 mManager.unregisterReceiver(mReceiver);
@@ -241,6 +245,9 @@ public class AccountBaseActivity extends BaseActivity {
     }
 
     protected void hideKeyBoard(IBinder windowToken) {
+        if(windowToken == null){
+            return;
+        }
         InputMethodManager inputMethodManager = this.mInputMethodManager;
         if (inputMethodManager == null) return;
         boolean active = inputMethodManager.isActive();

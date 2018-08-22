@@ -52,7 +52,7 @@ public class CollectionAdapter extends BaseRecyclerAdapter<Collection> {
                 type = "资讯";
                 break;
             default:
-                type = "其他";
+                type = "链接";
                 break;
         }
         h.mTypeView.setText(type);

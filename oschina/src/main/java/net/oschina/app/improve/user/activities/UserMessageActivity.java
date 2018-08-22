@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
 import net.oschina.app.R;
-import net.oschina.app.improve.base.activities.BaseBackActivity;
+import net.oschina.app.improve.base.activities.BackActivity;
 import net.oschina.app.improve.notice.NoticeBean;
 import net.oschina.app.improve.notice.NoticeManager;
 import net.oschina.app.improve.user.fragments.UserCommentFragment;
@@ -24,7 +24,7 @@ import butterknife.Bind;
  * updated by fei
  * on 2017/1/06
  */
-public class UserMessageActivity extends BaseBackActivity implements NoticeManager.NoticeNotify {
+public class UserMessageActivity extends BackActivity implements NoticeManager.NoticeNotify {
 
     @Bind(R.id.tabLayout)
     TabLayout mLayoutTab;
@@ -56,6 +56,8 @@ public class UserMessageActivity extends BaseBackActivity implements NoticeManag
     @Override
     protected void initWidget() {
         super.initWidget();
+        setStatusBarDarkMode();
+        setDarkToolBar();
         mNotice = NoticeManager.getNotice();
 
         mUserMentionFragment = new UserMentionFragment();

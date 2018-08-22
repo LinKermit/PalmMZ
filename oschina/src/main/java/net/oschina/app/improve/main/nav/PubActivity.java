@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -16,6 +17,7 @@ import net.oschina.app.R;
 import net.oschina.app.improve.account.AccountHelper;
 import net.oschina.app.improve.account.activity.LoginActivity;
 import net.oschina.app.improve.base.activities.BaseActivity;
+import net.oschina.app.improve.main.synthesize.pub.PubArticleActivity;
 import net.oschina.app.improve.media.Util;
 import net.oschina.app.improve.tweet.activities.TweetPublishActivity;
 import net.oschina.app.improve.write.WriteActivity;
@@ -24,7 +26,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 
 /**
- * 发布界面
+ * 发布选择界面
  * Created by huanghaibin on 2017/9/25.
  */
 
@@ -33,7 +35,7 @@ public class PubActivity extends BaseActivity implements View.OnClickListener {
     @Bind(R.id.btn_pub)
     ImageView mBtnPub;
 
-    @Bind({R.id.ll_pub_blog, R.id.ll_pub_tweet})
+    @Bind({R.id.ll_pub_article, R.id.ll_pub_blog, R.id.ll_pub_tweet})
     LinearLayout[] mLays;
 
     public static void show(Context context) {
@@ -71,9 +73,10 @@ public class PubActivity extends BaseActivity implements View.OnClickListener {
                 .start();
         show(0);
         show(1);
+        show(2);
     }
 
-    @OnClick({R.id.rl_main, R.id.ll_pub_tweet, R.id.ll_pub_blog})
+    @OnClick({R.id.rl_main, R.id.ll_pub_tweet, R.id.ll_pub_blog, R.id.ll_pub_article})
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -81,7 +84,7 @@ public class PubActivity extends BaseActivity implements View.OnClickListener {
                 dismiss();
                 break;
             case R.id.ll_pub_tweet:
-                if(!AccountHelper.isLogin()){
+                if (!AccountHelper.isLogin()) {
                     LoginActivity.show(this);
                     finish();
                     return;
@@ -90,7 +93,7 @@ public class PubActivity extends BaseActivity implements View.OnClickListener {
                 finish();
                 break;
             case R.id.ll_pub_blog:
-                if(!AccountHelper.isLogin()){
+                if (!AccountHelper.isLogin()) {
                     LoginActivity.show(this);
                     finish();
                     return;
@@ -98,24 +101,35 @@ public class PubActivity extends BaseActivity implements View.OnClickListener {
                 WriteActivity.show(this);
                 finish();
                 break;
+            case R.id.ll_pub_article:
+                if (!AccountHelper.isLogin()) {
+                    LoginActivity.show(this);
+                    finish();
+                    return;
+                }
+                PubArticleActivity.show(this, "");
+                finish();
+                break;
         }
     }
 
-    private void dismiss(){
+    private void dismiss() {
         close();
         close(0);
         close(1);
+        close(2);
     }
 
     private void close() {
         mBtnPub.clearAnimation();
         mBtnPub.animate()
                 .rotation(0f)
-                .setDuration(180)
+                .setDuration(200)
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
                         super.onAnimationEnd(animation);
+                        mBtnPub.setVisibility(View.GONE);
                         finish();
                     }
                 })
@@ -123,9 +137,10 @@ public class PubActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void show(int position) {
-        int angle = position == 0 ? 45 : 135;
-        float x = (float) Math.cos(angle * (Math.PI / 180)) * Util.dipTopx(this, 80);
-        float y = (float) -Math.sin(angle * (Math.PI / 180)) * Util.dipTopx(this, 80);
+        int angle = 30 + position * 60;
+
+        float x = (float) Math.cos(angle * (Math.PI / 180)) * Util.dipTopx(this, 100);
+        float y = (float) -Math.sin(angle * (Math.PI / 180)) * Util.dipTopx(this, position != 1 ? 160 : 100);
         ObjectAnimator objectAnimatorX = ObjectAnimator.ofFloat(mLays[position], "translationX", 0, x);
         ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(mLays[position], "translationY", 0, y);
         AnimatorSet animatorSet = new AnimatorSet();
@@ -134,15 +149,23 @@ public class PubActivity extends BaseActivity implements View.OnClickListener {
         animatorSet.start();
     }
 
-    private void close(int position) {
-        int angle = position == 0 ? 45 : 135;
-        float x = (float) Math.cos(angle * (Math.PI / 180)) * Util.dipTopx(this, 80);
-        float y = (float) -Math.sin(angle * (Math.PI / 180)) * Util.dipTopx(this, 80);
+    private void close(final int position) {
+        int angle = 30 + position * 60;
+        float x = (float) Math.cos(angle * (Math.PI / 180)) * Util.dipTopx(this, 100);
+        float y = (float) -Math.sin(angle * (Math.PI / 180)) * Util.dipTopx(this, position != 1 ? 160 : 100);
         ObjectAnimator objectAnimatorX = ObjectAnimator.ofFloat(mLays[position], "translationX", x, 0);
         ObjectAnimator objectAnimatorY = ObjectAnimator.ofFloat(mLays[position], "translationY", y, 0);
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.setDuration(180);
+        animatorSet.setInterpolator(new DecelerateInterpolator());
         animatorSet.play(objectAnimatorX).with(objectAnimatorY);
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mLays[position].setVisibility(View.GONE);
+            }
+        });
         animatorSet.start();
     }
 

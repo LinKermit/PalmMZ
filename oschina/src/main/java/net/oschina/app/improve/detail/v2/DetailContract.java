@@ -2,6 +2,7 @@ package net.oschina.app.improve.detail.v2;
 
 import net.oschina.app.improve.base.BasePresenter;
 import net.oschina.app.improve.base.BaseView;
+import net.oschina.app.improve.bean.Article;
 import net.oschina.app.improve.bean.SubBean;
 import net.oschina.app.improve.bean.comment.Comment;
 import net.oschina.app.improve.detail.db.Behavior;
@@ -54,6 +55,26 @@ interface DetailContract {
         void showPayDonateSuccess(int type, String sign, WeChatPay.PayResult result);
 
         void showPayDonateError();
+
+        /**
+         * 刷新成功
+         */
+        void onRefreshSuccess(List<Article> data);
+
+        /**
+         * 加载成功
+         */
+        void onLoadMoreSuccess(List<Article> data);
+
+        /**
+         * 没有更多数据
+         */
+        void showMoreMore();
+
+        /**
+         * 加载完成
+         */
+        void onComplete();
     }
 
     interface Presenter extends BasePresenter {
@@ -89,5 +110,15 @@ interface DetailContract {
          * @param payType  支付类型 1 支付宝  2、微信支付  返回结果不一样
          */
         void payDonate( long authorId,long objId,float money,int payType);
+
+        /**
+         * 刷新获得相关推荐
+         */
+        void onRefresh();
+
+        /**
+         * 加载更多获得相关推荐
+         */
+        void onLoadMore();
     }
 }

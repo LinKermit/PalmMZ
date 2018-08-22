@@ -1,6 +1,7 @@
 package net.oschina.app.improve.widget;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
@@ -34,6 +35,14 @@ public class BottomDialog extends BottomSheetDialog {
     public void setContentView(View view) {
         super.setContentView(view);
         initialize(view);
+        setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                if (behavior != null) {
+                    behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                }
+            }
+        });
     }
 
     @Override
@@ -46,6 +55,8 @@ public class BottomDialog extends BottomSheetDialog {
         ViewGroup parent = (ViewGroup) view.getParent();
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) parent.getLayoutParams();
         behavior = (BottomSheetBehavior) params.getBehavior();
+        if (behavior == null)
+            return;
         behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {

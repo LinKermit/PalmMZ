@@ -4,17 +4,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_comment"
-        android:orderInCategory="100"
-        android:title="评论"
-        app:actionLayout="@layout/lay_menu_action_comment"
+        android:id="@+id/menu_report"
+        android:title="举报"
+        android:icon="@mipmap/ic_inform"
         app:showAsAction="always"
-        tools:ignore="AlwaysShowAction,HardcodedText" />
+        tools:ignore="HardcodedText" />
 
     <item
-        android:id="@+id/menu_report"
-        android:orderInCategory="100"
-        android:title="举报"
-        app:showAsAction="never"
-        tools:ignore="HardcodedText" />
+        android:id="@+id/menu_share"
+        android:icon="@mipmap/ic_share_black_pressed"
+        android:title="@string/share_to"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" />
+
+
+
 </menu>

@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import net.oschina.app.R;
-import net.oschina.app.improve.base.activities.BaseBackActivity;
+import net.oschina.app.improve.base.activities.BackActivity;
 import net.oschina.app.improve.tweet.fragments.TweetFragment;
 
 /**
@@ -14,7 +14,7 @@ import net.oschina.app.improve.tweet.fragments.TweetFragment;
  * desc:
  */
 
-public class UserTweetActivity extends BaseBackActivity {
+public class UserTweetActivity extends BackActivity {
 
     private long uid;
     private Fragment userTweetFragment;
@@ -45,6 +45,8 @@ public class UserTweetActivity extends BaseBackActivity {
     @Override
     protected void initWidget() {
         super.initWidget();
+        setStatusBarDarkMode();
+        setDarkToolBar();
         if (userTweetFragment == null)
             userTweetFragment = TweetFragment.instantiate(uid, 0,false);
         getSupportFragmentManager().beginTransaction().add(R.id.user_tweet_container, userTweetFragment).commit();

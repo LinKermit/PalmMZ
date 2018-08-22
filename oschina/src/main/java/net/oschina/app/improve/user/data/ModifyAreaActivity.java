@@ -14,7 +14,7 @@ import com.loopj.android.http.TextHttpResponseHandler;
 
 import net.oschina.app.R;
 import net.oschina.app.api.remote.OSChinaApi;
-import net.oschina.app.improve.base.activities.BaseBackActivity;
+import net.oschina.app.improve.base.activities.BackActivity;
 import net.oschina.app.improve.base.adapter.BaseRecyclerAdapter;
 import net.oschina.app.improve.bean.User;
 import net.oschina.app.improve.bean.base.ResultBean;
@@ -31,7 +31,7 @@ import cz.msebera.android.httpclient.Header;
  * Created by huanghaibin on 2017/8/21.
  */
 
-public class ModifyAreaActivity extends BaseBackActivity {
+public class ModifyAreaActivity extends BackActivity {
 
     @Bind(R.id.rv_province)
     RecyclerView mRecyclerProvince;
@@ -50,6 +50,13 @@ public class ModifyAreaActivity extends BaseBackActivity {
     @Override
     protected int getContentView() {
         return R.layout.activity_modify_area;
+    }
+
+    @Override
+    protected void initWidget() {
+        super.initWidget();
+        setStatusBarDarkMode();
+        setDarkToolBar();
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -107,7 +114,7 @@ public class ModifyAreaActivity extends BaseBackActivity {
                 int i = mAdapterCity.getItems().indexOf(c);
                 if (i >= 0 && i < mAdapterCity.getCount()) {
                     mAdapterCity.setSelectedPosition(i);
-                    mRecyclerCity.scrollToPosition(index);
+                    mRecyclerCity.scrollToPosition(i);
                 }
             }
         }
@@ -162,6 +169,8 @@ public class ModifyAreaActivity extends BaseBackActivity {
                                 intent.putExtra("user_info", bean.getResult());
                                 setResult(RESULT_OK, intent);
                                 finish();
+                            }else {
+                                SimplexToast.show(ModifyAreaActivity.this,bean.getMessage());
                             }
 
                         } catch (Exception e) {

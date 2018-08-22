@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,7 +30,9 @@ import net.oschina.app.improve.account.base.AccountBaseActivity;
 import net.oschina.app.improve.account.bean.PhoneToken;
 import net.oschina.app.improve.app.AppOperator;
 import net.oschina.app.improve.bean.base.ResultBean;
+import net.oschina.app.improve.main.synthesize.web.WebActivity;
 import net.oschina.app.improve.utils.parser.RichTextParser;
+import net.oschina.app.improve.widget.SimplexToast;
 import net.oschina.app.util.TDevice;
 
 import java.lang.reflect.Type;
@@ -64,11 +67,13 @@ public class RegisterStepOneActivity extends AccountBaseActivity implements View
     LinearLayout mLlRegisterSmsCode;
     @Bind(R.id.et_register_auth_code)
     EditText mEtRegisterAuthCode;
-    @Bind(R.id.tv_register_sms_call)
-    TextView mTvRegisterSmsCall;
+
+    private TextView mTvRegisterSmsCall;
     @Bind(R.id.bt_register_submit)
     Button mBtRegisterSubmit;
 
+    @Bind(R.id.cb_protocol)
+    CheckBox mCheckProtocol;
     private boolean mMachPhoneNum;
 
     private CountDownTimer mTimer;
@@ -208,7 +213,7 @@ public class RegisterStepOneActivity extends AccountBaseActivity implements View
     @Override
     protected void initWidget() {
         super.initWidget();
-
+        mTvRegisterSmsCall = (TextView)findViewById(R.id.tv_register_sms_call);
         TextView label = (TextView) mLayBackBar.findViewById(R.id.tv_navigation_label);
         label.setVisibility(View.INVISIBLE);
 
@@ -307,6 +312,7 @@ public class RegisterStepOneActivity extends AccountBaseActivity implements View
                 mLlRegisterSmsCode.setBackgroundResource(R.drawable.bg_login_input_ok);
             }
         });
+        mCheckProtocol.setChecked(true);
     }
 
 
@@ -325,19 +331,26 @@ public class RegisterStepOneActivity extends AccountBaseActivity implements View
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        hideKeyBoard(getCurrentFocus().getWindowToken());
+        try {
+            hideKeyBoard(getCurrentFocus().getWindowToken());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         mLayBackBar.getViewTreeObserver().removeOnGlobalLayoutListener(this);
     }
 
     @SuppressWarnings("ConstantConditions")
     @OnClick({R.id.ib_navigation_back, R.id.iv_register_username_del, R.id.tv_register_sms_call,
-            R.id.bt_register_submit, R.id.lay_register_one_container})
+            R.id.bt_register_submit, R.id.lay_register_one_container, R.id.tv_protocol})
     @Override
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
             case R.id.ib_navigation_back:
                 finish();
+                break;
+            case R.id.tv_protocol:
+                WebActivity.show(this, "https://www.oschina.net/terms");
                 break;
             case R.id.iv_register_username_del:
                 mEtRegisterUsername.setText(null);
@@ -346,11 +359,18 @@ public class RegisterStepOneActivity extends AccountBaseActivity implements View
                 requestSmsCode();
                 break;
             case R.id.bt_register_submit:
-                requestRegister();
-                // RegisterStepTwoActivity.show(this,null);
+                if (mCheckProtocol.isChecked()) {
+                    requestRegister();
+                } else {
+                    SimplexToast.show(this, "您需要同意开源中国社区用户服务条款方可注册");
+                }
                 break;
             case R.id.lay_register_one_container:
-                hideKeyBoard(getCurrentFocus().getWindowToken());
+                try {
+                    hideKeyBoard(getCurrentFocus().getWindowToken());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 break;
             default:
                 break;

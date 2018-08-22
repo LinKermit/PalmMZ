@@ -1,6 +1,5 @@
 package net.oschina.app.improve.tweet.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -80,7 +79,7 @@ public class ListTweetLikeUsersFragment extends BaseRecyclerViewFragment<TweetLi
 
     @Override
     protected void requestData() {
-        String token = isRefreshing ? null : mBean.getNextPageToken();
+        String token = isRefreshing || mBean == null ? null : mBean.getNextPageToken();
         OSChinaApi.getTweetLikeList(mOperator.getTweetDetail().getId(), token, mHandler);
     }
 

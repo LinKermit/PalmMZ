@@ -1,11 +1,15 @@
 package net.oschina.app.improve.main.update;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.view.View;
 import android.view.WindowManager;
@@ -18,20 +22,15 @@ import net.oschina.app.improve.bean.Version;
 import net.oschina.app.improve.utils.DialogHelper;
 import net.oschina.app.util.TDevice;
 
-import java.util.List;
-
 import butterknife.Bind;
 import butterknife.OnClick;
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
 
 /**
- * 在线更新对话框
- * Created by haibin on 2017/5/4.
+ * 新版在线更新界面
+ * Created by huanghaibin on 2018/4/23.
  */
 
-public class UpdateActivity extends BaseActivity implements View.OnClickListener,
-        EasyPermissions.PermissionCallbacks {
+public class UpdateActivity extends BaseActivity implements View.OnClickListener {
     @Bind(R.id.tv_update_info)
     TextView mTextUpdateInfo;
     private Version mVersion;
@@ -58,7 +57,7 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
         mTextUpdateInfo.setText(Html.fromHtml(mVersion.getMessage()));
     }
 
-    @OnClick({R.id.btn_update, R.id.btn_close,R.id.btn_not_show})
+    @OnClick({R.id.btn_update, R.id.btn_close, R.id.btn_not_show})
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -67,13 +66,11 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
                     DialogHelper.getConfirmDialog(this, "当前非wifi环境，是否升级？", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            requestExternalStorage();
-                            finish();
+                            checkPermission();
                         }
                     }).show();
                 } else {
-                    requestExternalStorage();
-                    finish();
+                    checkPermission();
                 }
                 break;
             case R.id.btn_not_show:
@@ -84,39 +81,48 @@ public class UpdateActivity extends BaseActivity implements View.OnClickListener
             case R.id.btn_close:
                 finish();
                 break;
-            default:
-                break;
         }
 
     }
 
-    @AfterPermissionGranted(RC_EXTERNAL_STORAGE)
-    public void requestExternalStorage() {
-        if (EasyPermissions.hasPermissions(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            DownloadService.startService(this, mVersion.getDownloadUrl());
+    @SuppressLint("InlinedApi")
+    private void checkPermission() {
+        int result = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (result != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    RC_EXTERNAL_STORAGE);
         } else {
-            EasyPermissions.requestPermissions(this, "", RC_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE);
+            DownloadService.startService(this, mVersion.getDownloadUrl());
+            finish();
         }
-    }
-
-    @Override
-    public void onPermissionsGranted(int requestCode, List<String> perms) {
-
-    }
-
-    @Override
-    public void onPermissionsDenied(int requestCode, List<String> perms) {
-        DialogHelper.getConfirmDialog(this, "温馨提示", "需要开启开源中国对您手机的存储权限才能下载安装，是否现在开启", "去开启", "取消", true, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                startActivity(new Intent(Settings.ACTION_APPLICATION_SETTINGS));
-            }
-        }, null).show();
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == RC_EXTERNAL_STORAGE) {
+            if (grantResults.length > 0
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                DownloadService.startService(this, mVersion.getDownloadUrl());
+                finish();
+            } else {
+                DialogHelper.getConfirmDialog(this, "温馨提示",
+                        "需要开启开源中国对您手机的存储权限才能下载安装，是否现在开启",
+                        "去开启", "取消",
+                        true, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivity(new Intent(Settings.ACTION_APPLICATION_SETTINGS));
+                                finish();
+                            }
+                        }, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        }).show();
+            }
+        }
     }
-
 }

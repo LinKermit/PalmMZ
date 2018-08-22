@@ -21,7 +21,7 @@ public interface BaseListView<Presenter extends BaseListPresenter, M> extends Ba
     /**
      * 没有更多数据
      */
-    void showMoreMore();
+    void showNotMore();
 
     /**
      * 加载完成

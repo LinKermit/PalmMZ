@@ -140,13 +140,49 @@
             tools:ignore="RtlHardcoded"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <CheckBox
+            android:id="@+id/cb_protocol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/ic_selector_checkbox"
+            android:checked="false"
+            android:contentDescription="@null"
+            android:textColor="@color/text_secondary_color"
+            android:textSize="@dimen/font_12"
+            tools:visibility="visible" />
+
+        <TextView
+            android:layout_marginLeft="@dimen/lay_16"
+            android:text="已阅读并同意服务条款"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="HardcodedText,RtlHardcoded" />
+
+        <TextView
+            android:id="@+id/tv_protocol"
+            android:text=" 服务条款 "
+            android:textColor="@color/swiperefresh_color4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="HardcodedText,RtlHardcoded" />
+    </LinearLayout>
+
     <Button
         android:id="@+id/bt_register_submit"
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/bg_login_submit_lock"
         android:elevation="0dp"
         android:outlineProvider="none"

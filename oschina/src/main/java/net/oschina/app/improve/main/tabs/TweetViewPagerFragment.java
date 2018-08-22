@@ -10,7 +10,7 @@ import net.oschina.app.improve.base.fragments.BaseGeneralRecyclerFragment;
 import net.oschina.app.improve.base.fragments.BaseViewPagerFragment;
 import net.oschina.app.improve.bean.SubTab;
 import net.oschina.app.improve.main.subscription.SubFragment;
-import net.oschina.app.improve.search.activities.SearchActivity;
+import net.oschina.app.improve.search.v2.SearchActivity;
 import net.oschina.app.improve.tweet.fragments.TweetFragment;
 import net.oschina.app.interf.OnTabReselectListener;
 
@@ -102,6 +102,7 @@ public class TweetViewPagerFragment extends BaseViewPagerFragment implements OnT
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //SearchActivity.show(getContext());
                 SearchActivity.show(getContext());
             }
         };

@@ -1,6 +1,8 @@
 package net.oschina.app.improve.detail.general;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -12,10 +14,9 @@ import net.oschina.app.improve.bean.SubBean;
 import net.oschina.app.improve.bean.simple.Author;
 import net.oschina.app.improve.detail.v2.DetailFragment;
 import net.oschina.app.improve.utils.ReadedIndexCacheManager;
+import net.oschina.app.improve.widget.AutoScrollView;
+import net.oschina.app.improve.widget.PortraitView;
 import net.oschina.app.util.StringUtils;
-
-import butterknife.Bind;
-import butterknife.OnLongClick;
 
 /**
  * Created by haibin
@@ -23,20 +24,16 @@ import butterknife.OnLongClick;
  */
 
 public class NewsDetailFragment extends DetailFragment {
-    @Bind(R.id.tv_title)
-    TextView mTextTitle;
+    private TextView mTextTitle;
 
-    @Bind(R.id.tv_pub_date)
-    TextView mTextPubDate;
+    private TextView mTextPubDate;
 
-    @Bind(R.id.tv_author)
-    TextView mTextAuthor;
+    private TextView mTextAuthor;
 
-    @Bind(R.id.lay_about_software)
-    LinearLayout mLinearSoftware;
+    private PortraitView mPortraitView;
 
-    @Bind(R.id.tv_about_software_title)
-    TextView mTextSoftwareTitle;
+    private TextView mTextSoftwareName;
+    private LinearLayout mLinearSoftwareRoot;
 
     public static NewsDetailFragment newInstance() {
         return new NewsDetailFragment();
@@ -45,6 +42,25 @@ public class NewsDetailFragment extends DetailFragment {
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_news_detail_v2;
+    }
+
+    @Override
+    protected void initWidget(View root) {
+        super.initWidget(root);
+        mTextTitle = (TextView) mHeaderView.findViewById(R.id.tv_title);
+        mTextPubDate = (TextView) mHeaderView.findViewById(R.id.tv_pub_date);
+        mTextAuthor = (TextView) mHeaderView.findViewById(R.id.tv_author);
+        mPortraitView = (PortraitView) mHeaderView.findViewById(R.id.iv_avatar);
+        LinearLayout mLinearSoftware = (LinearLayout) mHeaderView.findViewById(R.id.ll_software);
+        mLinearSoftwareRoot = (LinearLayout) mHeaderView.findViewById(R.id.ll_software_root);
+        mTextSoftwareName = (TextView) mHeaderView.findViewById(R.id.tv_software_name);
+        mLinearSoftware.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mBean != null && mBean.getSoftware() != null)
+                    SoftwareDetailActivity.show(mContext, mBean.getSoftware().getId());
+            }
+        });
     }
 
     @Override
@@ -58,23 +74,18 @@ public class NewsDetailFragment extends DetailFragment {
     public void showGetDetailSuccess(SubBean bean) {
         super.showGetDetailSuccess(bean);
         mTextTitle.setText(bean.getTitle());
-        mTextPubDate.setText("发布于 " + StringUtils.formatYearMonthDay(bean.getPubDate()));
+        mTextPubDate.setText(StringUtils.formatYearMonthDay(bean.getPubDate()));
         Author author = mBean.getAuthor();
         if (author != null) {
-            mTextAuthor.setText("@" + author.getName());
+            mTextAuthor.setText(author.getName());
         }
-        final Software software = bean.getSoftware();
+        mPortraitView.setup(author);
+        Software software = bean.getSoftware();
         if (software != null) {
-            mLinearSoftware.setVisibility(View.VISIBLE);
-            mTextSoftwareTitle.setText(software.getName());
-            mLinearSoftware.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    SoftwareDetailActivity.show(getActivity(), software.getId());
-                }
-            });
+            mLinearSoftwareRoot.setVisibility(View.VISIBLE);
+            mTextSoftwareName.setText(software.getName());
         } else {
-            mLinearSoftware.setVisibility(View.GONE);
+            mLinearSoftwareRoot.setVisibility(View.GONE);
         }
     }
 
@@ -92,9 +103,15 @@ public class NewsDetailFragment extends DetailFragment {
         super.onDestroy();
     }
 
-    @OnLongClick(R.id.tv_title)
-    boolean onLongClickTitle() {
-        showCopyTitle();
-        return true;
+    @Override
+    protected View getHeaderView() {
+        return new NewsDetailHeaderView(mContext);
+    }
+
+    private static class NewsDetailHeaderView extends AutoScrollView {
+        public NewsDetailHeaderView(Context context) {
+            super(context);
+            LayoutInflater.from(context).inflate(R.layout.layout_news_detail_header, this, true);
+        }
     }
 }

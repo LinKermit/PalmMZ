@@ -135,6 +135,11 @@ public class CommentShareView extends NestedScrollView implements Runnable {
             String url = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
                     .getAbsolutePath() + File.separator + "开源中国/share/";
             File file = new File(url);
+            if (!file.exists())
+                return;
+            File[] files = file.listFiles();
+            if (files == null || files.length == 0)
+                return;
             for (File f : file.listFiles()) {
                 f.delete();
             }

@@ -66,10 +66,10 @@
                     android:background="#fcfcfc"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingBottom="16dp"
+                    android:paddingBottom="10dp"
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
-                    android:paddingTop="16dp">
+                    android:paddingTop="10dp">
 
                     <net.oschina.app.improve.widget.PortraitView
                         android:id="@+id/iv_avatar"
@@ -120,7 +120,7 @@
                         android:id="@+id/line1"
                         android:layout_width="match_parent"
                         android:layout_height="1px"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="8dp"
                         android:background="@color/list_divider_color" />
 
                     <TextView
@@ -136,7 +136,7 @@
                         android:id="@+id/line"
                         android:layout_width="match_parent"
                         android:layout_height="1px"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="8dp"
                         android:background="@color/list_divider_color" />
                 </LinearLayout>
             </LinearLayout>

@@ -48,7 +48,7 @@ class GistPresenter implements GistContract.Presenter {
                         List<Gist> list = bean.getResult();
                         mView.onRefreshSuccess(list);
                         if (list.size() != 0 && list.size() < 20) {
-                            mView.showMoreMore();
+                            mView.showNotMore();
                         }
                         mPage = 2;
                     } else {
@@ -83,7 +83,7 @@ class GistPresenter implements GistContract.Presenter {
                         List<Gist> list = bean.getResult();
                         mView.onLoadMoreSuccess(list);
                         if (list.size() != 0 && list.size() < 20) {
-                            mView.showMoreMore();
+                            mView.showNotMore();
                         }
                         ++mPage;
                     } else {

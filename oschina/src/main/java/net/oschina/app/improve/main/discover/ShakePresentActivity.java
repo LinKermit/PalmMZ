@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import net.oschina.app.R;
-import net.oschina.app.improve.base.activities.BaseBackActivity;
+import net.oschina.app.improve.base.activities.BackActivity;
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -14,7 +14,7 @@ import butterknife.OnClick;
 /**
  * 摇一摇活动界面
  */
-public class ShakePresentActivity extends BaseBackActivity implements View.OnClickListener {
+public class ShakePresentActivity extends BackActivity implements View.OnClickListener {
 
     @Bind(R.id.ll_shake_present)
     LinearLayout mLayShakePresent;
@@ -39,6 +39,8 @@ public class ShakePresentActivity extends BaseBackActivity implements View.OnCli
     @Override
     protected void initWidget() {
         super.initWidget();
+        setStatusBarDarkMode();
+        setDarkToolBar();
         mNewsFragment = ShakeNewsFragment.newInstance();
         mPresentFragment = ShakePresentFragment.newInstance();
         addFragment(R.id.fl_content, mNewsFragment);

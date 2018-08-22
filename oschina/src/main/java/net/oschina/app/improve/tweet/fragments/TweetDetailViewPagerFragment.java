@@ -14,7 +14,10 @@ import android.view.ViewGroup;
 import net.oschina.app.R;
 import net.oschina.app.bean.User;
 import net.oschina.app.improve.bean.simple.TweetComment;
+import net.oschina.app.improve.main.tweet.comment.TweetCommentFragment;
 import net.oschina.app.improve.tweet.contract.TweetDetailContract;
+
+import java.util.List;
 
 /**
  * 赞 | 评论
@@ -77,8 +80,8 @@ public class TweetDetailViewPagerFragment extends Fragment
             final ListTweetLikeUsersFragment mCmnFrag;
             mThumbupViewImp = mCmnFrag = ListTweetLikeUsersFragment.instantiate(mOperator, this);
 
-            final ListTweetCommentFragment mThumbupFrag;
-            mCmnViewImp = mThumbupFrag = ListTweetCommentFragment.instantiate(mOperator, this);
+            final TweetCommentFragment mThumbupFrag;
+            mCmnViewImp = mThumbupFrag = TweetCommentFragment.instantiate(mOperator, this);
 
             mViewPager.setAdapter(mAdapter = new FragmentStatePagerAdapter(getChildFragmentManager()) {
                 @Override
@@ -103,9 +106,9 @@ public class TweetDetailViewPagerFragment extends Fragment
                 public CharSequence getPageTitle(int position) {
                     switch (position) {
                         case 0:
-                            return String.format("赞(%s)", mOperator.getTweetDetail().getLikeCount());
+                            return String.format("赞 (%s)", mOperator.getTweetDetail().getLikeCount());
                         case 1:
-                            return String.format("评论(%s)", mOperator.getTweetDetail().getCommentCount());
+                            return String.format("评论 (%s)", mOperator.getTweetDetail().getCommentCount());
                     }
                     return null;
                 }
@@ -123,7 +126,7 @@ public class TweetDetailViewPagerFragment extends Fragment
         if (mCmnViewImp != null) mCmnViewImp.onCommentSuccess(comment);
         TabLayout.Tab tab = mTabLayout.getTabAt(1);
         if (tab != null)
-            tab.setText(String.format("评论(%s)", mOperator.getTweetDetail().getCommentCount()));
+            tab.setText(String.format("评论 (%s)", mOperator.getTweetDetail().getCommentCount()));
     }
 
     @Override
@@ -132,21 +135,28 @@ public class TweetDetailViewPagerFragment extends Fragment
         if (mThumbupViewImp != null) mThumbupViewImp.onLikeSuccess(isUp, user);
         TabLayout.Tab tab = mTabLayout.getTabAt(0);
         if (tab != null)
-            tab.setText(String.format("赞(%s)", mOperator.getTweetDetail().getLikeCount()));
+            tab.setText(String.format("赞 (%s)", mOperator.getTweetDetail().getLikeCount()));
     }
 
     @Override
     public void resetLikeCount(int count) {
         mOperator.getTweetDetail().setLikeCount(count);
         TabLayout.Tab tab = mTabLayout.getTabAt(0);
-        if (tab != null) tab.setText(String.format("赞(%s)", count));
+        if (tab != null) tab.setText(String.format("赞 (%s)", count));
     }
 
     @Override
     public void resetCmnCount(int count) {
         mOperator.getTweetDetail().setCommentCount(count);
         TabLayout.Tab tab = mTabLayout.getTabAt(1);
-        if (tab != null) tab.setText(String.format("评论(%s)", count));
+        if (tab != null) tab.setText(String.format("评论 (%s)", count));
+    }
+
+    @Override
+    public List<TweetComment> getComments() {
+        if (mCmnViewImp == null)
+            return null;
+        return mCmnViewImp.getComments();
     }
 
     public TweetDetailContract.ICmnView getCommentViewHandler() {

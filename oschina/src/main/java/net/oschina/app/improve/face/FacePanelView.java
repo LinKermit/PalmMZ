@@ -167,6 +167,7 @@ public class FacePanelView extends LinearLayout implements View.OnClickListener,
         } else {
             setVisibility(VISIBLE);
         }
+
     }
 
     @Override

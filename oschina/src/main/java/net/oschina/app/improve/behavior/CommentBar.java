@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -29,11 +30,14 @@ public class CommentBar {
     private FrameLayout mFrameLayout;
     private ViewGroup mParent;
     private ImageButton mFavView;
-    private ImageButton mShareView;
+    private FrameLayout mLinearComment;
+    private TextView mTextCommentCount;
     private TextView mCommentText;
     private BottomSheetBar mDelegation;
     private LinearLayout mCommentLayout;
-
+    private LinearLayout mDispatchLayout;
+    private LinearLayout mLikeLayout;
+    private ImageView mImageLike;
 
     private CommentBar(Context context) {
         this.mContext = context;
@@ -52,9 +56,13 @@ public class CommentBar {
     private void initView() {
         //((CoordinatorLayout.LayoutParams) mRootView.getLayoutParams()).setBehavior(new FloatingAutoHideDownBehavior());
         mFavView = (ImageButton) mRootView.findViewById(R.id.ib_fav);
-        mShareView = (ImageButton) mRootView.findViewById(R.id.ib_share);
+        mLinearComment = (FrameLayout) mRootView.findViewById(R.id.fl_comment_count);
         mCommentText = (TextView) mRootView.findViewById(R.id.tv_comment);
+        mTextCommentCount = (TextView) mRootView.findViewById(R.id.tv_comment_count);
         mCommentLayout = (LinearLayout) mRootView.findViewById(R.id.ll_comment);
+        mDispatchLayout = (LinearLayout) mRootView.findViewById(R.id.ll_dispatch);
+        mLikeLayout = (LinearLayout) mRootView.findViewById(R.id.ll_like);
+        mImageLike = (ImageView)mRootView.findViewById(R.id.iv_thumbup) ;
         mCommentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,8 +80,8 @@ public class CommentBar {
      *
      * @param listener
      */
-    public void setShareListener(View.OnClickListener listener) {
-        mShareView.setOnClickListener(listener);
+    public void setCommentCountListener(View.OnClickListener listener) {
+        mLinearComment.setOnClickListener(listener);
     }
 
     /**
@@ -105,18 +113,56 @@ public class CommentBar {
         mDelegation.getBtnCommit().setEnabled(enable);
     }
 
-    public void hideShare() {
-        mShareView.setVisibility(View.GONE);
+    public void hideCommentCount() {
+        mLinearComment.setVisibility(View.GONE);
+    }
+
+    public ImageView getLikeImage() {
+        return mImageLike;
     }
 
     public void hideFav() {
         mFavView.setVisibility(View.GONE);
     }
 
+    public void hideLike() {
+        mLikeLayout.setVisibility(View.GONE);
+    }
+
+    public void hideDispatch() {
+        mDispatchLayout.setVisibility(View.GONE);
+    }
+
+    public void showLike() {
+        mLikeLayout.setVisibility(View.VISIBLE);
+    }
+
+    public void showDispatch() {
+        mDispatchLayout.setVisibility(View.VISIBLE);
+    }
+
+    public void setLikeListener(View.OnClickListener likeListener){
+        mLikeLayout.setOnClickListener(likeListener);
+    }
+
+
+    public void setDispatchListener(View.OnClickListener dispatchListener){
+        mDispatchLayout.setOnClickListener(dispatchListener);
+    }
+
     public TextView getCommentText() {
         return mCommentText;
     }
 
+    public TextView getCommentCountText() {
+        return mTextCommentCount;
+    }
+
+    public void setCommentCount(int count) {
+        if (mTextCommentCount != null) {
+            mTextCommentCount.setText(String.valueOf(count));
+        }
+    }
 
     public void performClick() {
         mCommentLayout.performClick();

@@ -29,8 +29,8 @@ public class GistCommentFragment extends BaseRecyclerFragment<GistCommentContrac
     }
 
     @Override
-    public void showMoreMore() {
-        super.showMoreMore();
+    public void showNotMore() {
+        super.showNotMore();
         mRefreshLayout.setCanLoadMore(false);
     }
 

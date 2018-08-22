@@ -34,6 +34,8 @@ public class RecyclerRefreshLayout extends SwipeRefreshLayout implements SwipeRe
 
     private int mLastY;
 
+    private int mBottomCount = 1;
+
     public RecyclerRefreshLayout(Context context) {
         this(context, null);
     }
@@ -43,7 +45,6 @@ public class RecyclerRefreshLayout extends SwipeRefreshLayout implements SwipeRe
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         setOnRefreshListener(this);
     }
-
 
     @Override
     public void onRefresh() {
@@ -84,6 +85,8 @@ public class RecyclerRefreshLayout extends SwipeRefreshLayout implements SwipeRe
                     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                         if (canLoad() && mCanLoadMore) {
                             loadData();
+                        } else if (isNextScrollBottom() && listener != null && mCanLoadMore && !mIsOnLoading) {
+                            listener.onScrollToBottom();
                         }
                     }
                 });
@@ -148,10 +151,27 @@ public class RecyclerRefreshLayout extends SwipeRefreshLayout implements SwipeRe
         }
     }
 
+    public boolean isLoding() {
+        return mIsOnLoading;
+    }
+
+    @SuppressWarnings("all")
+    public void setBottomCount(int mBottomCount) {
+        this.mBottomCount = mBottomCount;
+    }
+
     /**
      * 判断是否到了最底部
      */
     private boolean isScrollBottom() {
+        return (mRecycleView != null && mRecycleView.getAdapter() != null)
+                && getLastVisiblePosition() == (mRecycleView.getAdapter().getItemCount() - mBottomCount);
+    }
+
+    /**
+     * 判断是否到了最底部
+     */
+    private boolean isNextScrollBottom() {
         return (mRecycleView != null && mRecycleView.getAdapter() != null)
                 && getLastVisiblePosition() == (mRecycleView.getAdapter().getItemCount() - 1);
     }
@@ -222,5 +242,7 @@ public class RecyclerRefreshLayout extends SwipeRefreshLayout implements SwipeRe
         void onRefreshing();
 
         void onLoadMore();
+
+        void onScrollToBottom();
     }
 }

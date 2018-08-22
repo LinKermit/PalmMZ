@@ -16,6 +16,7 @@ import com.bumptech.glide.request.target.Target;
 
 import net.oschina.app.R;
 import net.oschina.app.improve.app.AppOperator;
+import net.oschina.app.improve.base.activities.BackActivity;
 import net.oschina.app.improve.base.activities.BaseBackActivity;
 import net.oschina.app.improve.dialog.ShareDialog;
 import net.oschina.app.improve.media.ImageGalleryActivity;
@@ -32,7 +33,7 @@ import pub.devrel.easypermissions.EasyPermissions;
  * 邀请函
  * Created by haibin on 2017/4/11.
  */
-public class InvitationActivity extends BaseBackActivity implements View.OnClickListener,
+public class InvitationActivity extends BackActivity implements View.OnClickListener,
         EasyPermissions.PermissionCallbacks {
     private ShareDialog mShareDialog;
     @Bind(R.id.iv_invitation)
@@ -54,6 +55,8 @@ public class InvitationActivity extends BaseBackActivity implements View.OnClick
     @Override
     protected void initWidget() {
         super.initWidget();
+        setStatusBarDarkMode();
+        setDarkToolBar();
         mShareDialog = new ShareDialog(this, -1, false);
         mUrl = getIntent().getStringExtra("url");
     }

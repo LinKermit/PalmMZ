@@ -10,9 +10,9 @@
 # Add any project specific keep options here:
 
 # If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interfacer
+# and specify the fully qualified class name to the JavaScript interface
 # class:
-#-keepclassmembers class fqcn.of.javascript.interfacer.for.webview {
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
 
@@ -136,3 +136,20 @@
 -keep class android.net.SSLCertificateSocketFactory{*;}
 -dontwarn com.alipay.sdk.sys.**
 -keep class com.ta.utdid2.device.UTDevice{*;}
+
+-keep class com.baidu.bottom.** { *; }
+-keep class com.baidu.kirin.** { *; }
+-keep class com.baidu.mobstat.** { *; }
+
+-keep class okhttp3.** { *; }
+-keep interface okhttp3.** { *; }
+-dontwarn okhttp3.**
+
+-keepattributes EnclosingMethod
+-keep class com.AnywayAds.**{*;}
+-keep class com.alipay.android.app.IAlixPay{*;}
+-keep class com.alipay.android.app.IAlixPay$Stub{*;}
+-keep class com.alipay.android.app.IRemoteServiceCallback{*;}
+-keep class com.alipay.android.app.IRemoteServiceCallback$Stub{*;}
+-keep class com.alipay.sdk.app.PayTask{ public *;}
+-keep class com.alipay.sdk.app.AuthTask{ public *;}

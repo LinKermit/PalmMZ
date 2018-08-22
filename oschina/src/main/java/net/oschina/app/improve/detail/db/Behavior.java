@@ -125,6 +125,10 @@ public class Behavior implements Serializable {
     @Column(column = "version", isNotNull = true)
     private String version;
 
+    @SerializedName("key_str")
+    @Column(column = "key_str", isNotNull = true)
+    private String key;
+
     public String getUuid() {
         return uuid;
     }
@@ -268,5 +272,13 @@ public class Behavior implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

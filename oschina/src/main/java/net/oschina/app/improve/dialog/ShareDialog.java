@@ -72,6 +72,8 @@ public class ShareDialog extends BottomDialog implements OpenBuilder.Callback,
     private SubBean mBean;
     private Tweet mTweet;
 
+    private ShareItemClickListener mItemClickListener;
+
     public ShareDialog(@NonNull Activity activity) {
         super(activity, true);
         this.mActivity = activity;
@@ -156,6 +158,10 @@ public class ShareDialog extends BottomDialog implements OpenBuilder.Callback,
 
     public void setTweet(Tweet mTweet) {
         this.mTweet = mTweet;
+    }
+
+    public void setItemClickListener(ShareItemClickListener listener) {
+        this.mItemClickListener = listener;
     }
 
     @Override
@@ -401,10 +407,14 @@ public class ShareDialog extends BottomDialog implements OpenBuilder.Callback,
                 cancelLoading();
                 break;
             case R.mipmap.ic_action_screenshot:
-                if(isShareTweet){
-                    TweetShareActivity.show(getContext(),mTweet);
+                if (isShareTweet) {
+                    if (mItemClickListener != null) {
+                        mItemClickListener.onShareTweet();
+                    } else {
+                        TweetShareActivity.show(getContext(), mTweet);
+                    }
                     cancelLoading();
-                }else {
+                } else {
                     ShareActivity.show(getContext(), mBean);
                     cancelLoading();
                 }
@@ -564,5 +574,9 @@ public class ShareDialog extends BottomDialog implements OpenBuilder.Callback,
         if (mDialog == null)
             return;
         mDialog.dismiss();
+    }
+
+    public interface ShareItemClickListener {
+        void onShareTweet();
     }
 }

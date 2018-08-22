@@ -175,7 +175,7 @@ class TreePresenter implements TreeContract.Presenter {
     @SuppressWarnings("deprecation")
     @Override
     public String getImageUrl(String fileName) {
-        return "https://git.oschina.net/" + mProject.getPathWithNamespace() + "/" + "raw" + "/" + mBranch + "/" + URLEncoder.encode
+        return "https://gitee.com/" + mProject.getPathWithNamespace() + "/" + "raw" + "/" + mBranch + "/" + URLEncoder.encode
                 (getPath() + fileName);
     }
 

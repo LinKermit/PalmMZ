@@ -3,7 +3,12 @@ package com.newland.palm.main.dynamic;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,19 +16,16 @@ import android.widget.ImageView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.newland.palm.R;
-import com.newland.palm.base.BaseFragment;
+import com.newland.palm.base.BaseTitleFragment;
 import com.newland.palm.data.bean.SubTab;
 import com.newland.palm.main.AppOperator;
-import com.newland.palm.utils.LogUtils;
 import com.newland.palm.utils.StreamUtil;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +37,7 @@ import butterknife.OnClick;
  * 1-资讯
  */
 
-public class DynamicFragment extends BaseFragment implements View.OnClickListener{
+public class DynamicFragment extends BaseTitleFragment implements View.OnClickListener{
 
     private static final String TAG = "DynamicFragment";
 
@@ -46,11 +48,14 @@ public class DynamicFragment extends BaseFragment implements View.OnClickListene
 
     @BindView(R.id.iv_arrow_down)
     ImageView mViewArrowDown;
-
+    @BindView(R.id.view_pager)
+    ViewPager mViewPager;
     TabPickerView.TabPickerDataManager mTabPickerDataManager;
     List<SubTab> subTabs;
+
+    DynamicAdapter adapter;
     @Override
-    protected int getLayoutId() {
+    protected int getContentLayoutId() {
         return R.layout.fragment_dynamic;
     }
 
@@ -67,6 +72,7 @@ public class DynamicFragment extends BaseFragment implements View.OnClickListene
             public void onSelected(int position) {
                 //跳转主界面position tab
                 mViewArrowDown.setRotation(0);
+                int index = mViewPager.getCurrentItem();
             }
 
             @Override
@@ -109,9 +115,28 @@ public class DynamicFragment extends BaseFragment implements View.OnClickListene
                 isChangeIndex = false;
                 subTabs.clear();
                 subTabs.addAll(activeTabs);
-//                mAdapter.notifyDataSetChanged();
+                adapter.notifyDataSetChanged();
             }
         });
+
+        //初始化数据，ViewPager tab
+        subTabs = new ArrayList<>();
+        subTabs.addAll(mViewTabPicker.getTabPickerManager().getActiveDataSet());
+        adapter = new DynamicAdapter(getChildFragmentManager());
+        mViewPager.setAdapter(adapter);
+
+        mLayoutTab.setupWithViewPager(mViewPager);
+        mLayoutTab.setSmoothScrollingEnabled(true);
+    }
+
+    @Override
+    protected int getTitleRes() {
+        return R.string.main_tab_name_news;
+    }
+
+    @Override
+    protected int getIconRes() {
+        return R.mipmap.actionbar_search_icon;
     }
 
     /**
@@ -197,6 +222,29 @@ public class DynamicFragment extends BaseFragment implements View.OnClickListene
                     mViewArrowDown.setEnabled(true);
                 }
             });
+        }
+    }
+
+    private class DynamicAdapter extends FragmentPagerAdapter{
+
+        public DynamicAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return SubFragment.newInstance(mContext,subTabs.get(position));
+        }
+
+        @Override
+        public int getCount() {
+            return subTabs.size();
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return subTabs.get(position).getName();
         }
     }
 }

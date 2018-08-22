@@ -172,7 +172,7 @@ public class ProjectDetailFragment extends BaseFragment implements ProjectDetail
         return count >= 1000 ? String.format("%sk", decimalFormat.format((float)count / 1000)) : String.valueOf(count);
     }
 
-    private boolean toShare() {
+    private void toShare() {
         String content = mProject.getDescription().trim();
         if (content.length() > 55) {
             content = HTMLUtil.delHTMLTag(content);
@@ -196,6 +196,5 @@ public class ProjectDetailFragment extends BaseFragment implements ProjectDetail
         }
         mAlertDialog.show();
 
-        return true;
     }
 }

@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/main_background"
-              android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:titleTextColor="@color/black"
+        app:navigationIcon="@mipmap/btn_back_dark_pressed"
+        app:popupTheme="@style/ToolbarPopupBlackTheme"
+        tools:ignore="UnusedAttribute" />
+
+    <View style="@style/h_line" />
 
     <RadioGroup
         android:layout_width="match_parent"
@@ -23,7 +38,7 @@
             android:gravity="center_vertical"
             android:text="@string/program_error_hint"
             android:textColor="@color/feed_back_color"
-            android:textSize="@dimen/font_14"/>
+            android:textSize="@dimen/font_14" />
 
         <RadioButton
             android:layout_width="0dp"
@@ -33,7 +48,7 @@
             android:gravity="center_vertical"
             android:text="@string/feature_suggestions_hint"
             android:textColor="@color/feed_back_color"
-            android:textSize="@dimen/font_14"/>
+            android:textSize="@dimen/font_14" />
     </RadioGroup>
 
     <EditText
@@ -43,11 +58,11 @@
         android:layout_marginBottom="@dimen/lay_12"
         android:layout_marginLeft="@dimen/lay_16"
         android:layout_marginRight="@dimen/lay_16"
-        android:background="@color/white"
+        android:background="@color/main_background"
         android:gravity="top"
         android:hint="@string/feedback_hint"
         android:padding="@dimen/lay_8"
-        android:textSize="@dimen/font_14"/>
+        android:textSize="@dimen/font_14" />
 
     <TextView
         android:layout_width="match_parent"
@@ -55,7 +70,7 @@
         android:layout_marginLeft="@dimen/lay_16"
         android:layout_marginRight="@dimen/lay_16"
         android:text="@string/screenshot_hint"
-        android:textSize="@dimen/font_14"/>
+        android:textSize="@dimen/font_14" />
 
     <FrameLayout
         android:layout_width="wrap_content"
@@ -72,7 +87,7 @@
             android:background="@color/white"
             android:contentDescription="@null"
             android:scaleType="centerCrop"
-            android:src="@mipmap/ic_tweet_add"/>
+            android:src="@mipmap/ic_tweet_add" />
 
         <ImageView
             android:id="@+id/iv_clear_img"
@@ -84,7 +99,7 @@
             android:background="@drawable/ib_clear_image_selector"
             android:contentDescription="@null"
             android:visibility="gone"
-            tools:visibility="visible"/>
+            tools:visibility="visible" />
     </FrameLayout>
 
     <Button
@@ -100,5 +115,5 @@
         android:outlineProvider="none"
         android:text="@string/submit_feedback_hint"
         android:textColor="@color/white"
-        tools:targetApi="lollipop"/>
+        tools:targetApi="lollipop" />
 </LinearLayout>

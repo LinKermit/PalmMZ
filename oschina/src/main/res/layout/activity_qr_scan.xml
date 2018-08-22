@@ -19,9 +19,8 @@
             android:id="@+id/capture_mask_top"
             android:layout_width="match_parent"
             android:layout_height="120dp"
-            android:background="@mipmap/qr_scan_mask"
             android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
+            android:background="@mipmap/qr_scan_mask" />
 
         <RelativeLayout
             android:id="@+id/capture_crop_view"

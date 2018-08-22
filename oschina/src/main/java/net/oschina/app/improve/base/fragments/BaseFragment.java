@@ -1,6 +1,8 @@
 package net.oschina.app.improve.base.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -212,5 +214,26 @@ public abstract class BaseFragment extends Fragment {
 
     protected void onRestartInstance(Bundle bundle) {
 
+    }
+
+    protected void setStatusBarPadding() {
+        mRoot.setPadding(0, getStatusHeight(mContext), 0, 0);
+    }
+
+    @SuppressLint("ObsoleteSdkInt,PrivateApi")
+    private static int getStatusHeight(Context context) {
+        int statusHeight = 0;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            try {
+                Class<?> clazz = Class.forName("com.android.internal.R$dimen");
+                Object object = clazz.newInstance();
+                int height = Integer.parseInt(clazz.getField("status_bar_height")
+                        .get(object).toString());
+                statusHeight = context.getResources().getDimensionPixelSize(height);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return statusHeight;
     }
 }

@@ -1,6 +1,5 @@
 package net.oschina.app;
 
-import android.content.Intent;
 import android.text.TextUtils;
 
 import net.oschina.app.improve.account.AccountHelper;
@@ -8,7 +7,9 @@ import net.oschina.app.improve.app.AppOperator;
 import net.oschina.app.improve.base.activities.BaseActivity;
 import net.oschina.app.improve.bean.User;
 import net.oschina.app.improve.main.MainActivity;
+import net.oschina.app.improve.main.introduce.IntroduceActivity;
 import net.oschina.app.improve.main.tabs.DynamicTabFragment;
+import net.oschina.app.improve.main.update.OSCSharedPreference;
 
 /**
  * 应用启动界面
@@ -61,8 +62,16 @@ public class LaunchActivity extends BaseActivity {
     }
 
     private void redirectTo() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
+        if (OSCSharedPreference.getInstance().isFirstInstall()) {
+            IntroduceActivity.show(this);
+            finish();
+        } else {
+            MainActivity.show(this);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
     }
 }

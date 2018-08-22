@@ -4,22 +4,29 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.SystemClock;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.loopj.android.http.TextHttpResponseHandler;
+import com.upyun.library.common.UploadEngine;
+import com.upyun.library.listener.UpCompleteListener;
 
 import net.oschina.app.AppContext;
 import net.oschina.app.R;
 import net.oschina.app.api.remote.OSChinaApi;
+import net.oschina.app.improve.account.AccountHelper;
 import net.oschina.app.improve.bean.base.ResultBean;
 import net.oschina.app.improve.bean.resource.ImageResource;
 import net.oschina.app.improve.bean.simple.About;
+import net.oschina.app.improve.utils.MD5;
 import net.oschina.app.improve.utils.PicturesCompressor;
 import net.oschina.common.utils.BitmapUtil;
 
 import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
@@ -29,6 +36,7 @@ import cz.msebera.android.httpclient.Header;
  * on 16/7/21.
  * 动弹发布执行者
  */
+@SuppressWarnings("unused")
 class TweetPublishOperator implements Runnable, Contract.IOperator {
     private final int serviceStartId;
     private final int notificationId;
@@ -94,8 +102,168 @@ class TweetPublishOperator implements Runnable, Contract.IOperator {
                             service.updateModelCache(model.getId(), model);
                         }
                     });
+//            getTokenAndUpload(model.getCacheImagesIndex(), model.getCacheImages(), new
+//                    UploadImageCallback() {
+//                        @Override
+//                        public void onUploadImageDone() {
+//                            publish();
+//                        }
+//
+//                        @Override
+//                        public void onUploadImage(int index, String token) {
+//                            model.setCacheImagesInfo(index, token);
+//                            service.updateModelCache(model.getId(), model);
+//                        }
+//                    });
+
         }
     }
+
+
+    /**
+     * 步骤1，获取又拍凭证并上传文件
+     *
+     * @param index    index
+     * @param paths    paths
+     * @param callback callback
+     */
+    private void getTokenAndUpload(final int index, final String[] paths, final UploadImageCallback callback) {
+        OSChinaApi.getYPToken(new TextHttpResponseHandler() {
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                String error = "";
+                String response = "上传失败";
+                TweetPublishService.log(String.format("Upload image onFailure, statusCode:[%s] responseString:%s throwable:%s",
+                        "error", response, error));
+                setError(R.string.tweet_image_publish_failed, String.valueOf(index + 1), String.valueOf(paths.length));
+            }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                try {
+                    Type type = new TypeToken<ResultBean<YoupaiToken>>() {
+                    }.getType();
+                    ResultBean<YoupaiToken> resultBean = new Gson().fromJson(responseString, type);
+                    if (resultBean.isSuccess()) {
+                        upload(index, resultBean.getResult(), paths, callback);
+                    } else {
+                        saveError("Upload", resultBean.getMessage());
+                        onFailure(statusCode, headers, responseString, null);
+                    }
+                } catch (Exception e) {
+                    saveError("Upload", "response parse error「" + responseString + "」");
+                    onFailure(statusCode, headers, responseString, null);
+                }
+            }
+        });
+    }
+
+
+    private List<YouPaiResult> mImages = new ArrayList<>();
+
+    private void upload(final int index, final YoupaiToken token, final String[] paths, final UploadImageCallback runnable) {
+        // checkShare done
+        if (index < 0 || index >= paths.length) {
+            uploadTokenUrl(model.getCacheImagesToken(), 0, runnable);
+            return;
+        }
+
+        final String path = paths[index];
+
+        File file = new File(path);
+        String saveKey = String.format("app_%s.%s", MD5.get32MD5Str(AccountHelper.getUserId() + file.getName() + System.currentTimeMillis()), PicturesCompressor.getFileDiff(file));
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("bucket", "oscnet");
+        map.put("save-key", saveKey);
+        map.put("expiration", System.currentTimeMillis());
+
+        UploadEngine.getInstance()
+                .formUpload(file, map, token.getOperator(), token.getSecret(),
+                        new UpCompleteListener() {
+                            @Override
+                            public void onComplete(boolean isSuccess, String result) {
+                                Log.e("result", "result" + result + "  --  " + isSuccess);
+                                try {
+                                    YouPaiResult bean = new Gson().fromJson(result, YouPaiResult.class);
+                                    if (bean != null) {
+                                        if (bean.getCode() == 200) {
+                                            mImages.add(bean);
+                                            upload(index + 1, token, paths, runnable);
+                                        } else {
+                                            String error = "";
+                                            String response = bean.getMessage();
+                                            TweetPublishService.log(String.format("Upload image onFailure, statusCode:[%s] responseString:%s throwable:%s",
+                                                    bean.getCode(), response, error));
+                                            setError(R.string.tweet_image_publish_failed, String.valueOf(index + 1), String.valueOf(paths.length));
+                                        }
+                                    } else {
+                                        String error = "";
+                                        String response = "上传失败";
+                                        TweetPublishService.log(String.format("Upload image onFailure, statusCode:[%s] responseString:%s throwable:%s",
+                                                "error", response, error));
+                                        setError(R.string.tweet_image_publish_failed, String.valueOf(index + 1), String.valueOf(paths.length));
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, null);
+    }
+
+
+    /**
+     * 将图片资源告诉后台
+     */
+    private void uploadTokenUrl(String token, final int index, final UploadImageCallback runnable) {
+        runnable.onUploadImage(index, token);
+        if (index >= mImages.size()) {
+            runnable.onUploadImageDone();
+            return;
+        }
+        OSChinaApi.uploadImageForYouPai(token, mImages.get(index),
+                new TextHttpResponseHandler() {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                        String error = "";
+                        String response = responseString == null ? "" : responseString;
+                        if (throwable != null) {
+                            throwable.printStackTrace();
+                            error = throwable.getMessage();
+                            if (error.contains("UnknownHostException")
+                                    || error.contains("Read error: ssl")
+                                    || error.contains("Connection timed out")) {
+                                saveError("Upload", "network error");
+                            } else {
+                                saveError("Upload", response + " " + error);
+                            }
+                        }
+                        TweetPublishService.log(String.format("Upload image onFailure, statusCode:[%s] responseString:%s throwable:%s",
+                                statusCode, response, error));
+                        setError(R.string.tweet_image_publish_failed, String.valueOf(index + 1), String.valueOf(mImages.size()));
+                    }
+
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                        try {
+                            Type type = new TypeToken<ResultBean<ImageResource>>() {
+                            }.getType();
+                            ResultBean<ImageResource> resultBean = new Gson().fromJson(responseString, type);
+                            if (resultBean.isSuccess()) {
+                                String token = resultBean.getResult().getToken();
+                                uploadTokenUrl(token, index + 1, runnable);
+                            } else {
+                                saveError("Upload", resultBean.getMessage());
+                                onFailure(statusCode, headers, responseString, null);
+                            }
+                        } catch (Exception e) {
+                            saveError("Upload", "response parse error「" + responseString + "」");
+                            onFailure(statusCode, headers, responseString, null);
+                        }
+                    }
+                });
+    }
+
 
     /**
      * 上传图片

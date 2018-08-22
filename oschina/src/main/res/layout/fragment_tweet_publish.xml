@@ -30,6 +30,18 @@
                 android:padding="@dimen/lay_16"
                 app:layout_scrollFlags="scroll|enterAlways">
 
+                <net.oschina.app.improve.widget.RichEditText
+                    android:id="@+id/edit_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="start|left|top"
+                    android:hint="今天想动弹什么?"
+                    android:minLines="4"
+                    android:paddingBottom="@dimen/lay_32"
+                    android:textColor="#111111"
+                    android:textSize="@dimen/font_16" />
+
                 <TextView
                     android:id="@+id/txt_indicator"
                     android:layout_width="wrap_content"
@@ -46,18 +58,6 @@
                     android:textSize="14sp"
                     android:visibility="invisible"
                     tools:text="12" />
-
-                <net.oschina.app.improve.widget.RichEditText
-                    android:id="@+id/edit_content"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:gravity="start|left|top"
-                    android:hint="今天想动弹什么?"
-                    android:minLines="4"
-                    android:paddingBottom="@dimen/lay_32"
-                    android:textColor="#111111"
-                    android:textSize="@dimen/font_16" />
 
             </FrameLayout>
 
@@ -124,7 +124,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/actionbar_background"
+        android:background="@color/white"
         android:paddingTop="25dp">
 
         <ImageView
@@ -134,7 +134,8 @@
             android:background="@drawable/ic_material_ripple"
             android:clickable="true"
             android:scaleType="centerInside"
-            android:src="@mipmap/btn_back_normal" />
+            android:src="@mipmap/btn_back_dark_pressed"
+            tools:ignore="KeyboardInaccessibleWidget" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -143,8 +144,9 @@
             android:gravity="center"
             android:text="弹一弹"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="@color/white"
-            android:textSize="@dimen/font_18" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/font_18"
+            tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/icon_send"
@@ -156,7 +158,12 @@
             android:gravity="center"
             android:text="发送"
             android:textAppearance="@style/TextAppearance.AppCompat.Menu"
-            android:textColor="@color/tweet_publish_send" />
+            android:textColor="@color/black"
+            tools:ignore="HardcodedText" />
+
+        <View
+            style="@style/h_line"
+            android:layout_gravity="bottom" />
     </FrameLayout>
 
     <LinearLayout
@@ -252,7 +259,8 @@
             android:id="@+id/panel_face"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom" />
+            android:layout_gravity="bottom"
+            android:visibility="gone" />
 
     </LinearLayout>
 

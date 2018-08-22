@@ -123,6 +123,9 @@ public class CommentAdapter extends BaseRecyclerAdapter<Comment> {
         @Bind(R.id.btn_vote)
         ImageView mVote;
 
+        @Bind(R.id.iv_best_answer)
+        ImageView mImageBestAnswer;
+
         @Bind(R.id.lay_refer)
         CommentReferView mCommentReferView;
 
@@ -167,7 +170,11 @@ public class CommentAdapter extends BaseRecyclerAdapter<Comment> {
                     || commentType == OSChinaApi.COMMENT_SOFT) {
                 mVoteCount.setVisibility(View.GONE);
                 mVote.setVisibility(View.GONE);
-
+                if (comment.isBest()) {
+                    mImageBestAnswer.setEnabled(false);
+                    mImageBestAnswer.setImageResource(R.mipmap.label_best_answer);
+                    mImageBestAnswer.setVisibility(View.VISIBLE);
+                }
             } else {
                 mVoteCount.setText(String.valueOf(comment.getVote()));
                 mVoteCount.setVisibility(View.VISIBLE);

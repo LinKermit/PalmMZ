@@ -18,7 +18,8 @@ public class SubTab implements Serializable {
     public static final String TAG_HOT = "hot";
 
     public static final int BANNER_CATEGORY_NEWS = 1;
-    public static final int BANNER_CATEGORY_EVENT = 2;
+    public static final int BANNER_CATEGORY_EVENT = 3;
+    public static final int BANNER_CATEGORY_BLOG = 4;
 
     private String token;
     private String name;

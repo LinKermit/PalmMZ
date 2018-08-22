@@ -16,7 +16,7 @@ import com.loopj.android.http.TextHttpResponseHandler;
 import net.oschina.app.R;
 import net.oschina.app.api.remote.OSChinaApi;
 import net.oschina.app.improve.app.AppOperator;
-import net.oschina.app.improve.base.activities.BaseBackActivity;
+import net.oschina.app.improve.base.activities.BackActivity;
 import net.oschina.app.improve.bean.Message;
 import net.oschina.app.improve.bean.base.ResultBean;
 import net.oschina.app.improve.media.SelectImageActivity;
@@ -35,7 +35,7 @@ import cz.msebera.android.httpclient.Header;
  * on 2016/10/14.
  */
 
-public class FeedBackActivity extends BaseBackActivity implements View.OnClickListener {
+public class FeedBackActivity extends BackActivity implements View.OnClickListener {
 
     @Bind(R.id.rb_error)
     RadioButton rb_error;
@@ -50,7 +50,6 @@ public class FeedBackActivity extends BaseBackActivity implements View.OnClickLi
     ImageView iv_clear_img;
 
     private String mFilePath = "";
-    private String mFeedbackStr = "[Android-主站-%s]";
     private ProgressDialog mDialog;
 
     public static void show(Context context) {
@@ -65,6 +64,8 @@ public class FeedBackActivity extends BaseBackActivity implements View.OnClickLi
     @Override
     protected void initWidget() {
         super.initWidget();
+        setStatusBarDarkMode();
+        setDarkToolBar();
         rb_error.setChecked(true);
     }
 
@@ -82,6 +83,7 @@ public class FeedBackActivity extends BaseBackActivity implements View.OnClickLi
                 if (TextUtils.isEmpty(content) && TextUtils.isEmpty(mFilePath)) {
                     return;
                 }
+                String mFeedbackStr = "[Android-主站-%s]";
                 content = String.format(mFeedbackStr, rb_error.isChecked() ? "程序错误" : "功能建议") + content;
                 File file = new File(mFilePath);
                 if (file.exists()) {
@@ -122,7 +124,7 @@ public class FeedBackActivity extends BaseBackActivity implements View.OnClickLi
      * @param file    file
      */
     private void addFeedBack(String content, File file) {
-        getDialog("反馈中...").show();
+        getDialog().show();
         OSChinaApi.pubMessage(2609904, content, file, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
@@ -175,7 +177,7 @@ public class FeedBackActivity extends BaseBackActivity implements View.OnClickLi
         private String path;
         private String content;
 
-        public Run(String content) {
+         Run(String content) {
             this.content = content;
         }
 
@@ -194,13 +196,13 @@ public class FeedBackActivity extends BaseBackActivity implements View.OnClickLi
         return et_feed_back.getText().toString().trim();
     }
 
-    public ProgressDialog getDialog(String message) {
+    public ProgressDialog getDialog() {
         if (mDialog == null) {
             mDialog = new ProgressDialog(this);
             mDialog.setCancelable(false);
             mDialog.setCanceledOnTouchOutside(false);
         }
-        mDialog.setMessage(message);
+        mDialog.setMessage("反馈中...");
         return mDialog;
     }
 }

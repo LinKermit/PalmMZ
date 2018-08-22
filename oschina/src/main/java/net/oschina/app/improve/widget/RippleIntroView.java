@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 /**
+ * 涟漪View
  * Created by thanatosx on 2016/11/15.
  */
 

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v7.widget.Toolbar;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -32,7 +31,7 @@ import net.oschina.app.api.remote.OSChinaApi;
 import net.oschina.app.improve.account.AccountHelper;
 import net.oschina.app.improve.account.activity.LoginActivity;
 import net.oschina.app.improve.app.AppOperator;
-import net.oschina.app.improve.base.activities.BaseActivity;
+import net.oschina.app.improve.base.activities.BackActivity;
 import net.oschina.app.improve.bean.Tweet;
 import net.oschina.app.improve.bean.base.ResultBean;
 import net.oschina.app.improve.bean.simple.About;
@@ -44,6 +43,7 @@ import net.oschina.app.improve.dialog.ShareDialog;
 import net.oschina.app.improve.tweet.contract.TweetDetailContract;
 import net.oschina.app.improve.tweet.fragments.TweetDetailViewPagerFragment;
 import net.oschina.app.improve.tweet.service.TweetPublishService;
+import net.oschina.app.improve.tweet.share.TweetShareActivity;
 import net.oschina.app.improve.user.activities.UserSelectFriendsActivity;
 import net.oschina.app.improve.user.helper.ContactsCacheManager;
 import net.oschina.app.improve.utils.QuickOptionDialogHelper;
@@ -73,7 +73,7 @@ import cz.msebera.android.httpclient.Header;
  * on 16/6/13.
  */
 @SuppressWarnings("deprecation")
-public class TweetDetailActivity extends BaseActivity implements TweetDetailContract.Operator {
+public class TweetDetailActivity extends BackActivity implements TweetDetailContract.Operator {
 
     public static final String BUNDLE_KEY_TWEET = "BUNDLE_KEY_TWEET";
 
@@ -87,8 +87,8 @@ public class TweetDetailActivity extends BaseActivity implements TweetDetailCont
     TextView tvTime;
     @Bind(R.id.tv_client)
     TextView tvClient;
-    @Bind(R.id.iv_thumbup)
-    ImageView ivThumbup;
+//    @Bind(R.id.iv_thumbup)
+//    ImageView ivThumbup;
     @Bind(R.id.layout_coordinator)
     CoordinatorLayout mCoordinatorLayout;
     @Bind(R.id.fragment_container)
@@ -103,19 +103,19 @@ public class TweetDetailActivity extends BaseActivity implements TweetDetailCont
     TextView mContent;
     @Bind(R.id.tweet_pics_layout)
     TweetPicturesLayout mLayoutGrid;
-    @Bind(R.id.toolbar)
-    Toolbar mToolbar;
     @Bind(R.id.tv_ref_title)
     TextView mViewRefTitle;
     @Bind(R.id.tv_ref_content)
     TextView mViewRefContent;
     @Bind(R.id.layout_ref_images)
     TweetPicturesLayout mLayoutRefImages;
-    @Bind(R.id.iv_dispatch)
-    ImageView mViewDispatch;
+//    @Bind(R.id.iv_dispatch)
+//    ImageView mViewDispatch;
     @Bind(R.id.layout_ref)
     LinearLayout mLayoutRef;
 
+    @Bind(R.id.fl_footer)
+    FrameLayout mFrameFooter;
     private Tweet tweet;
     private final List<TweetComment> replies = new ArrayList<>();
     private RecordButtonUtil mRecordUtil;
@@ -165,7 +165,7 @@ public class TweetDetailActivity extends BaseActivity implements TweetDetailCont
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString,
                                   Throwable throwable) {
-                AppContext.showToastShort(ivThumbup.isSelected() ? "取消失败" : "点赞失败");
+                AppContext.showToastShort(mDelegation.getLikeImage().isSelected() ? "取消失败" : "点赞失败");
             }
 
             @Override
@@ -174,7 +174,7 @@ public class TweetDetailActivity extends BaseActivity implements TweetDetailCont
                         responseString, new TypeToken<ResultBean<TweetLike>>() {
                         }.getType());
                 if (result != null && result.isSuccess()) {
-                    ivThumbup.setSelected(result.getResult().isLiked());
+                    mDelegation.getLikeImage().setSelected(result.getResult().isLiked());
                     mThumbupViewImp.onLikeSuccess(result.getResult().isLiked(), null);
                 } else {
                     onFailure(statusCode, headers, responseString, null);
@@ -261,19 +261,33 @@ public class TweetDetailActivity extends BaseActivity implements TweetDetailCont
 
     }
 
+    @Override
     protected void initWidget() {
+        super.initWidget();
         setSwipeBackEnable(true);
-        mToolbar.setTitle("动弹详情");
-        setSupportActionBar(mToolbar);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        setStatusBarDarkMode();
+        setDarkToolBar();
+        mToolBar.setTitle("动弹详情");
+        setSupportActionBar(mToolBar);
+
+        mDelegation = CommentBar.delegation(this, mFrameFooter);
+
+        mDelegation.hideFav();
+        mDelegation.hideCommentCount();
+        mDelegation.showLike();
+        mDelegation.showDispatch();
+        mDelegation.setLikeListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                supportFinishAfterTransition();
+                onClickThumbUp();
             }
         });
-
-        mDelegation = CommentBar.delegation(this, mCoordinatorLayout);
-
+        mDelegation.setDispatchListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickTransmit();
+            }
+        });
         mDelegation.getBottomSheet().getEditText().setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -284,7 +298,7 @@ public class TweetDetailActivity extends BaseActivity implements TweetDetailCont
             }
         });
 
-        mDelegation.hideShare();
+        mDelegation.hideCommentCount();
         mDelegation.hideFav();
 
         mDelegation.getBottomSheet().setMentionListener(new View.OnClickListener() {
@@ -357,8 +371,8 @@ public class TweetDetailActivity extends BaseActivity implements TweetDetailCont
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_share, menu);
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
+        return true;
     }
 
     @Override
@@ -372,11 +386,20 @@ public class TweetDetailActivity extends BaseActivity implements TweetDetailCont
                 if (content.length() > 30)
                     content = content.substring(0, 30);
 
-                if (alertDialog == null)
-                    alertDialog = new ShareDialog(this,true)
+                if (alertDialog == null){
+                    alertDialog = new ShareDialog(this, true)
                             .title(content + " - 开源中国社区 ")
                             .content(content)
                             .url(tweet.getHref()).with();
+                    alertDialog.setItemClickListener(new ShareDialog.ShareItemClickListener() {
+                        @Override
+                        public void onShareTweet() {
+                            TweetShareActivity.show(TweetDetailActivity.this,tweet,
+                                    mCmnViewImp.getComments());
+                        }
+                    });
+                }
+
                 alertDialog.setTweet(tweet);
                 alertDialog.show();
 
@@ -413,9 +436,9 @@ public class TweetDetailActivity extends BaseActivity implements TweetDetailCont
             tvTime.setText(StringUtils.formatSomeAgo(tweet.getPubDate()));
         PlatfromUtil.setPlatFromString(tvClient, tweet.getAppClient());
         if (tweet.isLiked()) {
-            ivThumbup.setSelected(true);
+            mDelegation.getLikeImage().setSelected(true);
         } else {
-            ivThumbup.setSelected(false);
+            mDelegation.getLikeImage().setSelected(false);
         }
         if (!TextUtils.isEmpty(tweet.getContent())) {
             String content = tweet.getContent().replaceAll("[\n\\s]+", " ");
@@ -506,8 +529,8 @@ public class TweetDetailActivity extends BaseActivity implements TweetDetailCont
         if (mDelegation != null) mDelegation.getBottomSheet().dismiss();
     }
 
-    @OnClick(R.id.iv_thumbup)
-    void onClickThumbUp() {
+
+    private void onClickThumbUp() {
         if (checkLogin()) return;
         OSChinaApi.reverseTweetLike(tweet.getId(), publishAdmireHandler);
     }
@@ -518,15 +541,15 @@ public class TweetDetailActivity extends BaseActivity implements TweetDetailCont
         UIHelper.showDetail(this, tweet.getAbout().getType(), tweet.getAbout().getId(), null);
     }
 
-    @OnClick(R.id.iv_comment)
-    void onClickComment() {
+
+    private void onClickComment() {
         if (checkLogin()) return;
         replies.clear();
         mDelegation.getBottomSheet().show("发表评论");
     }
 
-    @OnClick(R.id.iv_dispatch)
-    void onClickTransmit() {
+
+    private void onClickTransmit() {
         if (tweet == null || tweet.getId() <= 0 && tweet.getAuthor() == null) return;
 
         String content = null;

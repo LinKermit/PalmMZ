@@ -3,6 +3,7 @@ package net.oschina.app.improve.main;
 import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +15,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -47,6 +47,7 @@ import net.oschina.app.improve.main.location.BDLocationAdapter;
 import net.oschina.app.improve.main.location.RadarSearchAdapter;
 import net.oschina.app.improve.main.nav.NavFragment;
 import net.oschina.app.improve.main.nav.NavigationButton;
+import net.oschina.app.improve.main.synthesize.pub.PubTipActivity;
 import net.oschina.app.improve.main.update.CheckUpdateManager;
 import net.oschina.app.improve.main.update.DownloadService;
 import net.oschina.app.improve.notice.NoticeManager;
@@ -74,9 +75,11 @@ import static net.oschina.app.improve.search.activities.NearbyActivity.LOCATION_
 public class MainActivity extends BaseActivity implements NavFragment.OnNavigationReselectListener,
         EasyPermissions.PermissionCallbacks, CheckUpdateManager.RequestPermissions {
 
+    public static boolean IS_SHOW = false;
     private static final int RC_EXTERNAL_STORAGE = 0x04;//存储权限
     public static final String ACTION_NOTICE = "ACTION_NOTICE";
     private long mBackPressedTime;
+
 
     private Version mVersion;
 
@@ -90,6 +93,11 @@ public class MainActivity extends BaseActivity implements NavFragment.OnNavigati
     private RadarSearchAdapter mRadarSearchAdapter;
 
 
+    public static void show(Context context) {
+        IS_SHOW = true;
+        context.startActivity(new Intent(context, MainActivity.class));
+    }
+
     public interface TurnBackListener {
         boolean onTurnBack();
     }
@@ -102,21 +110,26 @@ public class MainActivity extends BaseActivity implements NavFragment.OnNavigati
     @Override
     protected void initWidget() {
         super.initWidget();
+        IS_SHOW = true;
+        setSwipeBackEnable(false);
+        setStatusBarDarkMode();
         FragmentManager manager = getSupportFragmentManager();
         mNavBar = ((NavFragment) manager.findFragmentById(R.id.fag_nav));
         mNavBar.setup(this, manager, R.id.main_container, this);
 
-        if (AppContext.get("isFirstComing", true)) {
-            View view = findViewById(R.id.layout_ripple);
-            view.setVisibility(View.VISIBLE);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ((ViewGroup) v.getParent()).removeView(v);
-                    AppContext.set("isFirstComing", false);
-                }
-            });
-        }
+
+        // TODO: 2017/11/8 隐藏订阅
+//        if (AppContext.get("isFirstComing", true)) {
+//            View view = findViewById(R.id.layout_ripple);
+//            view.setVisibility(View.VISIBLE);
+//            view.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    ((ViewGroup) v.getParent()).removeView(v);
+//                    AppContext.set("isFirstComing", false);
+//                }
+//            });
+//        }
     }
 
     @Override
@@ -153,7 +166,7 @@ public class MainActivity extends BaseActivity implements NavFragment.OnNavigati
                             if (bean.isSuccess()) {
                                 //清楚数据，避免清空没有上传的数据
                                 DBManager.getInstance()
-                                        .delete(Behavior.class,"id<=?", String.valueOf(behaviors.get(behaviors.size() - 1).getId()));
+                                        .delete(Behavior.class, "id<=?", String.valueOf(behaviors.get(behaviors.size() - 1).getId()));
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -190,9 +203,9 @@ public class MainActivity extends BaseActivity implements NavFragment.OnNavigati
         Fragment fragment = navigationButton.getFragment();
         if (fragment != null
                 && fragment instanceof OnTabReselectListener) {
-        OnTabReselectListener listener = (OnTabReselectListener) fragment;
-        listener.onTabReselect();
-    }
+            OnTabReselectListener listener = (OnTabReselectListener) fragment;
+            listener.onTabReselect();
+        }
     }
 
     @Override
@@ -203,6 +216,13 @@ public class MainActivity extends BaseActivity implements NavFragment.OnNavigati
         checkUpdate();
         checkLocation();
         TweetNotificationManager.setup(this);
+
+        ClipManager.register(this, new ClipManager.OnClipChangeListener() {
+            @Override
+            public void onClipChange(String url) {
+                PubTipActivity.show(MainActivity.this, url);
+            }
+        });
     }
 
     private void checkLocation() {
@@ -295,8 +315,10 @@ public class MainActivity extends BaseActivity implements NavFragment.OnNavigati
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        IS_SHOW = false;
         NoticeManager.stopListen(this);
         releaseLbs();
+        ClipManager.unregister();
     }
 
     public void addOnTurnBackListener(TurnBackListener l) {
@@ -539,5 +561,10 @@ public class MainActivity extends BaseActivity implements NavFragment.OnNavigati
             mRadarSearchManager.destroy();
             mRadarSearchManager = null;
         }
+    }
+
+    @Override
+    protected boolean isSetStatusBarColor() {
+        return false;
     }
 }

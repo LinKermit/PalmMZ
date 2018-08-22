@@ -7,7 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.view.View;
 
 import net.oschina.app.R;
-import net.oschina.app.improve.base.activities.BaseBackActivity;
+import net.oschina.app.improve.base.activities.BackActivity;
 import net.oschina.app.improve.git.bean.Gist;
 import net.oschina.app.ui.empty.EmptyLayout;
 
@@ -18,7 +18,7 @@ import butterknife.Bind;
  * Created by haibin on 2017/5/10.
  */
 
-public class GistDetailActivity extends BaseBackActivity implements GistDetailContract.EmptyView {
+public class GistDetailActivity extends BackActivity implements GistDetailContract.EmptyView {
     private GistDetailPresenter mPresenter;
     @Bind(R.id.emptyLayout)
     EmptyLayout mEmptyLayout;
@@ -37,6 +37,8 @@ public class GistDetailActivity extends BaseBackActivity implements GistDetailCo
     @Override
     protected void initWidget() {
         super.initWidget();
+        setStatusBarDarkMode();
+        setDarkToolBar();
         final Gist gist = (Gist)
                 getIntent().getSerializableExtra("gist");
         GistDetailFragment fragment = GistDetailFragment.newInstance(gist);

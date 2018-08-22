@@ -23,10 +23,10 @@ import net.oschina.app.util.TDevice;
  * on 2016/10/27.
  */
 
-class QuestionSubAdapter extends BaseGeneralRecyclerAdapter<SubBean> implements BaseRecyclerAdapter.OnLoadingHeaderCallBack {
+public class QuestionSubAdapter extends BaseGeneralRecyclerAdapter<SubBean> implements BaseRecyclerAdapter.OnLoadingHeaderCallBack {
     private OSCApplication.ReadState mReadState;
 
-    QuestionSubAdapter(Callback callback, int mode) {
+    public QuestionSubAdapter(Callback callback, int mode) {
         super(callback, mode);
         mReadState = OSCApplication.getReadState("sub_list");
         setOnLoadingHeaderCallBack(this);
@@ -59,7 +59,8 @@ class QuestionSubAdapter extends BaseGeneralRecyclerAdapter<SubBean> implements 
         }
 
         vh.tv_question_title.setText(item.getTitle());
-        vh.tv_question_content.setText(item.getBody());
+        vh.tv_question_content.setText(TextUtils.isEmpty(item.getBody()) ?
+                item.getBody() : item.getBody().replaceFirst("\\s*|\t|\n", ""));
 
         Resources resources = mContext.getResources();
 

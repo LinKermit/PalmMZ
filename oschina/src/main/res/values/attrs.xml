@@ -99,4 +99,21 @@
         <attr name="max_count" format="integer" />
         <attr name="is_show_count" format="boolean" />
     </declare-styleable>
+
+    <declare-styleable name="RatioLayout">
+        <attr name="layout_ratio" format="float"/>
+        <attr name="ratio_flag">
+            <enum name="width" value="1" />
+            <enum name="height" value="2" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="OSCTextView">
+        <attr name="font_type">
+            <enum name="type_system" value="0"/>
+            <enum name="type_light" value="1"/>
+            <enum name="type_medium" value="2"/>
+            <enum name="type_regular" value="3"/>
+        </attr>
+    </declare-styleable>
 </resources>

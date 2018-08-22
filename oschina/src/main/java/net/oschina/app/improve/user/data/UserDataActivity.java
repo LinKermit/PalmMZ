@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import net.oschina.app.R;
 import net.oschina.app.improve.account.AccountHelper;
-import net.oschina.app.improve.base.activities.BaseBackActivity;
+import net.oschina.app.improve.base.activities.BackActivity;
 import net.oschina.app.improve.bean.User;
 import net.oschina.app.improve.widget.IdentityView;
 import net.oschina.app.improve.widget.PortraitView;
@@ -22,7 +22,7 @@ import butterknife.Bind;
  * Created by huanghaibin on 2017/8/14.
  */
 
-public class UserDataActivity extends BaseBackActivity implements View.OnClickListener {
+public class UserDataActivity extends BackActivity implements View.OnClickListener {
     @Bind(R.id.iv_avatar)
     PortraitView mUserFace;
 
@@ -61,6 +61,13 @@ public class UserDataActivity extends BaseBackActivity implements View.OnClickLi
     @Override
     protected int getContentView() {
         return R.layout.activity_user_data;
+    }
+
+    @Override
+    protected void initWidget() {
+        super.initWidget();
+//        setStatusBarDarkMode();
+//        setDarkToolBar();
     }
 
     @Override

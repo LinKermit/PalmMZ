@@ -22,7 +22,7 @@ import net.oschina.app.improve.base.fragments.BaseTitleFragment;
 import net.oschina.app.improve.bean.SubTab;
 import net.oschina.app.improve.main.MainActivity;
 import net.oschina.app.improve.main.subscription.SubFragment;
-import net.oschina.app.improve.search.activities.SearchActivity;
+import net.oschina.app.improve.search.v2.SearchActivity;
 import net.oschina.app.improve.widget.FragmentPagerAdapter;
 import net.oschina.app.improve.widget.TabPickerView;
 import net.oschina.app.interf.OnTabReselectListener;
@@ -263,7 +263,7 @@ public class DynamicTabFragment extends BaseTitleFragment implements OnTabResele
         mViewPager.setAdapter(mAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                return SubFragment.newInstance(getContext(), tabs.get(position));
+                return SubFragment.newInstance(tabs.get(position));
             }
 
             @Override
@@ -334,6 +334,7 @@ public class DynamicTabFragment extends BaseTitleFragment implements OnTabResele
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //SearchActivity.show(getContext());
                 SearchActivity.show(getContext());
             }
         };

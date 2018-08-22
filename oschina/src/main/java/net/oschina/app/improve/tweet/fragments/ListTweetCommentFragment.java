@@ -11,6 +11,7 @@ import com.loopj.android.http.TextHttpResponseHandler;
 import net.oschina.app.AppConfig;
 import net.oschina.app.AppContext;
 import net.oschina.app.R;
+import net.oschina.app.api.ApiHttpClient;
 import net.oschina.app.api.remote.OSChinaApi;
 import net.oschina.app.improve.account.AccountHelper;
 import net.oschina.app.improve.app.AppOperator;
@@ -29,6 +30,7 @@ import net.oschina.app.util.HTMLUtil;
 import net.oschina.app.util.UIHelper;
 
 import java.lang.reflect.Type;
+import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -178,19 +180,32 @@ public class ListTweetCommentFragment extends BaseRecyclerViewFragment<TweetComm
 
     @Override
     public void onCommentSuccess(TweetComment comment) {
+        if (mContext == null || mRefreshLayout == null) {
+            return;
+        }
+        if (mRefreshLayout.isLoding()) {
+            ApiHttpClient.cancelALL();
+        }
         isRefreshing = true;
+        mRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mRefreshLayout.setRefreshing(true);
+            }
+        });
+        mRefreshLayout.setOnLoading(true);
         mAdapter.setState(BaseRecyclerAdapter.STATE_HIDE, true);
         OSChinaApi.getTweetCommentList(mOperator.getTweetDetail().getId(), null, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                if(mContext==null)
+                if (mContext == null)
                     return;
                 onRequestError();
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                if(mContext==null)
+                if (mContext == null)
                     return;
                 try {
                     ResultBean<PageBean<TweetComment>> resultBean = AppOperator.createGson().fromJson(responseString, getType());
@@ -212,7 +227,7 @@ public class ListTweetCommentFragment extends BaseRecyclerViewFragment<TweetComm
             @Override
             public void onFinish() {
                 super.onFinish();
-                if(mContext==null)
+                if (mContext == null)
                     return;
                 onRequestFinish();
             }
@@ -220,7 +235,7 @@ public class ListTweetCommentFragment extends BaseRecyclerViewFragment<TweetComm
             @Override
             public void onCancel() {
                 super.onCancel();
-                if(mContext==null)
+                if (mContext == null)
                     return;
                 onRequestFinish();
             }
@@ -248,5 +263,10 @@ public class ListTweetCommentFragment extends BaseRecyclerViewFragment<TweetComm
                             ? EmptyLayout.NODATA
                             : EmptyLayout.HIDE_LAYOUT);
         }
+    }
+
+    @Override
+    public List<TweetComment> getComments() {
+        return mAdapter.getItems();
     }
 }

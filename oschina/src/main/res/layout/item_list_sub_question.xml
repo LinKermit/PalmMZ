@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
+    tools:ignore="RtlHardcoded,RtlSymmetry,SmallSp"
     android:orientation="vertical"
     android:weightSum="1">
 
@@ -39,11 +40,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="1dp"
                     android:ellipsize="end"
-                    android:lineSpacingExtra="4dp"
                     android:maxLines="2"
-                    android:textColor="@android:color/background_dark"
-                    android:textSize="16sp"
-                    tools:text="Title" />
+                    android:letterSpacing="0.04"
+                    android:textColor="@color/text_title_color"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:text="Title"
+                    tools:ignore="UnusedAttribute" />
 
                 <TextView
                     android:id="@+id/tv_question_content"
@@ -51,11 +54,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:ellipsize="end"
-                    android:lineSpacingExtra="4dp"
+                    android:lineSpacingExtra="2dp"
                     android:maxLines="2"
                     android:minLines="1"
                     android:textColor="@color/text_desc_color"
-                    android:textSize="13sp" />
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -87,7 +90,7 @@
                     android:lines="1"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/text_secondary_color"
-                    android:textSize="12sp"
+                    android:textSize="10sp"
                     tools:text="蚂蚁" />
 
                 <TextView
@@ -99,7 +102,7 @@
                     android:lines="1"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/text_secondary_color"
-                    android:textSize="12sp"
+                    android:textSize="10sp"
                     tools:text="2012-12-01 22:10" />
             </LinearLayout>
 

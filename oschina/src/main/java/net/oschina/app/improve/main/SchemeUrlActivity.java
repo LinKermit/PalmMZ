@@ -6,10 +6,8 @@ import android.support.annotation.Nullable;
 
 import net.oschina.app.R;
 import net.oschina.app.improve.base.activities.BaseBackActivity;
-import net.oschina.app.improve.main.MainActivity;
 import net.oschina.app.improve.tweet.activities.TweetDetailActivity;
 import net.oschina.app.improve.user.activities.OtherUserHomeActivity;
-import net.oschina.app.util.TLog;
 import net.oschina.app.util.UIHelper;
 
 import java.util.regex.Matcher;
@@ -30,7 +28,6 @@ public class SchemeUrlActivity extends BaseBackActivity {
             if (intent != null) {
                 //  oscapp://www.oschina.net/launch/app?type=-1(&id=112213)
                 String metaData = intent.getDataString();
-                TLog.e("meta", metaData);
                 long id = 0;
                 int type = 0;
                 if (metaData != null) {

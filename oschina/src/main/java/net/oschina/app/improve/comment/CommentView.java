@@ -122,6 +122,7 @@ public class CommentView extends LinearLayout implements View.OnClickListener {
         this.mType = type;
 
         mSeeMore.setVisibility(View.GONE);
+        mSeeMore.setText(String.format("查看所有 %s 条评论",commentCount));
         setVisibility(GONE);
 
         OSChinaApi.getComments(id, type, "refer,reply", order, null, new TextHttpResponseHandler() {
@@ -142,15 +143,19 @@ public class CommentView extends LinearLayout implements View.OnClickListener {
                         List<Comment> comments = resultBean.getResult().getItems();
 
                         int size = comments.size();
-                        if (type == OSChinaApi.COMMENT_NEWS) {
+                        if (type == OSChinaApi.COMMENT_NEWS ||
+                                type == OSChinaApi.COMMENT_TRANSLATION ||
+                                type == OSChinaApi.COMMENT_BLOG ||
+                                type == OSChinaApi.COMMENT_SOFT) {
                             List<Comment> hotComments = new ArrayList<>();
                             hotComments.clear();
                             //筛选出热门评论
                             for (int i = 0, len = comments.size(); i < (len > 5 ? 5 : len); i++) {
                                 Comment comment = comments.get(i);
-                                if (comment.getVote() > 0) {
-                                    hotComments.add(comment);
-                                }
+//                                if (comment.getVote() > 0) {
+//
+//                                }
+                                hotComments.add(comment);
                             }
                             comments = hotComments;
                             int len = comments.size();

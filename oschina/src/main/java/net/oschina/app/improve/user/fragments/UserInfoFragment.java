@@ -25,18 +25,22 @@ import net.oschina.app.improve.app.AppOperator;
 import net.oschina.app.improve.base.fragments.BaseFragment;
 import net.oschina.app.improve.bean.User;
 import net.oschina.app.improve.bean.base.ResultBean;
+import net.oschina.app.improve.main.synthesize.read.ReadHistoryActivity;
 import net.oschina.app.improve.media.SelectImageActivity;
 import net.oschina.app.improve.media.config.SelectOptions;
 import net.oschina.app.improve.notice.NoticeBean;
 import net.oschina.app.improve.notice.NoticeManager;
+import net.oschina.app.improve.setting.SettingActivity;
+import net.oschina.app.improve.share.ShareDialog;
+import net.oschina.app.improve.user.activities.UserBlogActivity;
 import net.oschina.app.improve.user.activities.UserFansActivity;
 import net.oschina.app.improve.user.activities.UserFollowsActivity;
 import net.oschina.app.improve.user.activities.UserMessageActivity;
 import net.oschina.app.improve.user.activities.UserTweetActivity;
 import net.oschina.app.improve.user.collection.UserCollectionActivity;
 import net.oschina.app.improve.user.data.MyDataActivity;
-import net.oschina.app.improve.user.data.UserDataActivity;
 import net.oschina.app.improve.user.event.UserEventActivity;
+import net.oschina.app.improve.user.tags.UserTagsActivity;
 import net.oschina.app.improve.utils.DialogHelper;
 import net.oschina.app.improve.utils.UiUtil;
 import net.oschina.app.improve.widget.PortraitView;
@@ -65,6 +69,8 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class UserInfoFragment extends BaseFragment implements View.OnClickListener,
         EasyPermissions.PermissionCallbacks, NoticeManager.NoticeNotify, OnTabReselectListener {
+
+    private ShareDialog mShareDialog;
 
     @Bind(R.id.iv_logo_setting)
     ImageView mIvLogoSetting;
@@ -414,7 +420,7 @@ public class UserInfoFragment extends BaseFragment implements View.OnClickListen
             R.id.iv_logo_setting, R.id.iv_logo_zxing, R.id.iv_portrait,
             R.id.user_view_solar_system, R.id.ly_tweet, R.id.ly_favorite,
             R.id.ly_following, R.id.ly_follower, R.id.rl_message,
-            R.id.rl_blog, R.id.rl_data,
+            R.id.rl_blog, R.id.rl_read, R.id.rl_share, R.id.rl_info_tags,
             R.id.rl_info_question, R.id.rl_info_activities, R.id.rl_team
     })
     @Override
@@ -423,7 +429,7 @@ public class UserInfoFragment extends BaseFragment implements View.OnClickListen
         int id = v.getId();
 
         if (id == R.id.iv_logo_setting) {
-            UIHelper.showSetting(getActivity());
+            SettingActivity.show(mContext);
         } else {
 
             if (!AccountHelper.isLogin()) {
@@ -443,7 +449,7 @@ public class UserInfoFragment extends BaseFragment implements View.OnClickListen
                 case R.id.user_view_solar_system:
                     //显示我的资料
                     if (mUserInfo != null) {
-                        UserDataActivity.show(mContext, mUserInfo);
+                        MyDataActivity.show(mContext, mUserInfo);
                     }
                     break;
                 case R.id.ly_tweet:
@@ -462,7 +468,7 @@ public class UserInfoFragment extends BaseFragment implements View.OnClickListen
                     UserMessageActivity.show(getActivity());
                     break;
                 case R.id.rl_blog:
-                    UIHelper.showUserBlog(getActivity(), AccountHelper.getUserId());
+                    UserBlogActivity.show(mContext, AccountHelper.getUserId());
                     break;
                 case R.id.rl_info_question:
                     UIHelper.showUserQuestion(getActivity(), AccountHelper.getUserId());
@@ -473,8 +479,21 @@ public class UserInfoFragment extends BaseFragment implements View.OnClickListen
                 case R.id.rl_team:
                     UIHelper.showTeamMainActivity(getActivity());
                     break;
-                case R.id.rl_data:
-                    MyDataActivity.show(mContext, mUserInfo);
+                case R.id.rl_read:
+                    ReadHistoryActivity.show(mContext);
+                    break;
+                case R.id.rl_info_tags:
+                    UserTagsActivity.show(mContext);
+                    break;
+                case R.id.rl_share:
+                    if (mShareDialog == null) {
+                        mShareDialog = new ShareDialog(mContext);
+                        String title = "开发者必备的手机 App，网罗全网技术内容";
+                        mShareDialog.setTitle(title);
+                        mShareDialog.init(getActivity(), title, "开源中国 App 4.0 全新上线，全网技术内容一手搞定，只关注我感兴趣的内容，点我查看详细介绍", "https://www.oschina.net/app_phone");
+                        mShareDialog.setShareApp(true);
+                    }
+                    mShareDialog.show();
                     break;
                 default:
                     break;

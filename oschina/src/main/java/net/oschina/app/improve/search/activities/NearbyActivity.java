@@ -40,7 +40,7 @@ import net.oschina.app.R;
 import net.oschina.app.Setting;
 import net.oschina.app.improve.account.AccountHelper;
 import net.oschina.app.improve.app.AppOperator;
-import net.oschina.app.improve.base.activities.BaseBackActivity;
+import net.oschina.app.improve.base.activities.BackActivity;
 import net.oschina.app.improve.base.adapter.BaseRecyclerAdapter;
 import net.oschina.app.improve.bean.NearbyResult;
 import net.oschina.app.improve.bean.User;
@@ -71,7 +71,7 @@ import pub.devrel.easypermissions.EasyPermissions;
  * on 2017/01/13
  */
 
-public class NearbyActivity extends BaseBackActivity implements RadarSearchListener, BDLocationListener,
+public class NearbyActivity extends BackActivity implements RadarSearchListener, BDLocationListener,
         RecyclerRefreshLayout.SuperRefreshLayoutListener, BaseRecyclerAdapter.OnItemClickListener,
         EasyPermissions.PermissionCallbacks, View.OnClickListener {
 
@@ -118,6 +118,8 @@ public class NearbyActivity extends BaseBackActivity implements RadarSearchListe
 
     @Override
     protected void initWidget() {
+        setStatusBarDarkMode();
+        setDarkToolBar();
         mEmptyLayout.setLoadingLocalFriend(true);
         mEmptyLayout.setOnLayoutClickListener(new View.OnClickListener() {
             @Override
@@ -268,7 +270,13 @@ public class NearbyActivity extends BaseBackActivity implements RadarSearchListe
 
     @Override
     public void onLoadMore() {
+        mAdapter.setState(BaseRecyclerAdapter.STATE_LOADING, true);
         requestData(mNextPageIndex);
+    }
+
+    @Override
+    public void onScrollToBottom() {
+
     }
 
     @Override
@@ -340,7 +348,7 @@ public class NearbyActivity extends BaseBackActivity implements RadarSearchListe
             //pageNum==0，表示初始化数据，有可能是刷新，也有可能是第一次加载
             List<RadarNearbyInfo> infoList = result.infoList;
             int pageIndex = result.pageIndex;
-            if (infoList != null) {
+            if (infoList != null && infoList.size() != 0) {
                 List<NearbyResult> items = mAdapter.getItems();
 
                 int tempSize = items.size();
@@ -579,25 +587,6 @@ public class NearbyActivity extends BaseBackActivity implements RadarSearchListe
 
                 User user = AccountHelper.getUser();
                 try {
-                    /*
-                    String company = "";
-                    if (user.getMore() != null) {
-                        company = user.getMore().getCompany();
-                    }
-                    company = TextUtils.isEmpty(company) ? "" : company;
-                    String comments = String.format(
-                            "{" +
-                                    "\"id\":\"%s\"," +
-                                    "\"name\":\"%s\"," +
-                                    "\"portrait\":\"%s\"," +
-                                    "\"gender\":\"%s\"," +
-                                    "\"more\":{" +
-                                    "\"company\":\"%s\"}" +
-                                    "}"
-                            , user.getId(), user.getName(), user.getPortrait(), user.getGender(), company);
-                    comments = comments.replaceAll("[\\s\n]+", "");
-                    comments = URLEncoder.encode(comments, CHARSET);
-                    */
                     SampleAuthor author = new SampleAuthor(user);
                     String authorJson = AppOperator.getGson().toJson(author);
                     info.comments = URLEncoder.encode(authorJson, CHARSET);
@@ -694,7 +683,7 @@ public class NearbyActivity extends BaseBackActivity implements RadarSearchListe
             initLbs();
         }
         //进行定位
-        mLocationClient.start();
+        mLocationClient.restart();
     }
 
     /**

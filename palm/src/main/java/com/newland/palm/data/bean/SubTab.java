@@ -153,7 +153,7 @@ public class SubTab implements Serializable{
 
     @Override
     public String toString() {
-        return "SubTab{" +
+        return "SubFragment{" +
                 "banner=" + banner +
                 ", fixed=" + fixed +
                 ", href='" + href + '\'' +

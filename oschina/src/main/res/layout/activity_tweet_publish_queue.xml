@@ -8,7 +8,8 @@
     android:background="@color/white"
     android:clickable="true"
     android:orientation="vertical"
-    tools:context="net.oschina.app.improve.tweet.activities.TweetPublishQueueActivity">
+    tools:context="net.oschina.app.improve.tweet.activities.TweetPublishQueueActivity"
+    tools:ignore="KeyboardInaccessibleWidget">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,7 +31,8 @@
                 android:layout_marginLeft="-4dp"
                 android:clickable="true"
                 android:scaleType="centerInside"
-                android:src="@mipmap/btn_back_normal" />
+                android:src="@mipmap/btn_back_normal"
+                tools:ignore="ContentDescription,RtlHardcoded" />
 
             <TextView
                 android:id="@+id/txt_title"
@@ -43,7 +45,8 @@
                 android:paddingTop="@dimen/lay_8"
                 android:text="『Failed』"
                 android:textColor="@color/white"
-                android:textSize="@dimen/font_18" />
+                android:textSize="@dimen/font_18"
+                tools:ignore="HardcodedText,RtlHardcoded" />
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView

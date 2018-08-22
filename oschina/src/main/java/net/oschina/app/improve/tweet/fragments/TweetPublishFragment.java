@@ -33,11 +33,10 @@ import net.oschina.app.improve.tweet.widget.TweetPicturesPreviewer;
 import net.oschina.app.improve.user.activities.UserSelectFriendsActivity;
 import net.oschina.app.improve.utils.parser.TweetParser;
 import net.oschina.app.improve.widget.RichEditText;
-import net.oschina.app.improve.widget.adapter.OnKeyArrivedListenerAdapter;
 import net.oschina.app.improve.widget.adapter.OnKeyArrivedListenerAdapterV2;
+import net.oschina.app.util.TDevice;
 import net.oschina.app.util.UIHelper;
 import net.oschina.common.adapter.TextWatcherAdapter;
-
 
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -281,11 +280,18 @@ public class TweetPublishFragment extends BaseFragment implements View.OnClickLi
      * @param v View
      */
     private void handleEmojiClick(View v) {
+
         if (mFacePanel.isShow()) {
             mFacePanel.hidePanel();
             showSoftKeyboard(mEditContent);
         } else {
-            mFacePanel.openPanel();
+            TDevice.closeKeyboard(mEditContent);
+            mFacePanel.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mFacePanel.openPanel();
+                }
+            },250);
         }
     }
 

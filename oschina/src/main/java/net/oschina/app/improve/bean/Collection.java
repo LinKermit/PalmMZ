@@ -11,7 +11,7 @@ public class Collection implements Serializable {
     private long id;
     private int type;
     private String title;
-    private String href;
+    private String url;
     private User authorUser;
     private String favDate;
     private int favCount;
@@ -43,12 +43,12 @@ public class Collection implements Serializable {
         this.title = title;
     }
 
-    public String getHref() {
-        return href;
+    public String getUrl() {
+        return url;
     }
 
-    public void setHref(String href) {
-        this.href = href;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public User getAuthorUser() {

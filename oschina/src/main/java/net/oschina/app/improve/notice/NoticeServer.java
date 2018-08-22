@@ -117,7 +117,7 @@ public class NoticeServer extends Service {
     public void onCreate() {
         super.onCreate();
         log("onCreate");
-         // First initthe Client
+        // First init the Client
         Application application = getApplication();
         if (application instanceof OSCApplication) {
             OSCApplication.reInit();
@@ -268,16 +268,14 @@ public class NoticeServer extends Service {
         log("refreshNoticeForNet: mRunning:" + mRunning);
 
         mRunning = true;
-        OSChinaApi.getNotice(new TextHttpResponseHandler() {
+        OSChinaApi.getNotice( new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                log("onFailure:" + statusCode + " " + responseString);
                 doNetFinish(null);
             }
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                log("onSuccess:" + statusCode + " " + responseString);
                 if (!TextUtils.isEmpty(responseString)) {
                     try {
                         Type type = new TypeToken<ResultBean>() {

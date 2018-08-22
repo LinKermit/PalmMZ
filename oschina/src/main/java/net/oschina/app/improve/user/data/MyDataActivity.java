@@ -13,7 +13,7 @@ import net.oschina.app.R;
 import net.oschina.app.api.remote.OSChinaApi;
 import net.oschina.app.improve.account.AccountHelper;
 import net.oschina.app.improve.app.AppOperator;
-import net.oschina.app.improve.base.activities.BaseBackActivity;
+import net.oschina.app.improve.base.activities.BackActivity;
 import net.oschina.app.improve.bean.User;
 import net.oschina.app.improve.bean.base.ResultBean;
 import net.oschina.app.improve.media.SelectImageActivity;
@@ -33,7 +33,7 @@ import cz.msebera.android.httpclient.Header;
  * Created by huanghaibin on 2017/8/22.
  */
 
-public class MyDataActivity extends BaseBackActivity implements View.OnClickListener {
+public class MyDataActivity extends BackActivity implements View.OnClickListener {
 
     @Bind(R.id.tv_nickname)
     TextView mTextNickname;
@@ -60,6 +60,13 @@ public class MyDataActivity extends BaseBackActivity implements View.OnClickList
     @Override
     protected int getContentView() {
         return R.layout.activity_my_data;
+    }
+
+    @Override
+    protected void initWidget() {
+        super.initWidget();
+        setStatusBarDarkMode();
+        setDarkToolBar();
     }
 
     @Override

@@ -7,14 +7,12 @@ import android.content.Context;
 import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.TextHttpResponseHandler;
 
-import net.oschina.app.AppContext;
 import net.oschina.app.BuildConfig;
 import net.oschina.app.api.remote.OSChinaApi;
 import net.oschina.app.improve.app.AppOperator;
 import net.oschina.app.improve.bean.Version;
 import net.oschina.app.improve.bean.base.ResultBean;
 import net.oschina.app.improve.utils.DialogHelper;
-import net.oschina.app.util.TDevice;
 
 import java.util.List;
 
@@ -30,7 +28,6 @@ public class CheckUpdateManager {
     private ProgressDialog mWaitDialog;
     private Context mContext;
     private boolean mIsShowDialog;
-    private RequestPermissions mCaller;
 
     public CheckUpdateManager(Context context, boolean showWaitingDialog) {
         this.mContext = context;
@@ -51,11 +48,15 @@ public class CheckUpdateManager {
         OSChinaApi.checkUpdate(new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                if (mIsShowDialog) {
-                    DialogHelper.getMessageDialog(mContext, "网络异常，无法获取新版本信息").show();
-                }
-                if (mWaitDialog != null) {
-                    mWaitDialog.dismiss();
+                try {
+                    if (mIsShowDialog) {
+                        DialogHelper.getMessageDialog(mContext, "网络异常，无法获取新版本信息").show();
+                    }
+                    if (mWaitDialog != null) {
+                        mWaitDialog.dismiss();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
             }
 
@@ -98,8 +99,9 @@ public class CheckUpdateManager {
         });
     }
 
+    @SuppressWarnings("all")
     public void setCaller(RequestPermissions caller) {
-        this.mCaller = caller;
+        RequestPermissions mCaller = caller;
     }
 
     public interface RequestPermissions {

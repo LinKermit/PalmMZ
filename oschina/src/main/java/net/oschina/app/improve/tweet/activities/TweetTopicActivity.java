@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import net.oschina.app.R;
 import net.oschina.app.improve.app.ParentLinkedHolder;
+import net.oschina.app.improve.base.activities.BackActivity;
 import net.oschina.app.improve.base.activities.BaseBackActivity;
 import net.oschina.app.improve.tweet.fragments.TweetPublishFragment;
 import net.oschina.app.improve.utils.CacheManager;
@@ -40,7 +41,7 @@ import java.util.regex.Pattern;
 
 import butterknife.Bind;
 
-public class TweetTopicActivity extends BaseBackActivity {
+public class TweetTopicActivity extends BackActivity {
     private static final String CACHE_FILE = "TweetTopicLocalCache";
     @Bind(R.id.edit_enter_tag)
     EditText mTopicContent;
@@ -94,6 +95,8 @@ public class TweetTopicActivity extends BaseBackActivity {
     @Override
     protected void initWidget() {
         super.initWidget();
+        setStatusBarDarkMode();
+        setDarkToolBar();
         mRecycler.setLayoutManager(mLayoutManager = new LinearLayoutManager(this));
         mRecycler.setAdapter(adapter);
         mTopicContent.setOnKeyListener(new View.OnKeyListener() {

@@ -132,6 +132,23 @@ public final class PicturesCompressor {
         return mimeType.contains("jpeg") || mimeType.contains("png") || mimeType.contains("gif");
     }
 
+    public static String getFileDiff(File file) {
+        BitmapFactory.Options opts = BitmapUtil.createOptions();
+        opts.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(file.getAbsolutePath(), opts);
+        String mimeType = opts.outMimeType.toLowerCase();
+        if(mimeType.contains("jpeg")){
+            return "jpeg";
+        }
+        if(mimeType.contains("png") ){
+            return "png";
+        }
+        if(mimeType.contains("gif")){
+            return "gif";
+        }
+        return "jpg";
+    }
+
     public static String verifyPictureExt(String filePath) {
         int lastDotIndex = filePath.lastIndexOf(".");
         String ext = "jpg";
@@ -197,7 +214,8 @@ public final class PicturesCompressor {
 
     private static Bitmap rotaingBitmap(int angle, Bitmap bitmap) {
         //旋转图片 动作
-        Matrix matrix = new Matrix();;
+        Matrix matrix = new Matrix();
+        ;
         matrix.postRotate(angle);
         Log.e("angle2", "  -- " + angle);
         // 创建新的图片

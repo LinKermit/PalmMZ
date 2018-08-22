@@ -9,8 +9,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.umeng.analytics.MobclickAgent;
-
 import net.oschina.app.R;
 import net.oschina.app.improve.utils.DialogHelper;
 import net.oschina.app.interf.BaseViewInterface;
@@ -60,16 +58,16 @@ public abstract class BaseActivity extends AppCompatActivity implements
         _isVisible = true;
 
         //umeng analytics
-        MobclickAgent.setDebugMode(false);
-        MobclickAgent.openActivityDurationTrack(false);
-        MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
+//        MobclickAgent.setDebugMode(false);
+//        MobclickAgent.openActivityDurationTrack(false);
+//        MobclickAgent.setScenarioType(this, MobclickAgent.EScenarioType.E_UM_NORMAL);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd(this.packageName4Umeng);
-        MobclickAgent.onResume(this);
+//        MobclickAgent.onPageEnd(this.packageName4Umeng);
+//        MobclickAgent.onResume(this);
 
         if (this.isFinishing()) {
             TDevice.hideSoftKeyboard(getCurrentFocus());
@@ -79,8 +77,8 @@ public abstract class BaseActivity extends AppCompatActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        MobclickAgent.onPageStart(this.packageName4Umeng);
-        MobclickAgent.onResume(this);
+//        MobclickAgent.onPageStart(this.packageName4Umeng);
+//        MobclickAgent.onResume(this);
     }
 
     protected void onBeforeSetContentLayout() {

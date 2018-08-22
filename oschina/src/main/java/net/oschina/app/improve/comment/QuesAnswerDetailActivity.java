@@ -29,7 +29,7 @@ import net.oschina.app.api.remote.OSChinaApi;
 import net.oschina.app.improve.account.AccountHelper;
 import net.oschina.app.improve.account.activity.LoginActivity;
 import net.oschina.app.improve.app.AppOperator;
-import net.oschina.app.improve.base.activities.BaseBackActivity;
+import net.oschina.app.improve.base.activities.BackActivity;
 import net.oschina.app.improve.bean.base.ResultBean;
 import net.oschina.app.improve.bean.comment.Comment;
 import net.oschina.app.improve.bean.comment.Reply;
@@ -65,7 +65,7 @@ import cz.msebera.android.httpclient.Header;
  * on 16/11/17
  * desc:问答,活动的评论详情（相当于帖子）,可以对评论进行顶踩操作
  */
-public class QuesAnswerDetailActivity extends BaseBackActivity {
+public class QuesAnswerDetailActivity extends BackActivity {
 
     public static final String BUNDLE_KEY = "BUNDLE_KEY";
     public static final String BUNDLE_ARTICLE_KEY = "BUNDLE_ARTICLE_KEY";
@@ -147,6 +147,8 @@ public class QuesAnswerDetailActivity extends BaseBackActivity {
     @SuppressLint("SetTextI18n")
     @SuppressWarnings("deprecation")
     protected void initWidget() {
+        setStatusBarDarkMode();
+        setDarkToolBar();
         // portrait
         ivPortrait.setup(comment.getAuthor());
         identityView.setup(comment.getAuthor().getIdentity());
@@ -178,7 +180,7 @@ public class QuesAnswerDetailActivity extends BaseBackActivity {
         mDelegation.getBottomSheet().getEditText().setText("");
 
         mDelegation.hideFav();
-        mDelegation.hideShare();
+        mDelegation.hideCommentCount();
 
         mDelegation.getBottomSheet().getEditText().setOnKeyArrivedListener(new OnKeyArrivedListenerAdapterV2(this));
 

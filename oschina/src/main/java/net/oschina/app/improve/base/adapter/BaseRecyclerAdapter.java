@@ -11,9 +11,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import net.oschina.app.R;
-import net.oschina.app.improve.user.data.City;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -36,6 +36,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
     private static final int STATE_REFRESHING = 6;
     public static final int STATE_LOAD_ERROR = 7;
     public static final int STATE_LOADING = 8;
+    public static final int STATE_LOAD = 9;
 
     private final int BEHAVIOR_MODE;
     protected int mState;
@@ -45,7 +46,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
     public static final int ONLY_FOOTER = 2;
     public static final int BOTH_HEADER_FOOTER = 3;
 
-    public static final int VIEW_TYPE_NORMAL = 0;
+    protected static final int VIEW_TYPE_NORMAL = 0;
     private static final int VIEW_TYPE_HEADER = -1;
     private static final int VIEW_TYPE_FOOTER = -2;
 
@@ -105,7 +106,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
                 if (onLoadingHeaderCallBack != null)
                     return onLoadingHeaderCallBack.onCreateHeaderHolder(parent);
                 else
-                    throw new IllegalArgumentException("you have to impl the interfacer when using this viewType");
+                    throw new IllegalArgumentException("you have to impl the interface when using this viewType");
             case VIEW_TYPE_FOOTER:
                 return new FooterViewHolder(mInflater.inflate(R.layout.recycler_footer_view, parent, false));
             default:
@@ -114,6 +115,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
                     holder.itemView.setTag(holder);
                     holder.itemView.setOnLongClickListener(onLongClickListener);
                     holder.itemView.setOnClickListener(onClickListener);
+                    onBindClickListener(holder);
                 }
                 return holder;
         }
@@ -135,6 +137,9 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
                         fvh.pb_footer.setVisibility(View.GONE);
                         break;
                     case STATE_LOAD_MORE:
+                        fvh.tv_footer.setText(mContext.getResources().getString(R.string.state_load));
+                        fvh.pb_footer.setVisibility(View.GONE);
+                        break;
                     case STATE_LOADING:
                         fvh.tv_footer.setText(mContext.getResources().getString(R.string.state_loading));
                         fvh.pb_footer.setVisibility(View.VISIBLE);
@@ -151,6 +156,10 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
                         fvh.tv_footer.setText(mContext.getResources().getString(R.string.state_load_error));
                         fvh.pb_footer.setVisibility(View.GONE);
                         break;
+                    case STATE_LOAD:
+                        fvh.tv_footer.setText(mContext.getResources().getString(R.string.state_load));
+                        fvh.pb_footer.setVisibility(View.GONE);
+                        break;
                     case STATE_HIDE:
                         fvh.itemView.setVisibility(View.GONE);
                         break;
@@ -162,6 +171,9 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
         }
     }
 
+    protected void onBindClickListener(RecyclerView.ViewHolder holder) {
+
+    }
 
     /**
      * 当添加到RecyclerView时获取GridLayoutManager布局管理器，修正header和footer显示整行
@@ -321,6 +333,19 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
         }
     }
 
+    public void moveItem(int fromPosition, int toPosition) {
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(mItems, i, i + 1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(mItems, i, i - 1);
+            }
+        }
+        notifyItemMoved(fromPosition, toPosition);
+    }
+
     public final T getItem(int position) {
         int p = getIndex(position);
         if (p < 0 || p >= mItems.size())
@@ -385,6 +410,19 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter {
         }
 
         public abstract void onClick(int position, long itemId);
+    }
+
+    /**
+     * 点击事件
+     */
+    public static abstract class OnViewClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            RecyclerView.ViewHolder holder = (RecyclerView.ViewHolder) v.getTag();
+            onClick(v, holder.getAdapterPosition());
+        }
+
+        public abstract void onClick(View view, int position);
     }
 
 

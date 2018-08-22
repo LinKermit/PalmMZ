@@ -35,6 +35,7 @@ import net.oschina.common.utils.StreamUtil;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -85,20 +86,26 @@ public class TweetShareFragment extends BaseFragment implements Runnable {
     RecyclerView mRecycleView;
     private ShareCommentAdapter mAdapter;
 
+    private ArrayList<TweetComment> mComments;
     private Tweet mTweet;
 
-    public static TweetShareFragment newInstance(Tweet tweet) {
+    public static TweetShareFragment newInstance(Tweet tweet, List<TweetComment> comments) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("tweet", tweet);
+        if (comments != null && comments instanceof ArrayList) {
+            bundle.putSerializable("comments", (ArrayList) comments);
+        }
         TweetShareFragment fragment = new TweetShareFragment();
         fragment.setArguments(bundle);
         return fragment;
     }
 
+    @SuppressWarnings("all")
     @Override
     protected void initBundle(Bundle bundle) {
         super.initBundle(bundle);
         mTweet = (Tweet) bundle.getSerializable("tweet");
+        mComments = (ArrayList<TweetComment>) bundle.getSerializable("comments");
     }
 
     @Override
@@ -121,6 +128,10 @@ public class TweetShareFragment extends BaseFragment implements Runnable {
 
 
     void initList(List<TweetComment> list) {
+        if (mComments != null && mComments.size() > 0) {
+            mAdapter.resetItem(mComments);
+            return;
+        }
         mAdapter.resetItem(list);
         if (mContext == null)
             return;

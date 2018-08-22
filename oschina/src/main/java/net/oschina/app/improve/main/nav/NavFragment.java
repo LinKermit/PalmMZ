@@ -16,9 +16,9 @@ import android.widget.ImageView;
 import net.oschina.app.R;
 import net.oschina.app.improve.account.AccountHelper;
 import net.oschina.app.improve.base.fragments.BaseFragment;
-import net.oschina.app.improve.main.tabs.DynamicTabFragment;
-import net.oschina.app.improve.main.tabs.ExploreFragment;
-import net.oschina.app.improve.main.tabs.TweetViewPagerFragment;
+import net.oschina.app.improve.main.ExploreFragment;
+import net.oschina.app.improve.main.synthesize.SynthesizeFragment;
+import net.oschina.app.improve.main.tweet.TweetPagerFragment;
 import net.oschina.app.improve.notice.NoticeBean;
 import net.oschina.app.improve.notice.NoticeManager;
 import net.oschina.app.improve.tweet.activities.TweetPublishActivity;
@@ -36,8 +36,7 @@ import butterknife.OnLongClick;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NavFragment extends BaseFragment implements View.OnClickListener, NoticeManager.NoticeNotify,View.OnLongClickListener {
-
+public class NavFragment extends BaseFragment implements View.OnClickListener, NoticeManager.NoticeNotify, View.OnLongClickListener {
     @Bind(R.id.nav_item_news)
     NavigationButton mNavNews;
     @Bind(R.id.nav_item_tweet)
@@ -78,11 +77,11 @@ public class NavFragment extends BaseFragment implements View.OnClickListener, N
 
         mNavNews.init(R.drawable.tab_icon_new,
                 R.string.main_tab_name_news,
-                DynamicTabFragment.class);
+                SynthesizeFragment.class);
 
         mNavTweet.init(R.drawable.tab_icon_tweet,
                 R.string.main_tab_name_tweet,
-                TweetViewPagerFragment.class);
+                TweetPagerFragment.class);
 
         mNavExplore.init(R.drawable.tab_icon_explore,
                 R.string.main_tab_name_explore,
@@ -217,7 +216,7 @@ public class NavFragment extends BaseFragment implements View.OnClickListener, N
 
     @Override
     public void onNoticeArrived(NoticeBean bean) {
-        mNavMe.showRedDot(bean.getAllCount());
+        mNavMe.showRedDot(bean.getUserCount());
     }
 
     public interface OnNavigationReselectListener {

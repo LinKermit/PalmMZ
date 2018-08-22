@@ -107,6 +107,7 @@ public class TweetPublishActivity extends BaseBackActivity {
     @Override
     protected void initWidget() {
         super.initWidget();
+        setStatusBarDarkMode();
         getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
 
         Intent intent = getIntent();

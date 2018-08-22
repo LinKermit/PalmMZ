@@ -26,7 +26,7 @@
     <style name="h_line">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1px</item>
-        <item name="android:background">?attr/lineColor</item>
+        <item name="android:background">@color/list_divider_color</item>
     </style>
     <!-- 纵向线条 -->
 

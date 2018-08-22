@@ -42,4 +42,5 @@
 
     <string name="qr_code_tip">扫一扫上面的二维码，加我为好友</string>
     <string name="qr_code_tip2">(长按保存到本地)</string>
+
 </resources>

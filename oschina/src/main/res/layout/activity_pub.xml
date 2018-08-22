@@ -38,14 +38,56 @@
         <FrameLayout
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/bg_pub_write">
+            android:background="@drawable/bg_pub_tweet">
 
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
+                android:tint="@color/white"
                 android:contentDescription="@string/tweet_public"
                 android:src="@mipmap/ic_new_tweet" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_pub_article"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/lay_8"
+        android:paddingTop="@dimen/lay_8"
+        tools:ignore="UseCompoundDrawables">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/lay_4"
+            android:layout_marginTop="@dimen/lay_4"
+            android:background="@drawable/bg_pub"
+            android:paddingBottom="2dp"
+            android:paddingLeft="@dimen/lay_8"
+            android:paddingRight="@dimen/lay_8"
+            android:paddingTop="2dp"
+            android:text="投递文章"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_12" />
+
+        <FrameLayout
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/bg_pub_article">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:tint="@color/white"
+                android:contentDescription="@string/tweet_public"
+                android:src="@mipmap/ic_new_article" />
         </FrameLayout>
     </LinearLayout>
 
@@ -78,12 +120,13 @@
         <FrameLayout
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/bg_pub_write">
+            android:background="@drawable/bg_pub_blog">
 
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
+                android:tint="@color/white"
                 android:contentDescription="@string/tweet_public"
                 android:src="@mipmap/ic_new_blog" />
         </FrameLayout>

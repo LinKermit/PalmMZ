@@ -105,6 +105,7 @@
     <string name="tip_content_empty">内容不能为空</string>
     <string name="tip_content_too_long">内容太长</string>
 
+    <string name="zb">开源众包</string>
     <string name="git">码云推荐</string>
     <string name="gits">代码片段</string>
     <string name="actionbar_title_software_list">开源软件</string>
@@ -116,6 +117,7 @@
     <string name="actionbar_title_note_edit">编辑便签</string>
     <!-- 找人不显示标题 -->
     <string name="actionbar_title_event">我的活动</string>
+    <string name="actionbar_title_tags">关注标签</string>
     <string name="actionbar_title_my_event">我的活动</string>
     <string name="actionbar_title_event_apply">活动出席人员</string>
     <string name="actionbar_title_same_city">同城</string>
@@ -182,6 +184,7 @@
     <string name="blog">我的博客</string>
     <string name="message">我的消息</string>
     <string name="data">我的资料</string>
+    <string name="read">阅读记录</string>
     <string name="team">我的团队</string>
     <string name="user_score">积分</string>
     <string name="question">我的问答</string>
@@ -247,6 +250,7 @@
     <string name="state_not_more">没有更多数据</string>
     <string name="state_load_error">加载失败</string>
     <string name="state_refreshing">正在刷新</string>
+    <string name="state_load">正在加载…</string>
     <string name="state_loading_error">数据加载中&#8230;</string>
     <string name="state_submit">正在提交中&#8230;</string>
 
@@ -344,6 +348,9 @@
     <string name="title_updating_user_avatar">正在上传头像…</string>
     <string name="search_man">找人</string>
 
+    <string name="search_error">搜索失败</string>
+    <string name="search_keyword_empty_error">搜索关键字不能为空</string>
+
     <!--@联系人／好友-->
     <string name="add_relation_success">关注成功</string>
     <string name="cancel_relation_success">取消关注成功</string>
@@ -401,4 +408,33 @@
     <string name="blog_content_empty_error">博客内容不能为空</string>
     <string name="pub_blog_failure">发布失败</string>
     <string name="pub_blog_success">发布成功</string>
+
+    <string-array name="synthesize_titles">
+        <item>英文</item>
+        <item>推荐</item>
+        <item>资讯</item>
+        <item>问答</item>
+        <item>博客</item>
+    </string-array>
+
+
+    <string-array name="tweet_titles">
+        <item>最新动弹</item>
+        <item>热门动弹</item>
+        <item>每日乱弹</item>
+        <item>我的动弹</item>
+    </string-array>
+
+    <string name="share_wechat">微信</string>
+    <string name="share_moments">朋友圈</string>
+    <string name="share_weibo">微博</string>
+    <string name="share_qq">QQ</string>
+    <string name="share_qzone">Qzone</string>
+    <string name="share_browser">浏览器</string>
+    <string name="share_copy">复制链接</string>
+    <string name="share_save">保存相册</string>
+
+
+    <string name="pub_article_success">分享文章已成功提交，请等候审核</string>
+    <string name="pub_article_failed">投递失败</string>
 </resources>

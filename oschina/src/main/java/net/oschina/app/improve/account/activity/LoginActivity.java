@@ -165,7 +165,7 @@ public class LoginActivity extends AccountBaseActivity implements View.OnClickLi
         }
         AppContext.showToast(R.string.login_success_hint);
         setResult(RESULT_OK);
-        sendLocalReceiver();//发送广播关闭自己l
+        sendLocalReceiver();
         //后台异步同步数据
         ContactsCacheManager.sync();
         holdAccount();
@@ -329,7 +329,11 @@ public class LoginActivity extends AccountBaseActivity implements View.OnClickLi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        hideKeyBoard(getCurrentFocus().getWindowToken());
+        try {
+            hideKeyBoard(getCurrentFocus().getWindowToken());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         mLayBackBar.getViewTreeObserver().removeOnGlobalLayoutListener(this);
     }
 
@@ -409,7 +413,11 @@ public class LoginActivity extends AccountBaseActivity implements View.OnClickLi
                 mEtLoginPwd.setText(null);
                 break;
             case R.id.lay_login_container:
-                hideKeyBoard(getCurrentFocus().getWindowToken());
+                try {
+                    hideKeyBoard(getCurrentFocus().getWindowToken());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 break;
             default:
                 break;

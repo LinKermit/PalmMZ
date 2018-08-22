@@ -25,6 +25,7 @@ import net.oschina.app.improve.bean.simple.TweetComment;
 import net.oschina.app.improve.utils.DialogHelper;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -43,7 +44,6 @@ public class TweetShareActivity extends BackActivity implements
         View.OnClickListener {
 
 
-
     private int mType;
     private static final int TYPE_SHARE = 1;
     private static final int TYPE_SAVE = 2;
@@ -52,6 +52,7 @@ public class TweetShareActivity extends BackActivity implements
     @Bind(R.id.recyclerView)
     RecyclerView mRecycleView;
     private ShareCommentAdapter mAdapter;
+    private ArrayList<TweetComment> mComments;
 
     public static void show(Context context, Tweet tweet) {
         if (tweet == null)
@@ -61,23 +62,38 @@ public class TweetShareActivity extends BackActivity implements
         context.startActivity(intent);
     }
 
+    public static void show(Context context, Tweet tweet, List<TweetComment> comments) {
+        if (tweet == null)
+            return;
+        Intent intent = new Intent(context, TweetShareActivity.class);
+        intent.putExtra("tweet", tweet);
+        if (comments != null && comments instanceof ArrayList) {
+            intent.putExtra("comments", (ArrayList) comments);
+        }
+        context.startActivity(intent);
+    }
+
 
     @Override
     protected int getContentView() {
         return R.layout.activity_tweet_share;
     }
 
+    @SuppressWarnings("ALL")
     @Override
     protected void initWidget() {
         super.initWidget();
-
+        setStatusBarDarkMode();
+        setDarkToolBar();
         Tweet tweet = (Tweet) getIntent().getSerializableExtra("tweet");
+        mComments = (ArrayList<TweetComment>) getIntent().getSerializableExtra("comments");
 
         mRecycleView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new ShareCommentAdapter(this,BaseRecyclerAdapter.ONLY_HEADER,tweet);
+        mAdapter = new ShareCommentAdapter(this, BaseRecyclerAdapter.ONLY_HEADER, tweet);
         mRecycleView.setAdapter(mAdapter);
+        mAdapter.resetItem(mComments);
 
-        mFragment = TweetShareFragment.newInstance(tweet);
+        mFragment = TweetShareFragment.newInstance(tweet, mComments);
         addFragment(R.id.fl_content, mFragment);
         requestData(tweet.getId());
     }
@@ -116,7 +132,9 @@ public class TweetShareActivity extends BackActivity implements
                     }.getType();
                     ResultBean<PageBean<TweetComment>> resultBean = AppOperator.createGson().fromJson(responseString, type);
                     if (resultBean != null && resultBean.isSuccess() && resultBean.getResult().getItems() != null) {
-                        mAdapter.resetItem(resultBean.getResult().getItems());
+                        if (mComments == null || mComments.size() == 0) {
+                            mAdapter.resetItem(resultBean.getResult().getItems());
+                        }
                         mFragment.initList(resultBean.getResult().getItems());
                     } else {
                         mAdapter.setState(BaseRecyclerAdapter.STATE_NO_MORE, true);

@@ -73,7 +73,7 @@ class CodeDetailPresenter implements CodeDetailContract.Presenter {
 
     @Override
     public String getShareUrl() {
-        return String.format("https://git.oschina.net/%s/blob/%s/%s",
+        return String.format("https://gitee.com/%s/blob/%s/%s",
                 mProject.getPathWithNamespace(),
                 mBranch,
                 mFileName);

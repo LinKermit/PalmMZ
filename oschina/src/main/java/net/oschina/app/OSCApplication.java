@@ -1,16 +1,23 @@
 package net.oschina.app;
 
 import android.content.Context;
+import android.provider.Settings;
 import android.support.multidex.MultiDex;
+import android.text.TextUtils;
+
 
 import com.baidu.mapapi.SDKInitializer;
 
 import net.oschina.app.api.ApiHttpClient;
 import net.oschina.app.improve.account.AccountHelper;
+import net.oschina.app.improve.base.activities.BaseActivity;
 import net.oschina.app.improve.detail.db.DBManager;
 import net.oschina.app.improve.detail.v2.DetailCache;
 import net.oschina.app.improve.main.update.OSCSharedPreference;
+import net.oschina.app.improve.utils.MD5;
 import net.oschina.common.helper.ReadStateHelper;
+
+import java.util.UUID;
 
 /**
  * Created by qiujuer
@@ -32,9 +39,17 @@ public class OSCApplication extends AppContext {
     }
 
     private void init() {
+        BaseActivity.IS_ACTIVE = true;
         OSCSharedPreference.init(this, "osc_update_sp");
+        if (TextUtils.isEmpty(OSCSharedPreference.getInstance().getDeviceUUID())) {
+            String androidId = Settings.System.getString(getContentResolver(), Settings.System.ANDROID_ID);
+            if (TextUtils.isEmpty(androidId)) {
+                androidId = UUID.randomUUID().toString().replaceAll("-", "");
+            }
+            OSCSharedPreference.getInstance().putDeviceUUID(MD5.get32MD5Str(androidId));
+        }
         // 初始化异常捕获类
-        AppCrashHandler.getInstance().init(this);
+        //AppCrashHandler.getInstance().init(this);
         // 初始化账户基础信息
         AccountHelper.init(this);
         // 初始化网络请求

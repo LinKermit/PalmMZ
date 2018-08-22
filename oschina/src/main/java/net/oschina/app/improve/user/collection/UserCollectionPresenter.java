@@ -1,6 +1,7 @@
 package net.oschina.app.improve.user.collection;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -66,12 +67,16 @@ class UserCollectionPresenter implements UserCollectionContract.Presenter {
                     ResultBean<PageBean<Collection>> resultBean = new Gson().fromJson(responseString, mGsonType);
                     if (resultBean != null) {
                         List<Collection> items;
-                        if (resultBean.isSuccess()) {
-                            mNextPageToken = resultBean.getResult().getNextPageToken();
-                            items = resultBean.getResult().getItems();
-                            mView.onRefreshSuccess(items);
-                            if (items.size() < 20)
-                                mView.showMoreMore();
+                        if (resultBean.getCode() == 1) {
+                            if(resultBean.getResult() == null){
+                                mView.showNotMore();
+                            }else {
+                                mNextPageToken = resultBean.getResult().getNextPageToken();
+                                items = resultBean.getResult().getItems();
+                                mView.onRefreshSuccess(items);
+                                if (items == null || items.size() < 20)
+                                    mView.showNotMore();
+                            }
                         } else {
                             mView.showNetworkError(R.string.tip_network_error);
                         }
@@ -103,15 +108,20 @@ class UserCollectionPresenter implements UserCollectionContract.Presenter {
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
                 try {
+                    Log.e("onSuccess", "" + responseString);
                     ResultBean<PageBean<Collection>> resultBean = new Gson().fromJson(responseString, mGsonType);
                     if (resultBean != null) {
                         List<Collection> items;
-                        if (resultBean.isSuccess()) {
-                            mNextPageToken = resultBean.getResult().getNextPageToken();
-                            items = resultBean.getResult().getItems();
-                            mView.onLoadMoreSuccess(items);
-                            if (items.size() < 20)
-                                mView.showMoreMore();
+                        if (resultBean.getCode() == 1) {
+                            if(resultBean.getResult() == null){
+                                mView.showNotMore();
+                            }else {
+                                mNextPageToken = resultBean.getResult().getNextPageToken();
+                                items = resultBean.getResult().getItems();
+                                mView.onLoadMoreSuccess(items);
+                                if (items == null || items.size() < 20)
+                                    mView.showNotMore();
+                            }
                         } else {
                             mView.showNetworkError(R.string.tip_network_error);
                         }

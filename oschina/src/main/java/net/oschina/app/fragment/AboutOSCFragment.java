@@ -1,5 +1,7 @@
 package net.oschina.app.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -7,10 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import net.oschina.app.BuildConfig;
 import net.oschina.app.R;
 import net.oschina.app.Setting;
 import net.oschina.app.base.BaseFragment;
-import net.oschina.app.util.TDevice;
+import net.oschina.app.improve.widget.SimplexToast;
 import net.oschina.app.util.UIHelper;
 import net.oschina.common.admin.Boss;
 
@@ -42,7 +45,7 @@ public class AboutOSCFragment extends BaseFragment {
 
     @Override
     public void initData() {
-        mTvVersionName.setText(TDevice.getVersionName());
+        mTvVersionName.setText(BuildConfig.VERSION_NAME);
     }
 
     @Override
@@ -51,7 +54,7 @@ public class AboutOSCFragment extends BaseFragment {
         final int id = v.getId();
         switch (id) {
             case R.id.tv_grade:
-                TDevice.openAppInMarket(getActivity());
+                openMarket();
                 break;
             case R.id.tv_oscsite:
                 UIHelper.openInternalBrowser(getActivity(), "https://www.oschina.net");
@@ -66,6 +69,17 @@ public class AboutOSCFragment extends BaseFragment {
                 break;
             default:
                 break;
+        }
+    }
+
+    private void openMarket() {
+        try {
+            Uri uri = Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        } catch (Exception e) {
+            SimplexToast.show(getActivity(), "请至少安装一个应用商店");
         }
     }
 }

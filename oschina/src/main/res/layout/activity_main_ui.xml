@@ -2,7 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <LinearLayout
         android:id="@+id/activity_main_ui"
@@ -31,7 +32,8 @@
         android:background="#AA000000"
         android:clickable="true"
         android:fitsSystemWindows="true"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:ignore="KeyboardInaccessibleWidget">
 
         <ImageView
             android:id="@+id/iv_plus"
@@ -53,7 +55,7 @@
             android:layout_marginRight="40dp"
             android:layout_marginTop="50dp"
             android:contentDescription="@null"
-            android:src="@mipmap/tips_subscribe"
+            android:src="@mipmap/tip_subscribe"
             tools:ignore="RtlHardcoded" />
 
     </net.oschina.app.improve.widget.RippleIntroView>

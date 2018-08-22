@@ -148,6 +148,15 @@ public class TweetFragment extends BaseGeneralRecyclerFragment<Tweet>
         return fragment;
     }
 
+    public static Fragment newInstance(int catalog) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(BUNDLE_KEY_REQUEST_CATALOG, catalog);
+        Fragment fragment = new TweetFragment();
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+
     @Override
     protected void initBundle(Bundle bundle) {
         super.initBundle(bundle);
@@ -164,6 +173,12 @@ public class TweetFragment extends BaseGeneralRecyclerFragment<Tweet>
                 setHasOptionsMenu(true);
                 break;
         }
+    }
+
+    @Override
+    protected void initWidget(View root) {
+        super.initWidget(root);
+        mRecyclerView.setItemAnimator(null);
     }
 
     /**

@@ -255,9 +255,9 @@ public abstract class RichTextParser {
                     public void onClick(View widget) {
                         Gist gist = new Gist();
                         User user = new User();
-                        user.setName(group1);
+                        user.setName(group2);
                         gist.setOwner(user);
-                        gist.setId(group3);
+                        gist.setId(group4);
                         gist.setSummary(group2);
                         GistDetailActivity.show(context, gist);
                     }

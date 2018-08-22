@@ -71,7 +71,7 @@ class UserEventPresenter implements UserEventContract.Presenter {
                             items = resultBean.getResult().getItems();
                             mView.onRefreshSuccess(items);
                             if (items.size() < 20)
-                                mView.showMoreMore();
+                                mView.showNotMore();
                             mEmptyView.hideEmptyLayout();
                         } else {
                             mView.showNetworkError(R.string.tip_network_error);
@@ -118,7 +118,7 @@ class UserEventPresenter implements UserEventContract.Presenter {
                             items = resultBean.getResult().getItems();
                             mView.onLoadMoreSuccess(items);
                             if (items.size() < 20)
-                                mView.showMoreMore();
+                                mView.showNotMore();
                         } else {
                             mView.showNetworkError(R.string.tip_network_error);
                         }

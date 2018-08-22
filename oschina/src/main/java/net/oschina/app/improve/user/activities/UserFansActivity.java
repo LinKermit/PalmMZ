@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import com.google.gson.reflect.TypeToken;
 
+import net.oschina.app.R;
 import net.oschina.app.api.remote.OSChinaApi;
 import net.oschina.app.improve.base.activities.BaseRecyclerViewActivity;
 import net.oschina.app.improve.base.adapter.BaseRecyclerAdapter;
@@ -46,9 +47,21 @@ public class UserFansActivity extends BaseRecyclerViewActivity<UserFansOrFollows
     }
 
     @Override
+    protected int getContentView() {
+        return R.layout.activity_user_follows;
+    }
+
+    @Override
     protected boolean initBundle(Bundle bundle) {
         userId = bundle.getLong(BUNDLE_KEY_ID, 0);
         return super.initBundle(bundle);
+    }
+
+    @Override
+    protected void initWidget() {
+        super.initWidget();
+        setStatusBarDarkMode();
+        setDarkToolBar();
     }
 
     @Override

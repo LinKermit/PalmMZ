@@ -46,7 +46,7 @@ public class CropActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void initData() {
         super.initData();
-
+        setSwipeBackEnable(false);
         String url = mOption.getSelectedImages().get(0);
         getImageLoader().load(url)
                 .fitCenter()

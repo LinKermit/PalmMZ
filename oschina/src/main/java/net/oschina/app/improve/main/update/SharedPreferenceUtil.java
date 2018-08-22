@@ -14,7 +14,7 @@ public class SharedPreferenceUtil {
     private SharedPreferences.Editor mEditor;
 
     @SuppressLint("CommitPrefEdits")
-    public SharedPreferenceUtil(Context context, String name) {
+     SharedPreferenceUtil(Context context, String name) {
         this.mSp = context.getSharedPreferences(name, Context.MODE_PRIVATE);
         this.mEditor = mSp.edit();
     }

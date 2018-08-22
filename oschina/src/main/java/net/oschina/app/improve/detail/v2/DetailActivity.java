@@ -4,13 +4,10 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
-import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -19,12 +16,12 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import net.oschina.app.AppConfig;
 import net.oschina.app.AppContext;
 import net.oschina.app.R;
 import net.oschina.app.api.remote.OSChinaApi;
+import net.oschina.app.bean.Report;
 import net.oschina.app.improve.account.AccountHelper;
 import net.oschina.app.improve.account.activity.LoginActivity;
 import net.oschina.app.improve.base.activities.BackActivity;
@@ -35,16 +32,17 @@ import net.oschina.app.improve.bean.comment.Comment;
 import net.oschina.app.improve.bean.simple.About;
 import net.oschina.app.improve.behavior.CommentBar;
 import net.oschina.app.improve.comment.CommentsActivity;
-import net.oschina.app.improve.comment.OnCommentClickListener;
 import net.oschina.app.improve.detail.db.Behavior;
 import net.oschina.app.improve.detail.db.DBManager;
 import net.oschina.app.improve.dialog.ShareDialog;
+import net.oschina.app.improve.main.MainActivity;
+import net.oschina.app.improve.main.update.OSCSharedPreference;
 import net.oschina.app.improve.tweet.service.TweetPublishService;
 import net.oschina.app.improve.user.activities.UserSelectFriendsActivity;
 import net.oschina.app.improve.utils.DialogHelper;
+import net.oschina.app.improve.utils.NetworkUtil;
 import net.oschina.app.improve.widget.CommentShareView;
 import net.oschina.app.improve.widget.SimplexToast;
-import net.oschina.app.improve.widget.adapter.OnKeyArrivedListenerAdapter;
 import net.oschina.app.improve.widget.adapter.OnKeyArrivedListenerAdapterV2;
 import net.oschina.app.ui.empty.EmptyLayout;
 import net.oschina.app.util.HTMLUtil;
@@ -52,6 +50,7 @@ import net.oschina.app.util.StringUtils;
 import net.oschina.app.util.TDevice;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -67,17 +66,18 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public abstract class DetailActivity extends BackActivity implements
         DetailContract.EmptyView, Runnable,
-        OnCommentClickListener, EasyPermissions.PermissionCallbacks {
+        CommentView.OnCommentClickListener, EasyPermissions.PermissionCallbacks {
 
     protected String mCommentHint;
     protected DetailPresenter mPresenter;
     protected EmptyLayout mEmptyLayout;
     protected DetailFragment mDetailFragment;
     protected ShareDialog mAlertDialog;
-    protected TextView mCommentCountView;
+
     protected long mStay;//该界面停留时间
     private long mStart;
     protected Behavior mBehavior;
+    @SuppressWarnings("unused")
     private boolean isInsert;
 
     protected CommentBar mDelegation;
@@ -106,6 +106,8 @@ public abstract class DetailActivity extends BackActivity implements
         setSwipeBackEnable(true);
         DBManager.getInstance()
                 .create(Behavior.class);
+        DBManager.getInstance()
+                .alter(Behavior.class);
         CommentShareView.clearShareImage();
         if (!TDevice.hasWebView(this)) {
             finish();
@@ -158,10 +160,10 @@ public abstract class DetailActivity extends BackActivity implements
                 }
             });
 
-            mDelegation.setShareListener(new View.OnClickListener() {
+            mDelegation.setCommentCountListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    toShare(mBean.getTitle(), mBean.getBody(), mBean.getHref());
+                    CommentsActivity.show(DetailActivity.this, mBean.getId(), mBean.getType(), OSChinaApi.COMMENT_NEW_ORDER, mBean.getTitle());
                 }
             });
 
@@ -211,8 +213,8 @@ public abstract class DetailActivity extends BackActivity implements
 
         if (AccountHelper.isLogin() &&
                 DBManager.getInstance()
-                        .getCount(Behavior.class) >= 15) {
-            mPresenter.uploadBehaviors(DBManager.getInstance().get(Behavior.class, 15, 0));
+                        .getCount(Behavior.class) >= 3) {
+            mPresenter.uploadBehaviors(DBManager.getInstance().get(Behavior.class));
         }
         if (mShareView != null) {
             mShareCommentDialog = DialogHelper.getRecyclerViewDialog(this, new BaseRecyclerAdapter.OnItemClickListener() {
@@ -252,7 +254,7 @@ public abstract class DetailActivity extends BackActivity implements
             mBehavior = new Behavior();
             mBehavior.setUser(AccountHelper.getUserId());
             mBehavior.setUserName(AccountHelper.getUser().getName());
-            mBehavior.setNetwork(getNetwork());
+            mBehavior.setNetwork(NetworkUtil.getNetwork(this));
             mBehavior.setUrl(mBean.getHref());
             mBehavior.setOperateType(mBean.getType());
             mBehavior.setOperateTime(System.currentTimeMillis());
@@ -261,67 +263,18 @@ public abstract class DetailActivity extends BackActivity implements
             mBehavior.setDevice(android.os.Build.MODEL);
             mBehavior.setVersion(TDevice.getVersionName());
             mBehavior.setOs(android.os.Build.VERSION.RELEASE);
-            isInsert = DBManager.getInstance()
-                    .insert(mBehavior);
+            mBehavior.setKey(String.format("%s_%s_%s", "osc", mBean.getType(), mBean.getId()));
+            mBehavior.setUuid(OSCSharedPreference.getInstance().getDeviceUUID());
+            // TODO: 2017/11/6 暂时取消收藏接口 
+//            isInsert = DBManager.getInstance()
+//                    .insert(mBehavior);
         }
     }
 
-    @SuppressWarnings("deprecation")
-    private String getNetwork() {
-        ConnectivityManager connect = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        if (connect == null)
-            return "null";
-        NetworkInfo activeNetInfo = connect.getActiveNetworkInfo();
-        if (activeNetInfo == null || !activeNetInfo.isAvailable()) {
-            return "null";
-        }
-        NetworkInfo wifiInfo = connect.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        if (wifiInfo != null) {
-            NetworkInfo.State state = wifiInfo.getState();
-            if (state != null)
-                if (state == NetworkInfo.State.CONNECTED || state == NetworkInfo.State.CONNECTING) {
-                    return "WIFI";
-                }
-        }
-        NetworkInfo networkInfo = connect.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        NetworkInfo.State state = networkInfo.getState();
-        if (null != state)
-            if (state == NetworkInfo.State.CONNECTED || state == NetworkInfo.State.CONNECTING) {
-                switch (activeNetInfo.getSubtype()) {
-                    case TelephonyManager.NETWORK_TYPE_GPRS: // 联通2g
-                    case TelephonyManager.NETWORK_TYPE_CDMA: // 电信2g
-                    case TelephonyManager.NETWORK_TYPE_EDGE: // 移动2g
-                    case TelephonyManager.NETWORK_TYPE_1xRTT:
-                    case TelephonyManager.NETWORK_TYPE_IDEN:
-                        return "2G";
-                    case TelephonyManager.NETWORK_TYPE_EVDO_A: // 电信3g
-                    case TelephonyManager.NETWORK_TYPE_UMTS:
-                    case TelephonyManager.NETWORK_TYPE_EVDO_0:
-                    case TelephonyManager.NETWORK_TYPE_HSDPA:
-                    case TelephonyManager.NETWORK_TYPE_HSUPA:
-                    case TelephonyManager.NETWORK_TYPE_HSPA:
-                    case TelephonyManager.NETWORK_TYPE_EVDO_B:
-                    case TelephonyManager.NETWORK_TYPE_EHRPD:
-                    case TelephonyManager.NETWORK_TYPE_HSPAP:
-                        return "3G";
-                    case TelephonyManager.NETWORK_TYPE_LTE:
-                        return "4G";
-                }
-            }
-        return "null";
-    }
 
     @Override
     public void hideEmptyLayout() {
         mEmptyLayout.setErrorType(EmptyLayout.HIDE_LAYOUT);
-        if (mCommentCountView != null) {
-            mCommentCountView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    CommentsActivity.show(DetailActivity.this, mBean.getId(), mBean.getType(), OSChinaApi.COMMENT_NEW_ORDER, mBean.getTitle());
-                }
-            });
-        }
     }
 
     @Override
@@ -333,10 +286,20 @@ public abstract class DetailActivity extends BackActivity implements
     public void showGetDetailSuccess(SubBean bean) {
         this.mBean = bean;
         initBehavior();
-        if (mDelegation != null)
+        if (mDelegation != null) {
+            if (bean.getStatistics() != null) {
+                mDelegation.setCommentCount(bean.getStatistics().getComment());
+            }
             mDelegation.setFavDrawable(mBean.isFavorite() ? R.drawable.ic_faved : R.drawable.ic_fav);
-        if (mCommentCountView != null && mBean.getStatistics() != null) {
-            mCommentCountView.setText(String.valueOf(mBean.getStatistics().getComment()));
+        }
+        if (mEmptyLayout != null) {
+            mEmptyLayout.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (mEmptyLayout != null)
+                        mEmptyLayout.setErrorType(EmptyLayout.HIDE_LAYOUT);
+                }
+            }, 2000);
         }
     }
 
@@ -381,7 +344,7 @@ public abstract class DetailActivity extends BackActivity implements
         mDelegation.getBottomSheet().getEditText().setText("");
         mDelegation.getBottomSheet().getEditText().setHint(mCommentHint);
         mDelegation.getBottomSheet().dismiss();
-
+        mDelegation.setCommentCount(mBean.getStatistics().getComment());
     }
 
     @Override
@@ -411,21 +374,38 @@ public abstract class DetailActivity extends BackActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_detail, menu);
-        MenuItem item = menu.findItem(R.id.menu_scroll_comment);
-        if (item != null) {
-            View action = item.getActionView();
-            if (action != null) {
-                View tv = action.findViewById(R.id.tv_comment_count);
-                if (tv != null && mBean != null) {
-                    mCommentCountView = (TextView) tv;
-                    if (mBean.getStatistics() != null)
-                        mCommentCountView.setText(mBean.getStatistics().getComment() + "");
-                }
-            }
-        }
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_share:
+                if (mBean != null) {
+                    if (mBean.getType() != News.TYPE_SOFTWARE) {
+                        toShare(mBean.getTitle(), mBean.getBody(), mBean.getHref());
+                    } else {
+                        Map<String, Object> extras = mBean.getExtra();
+                        if (extras != null) {
+                            toShare(getExtraString(extras.get("softwareTitle")) + "   " + getExtraString(extras.get("softwareName")), mBean.getBody(), mBean.getHref());
+                        }
+                    }
+                }
+                break;
+            case R.id.menu_report:
+                if (!AccountHelper.isLogin()) {
+                    LoginActivity.show(this);
+                    return false;
+                }
+                toReport(mBean.getId(), mBean.getHref());
+                break;
+        }
+        return false;
+    }
+
+    protected void toReport(long id, String href) {
+        ReportDialog.create(this, id, href, Report.TYPE_BLOG, "").show();
+    }
 
     @SuppressWarnings({"LoopStatementThatDoesntLoop", "SuspiciousMethodCalls"})
     protected void toShare(String title, String content, String url) {
@@ -450,11 +430,11 @@ public abstract class DetailActivity extends BackActivity implements
                     break;
                 }
             default:
-                String regex = "<img src=\"([^\"]+)\"";
+                String regex = "<img[^>]+\\s?src=\"([^\"]+)\"\\s?[^>]*>";
 
                 Pattern pattern = Pattern.compile(regex);
 
-                Matcher matcher = pattern.matcher(content);
+                Matcher matcher = pattern.matcher(mBean.getBody());
 
                 while (matcher.find()) {
                     imageUrl = matcher.group(1);
@@ -476,7 +456,7 @@ public abstract class DetailActivity extends BackActivity implements
         // 分享
         if (mAlertDialog == null) {
             mAlertDialog = new
-                    ShareDialog(this, mBean.getId(),(mBean.getType() == News.TYPE_BLOG || mBean.getType() == News.TYPE_NEWS))
+                    ShareDialog(this, mBean.getId(), (mBean.getType() == News.TYPE_BLOG || mBean.getType() == News.TYPE_NEWS))
                     .type(mBean.getType())
                     .title(title)
                     .content(content)
@@ -497,6 +477,13 @@ public abstract class DetailActivity extends BackActivity implements
         this.mComment = comment;
         if (mShareCommentDialog != null) {
             mShareCommentDialog.show();
+        }
+    }
+
+    @Override
+    public void onShowComment(View view) {
+        if (mDelegation != null) {
+            mDelegation.getBottomSheet().show(mCommentHint);
         }
     }
 
@@ -556,7 +543,7 @@ public abstract class DetailActivity extends BackActivity implements
     @Override
     protected void onPause() {
         super.onPause();
-        if(mShareCommentDialog!= null){
+        if (mShareCommentDialog != null) {
             mShareCommentDialog.dismiss();
         }
     }
@@ -670,5 +657,21 @@ public abstract class DetailActivity extends BackActivity implements
 
 
         abstract void onMultiTouch(View v, MotionEvent event, int touchCount);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(!MainActivity.IS_SHOW){
+            MainActivity.show(this);
+        }
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(!MainActivity.IS_SHOW){
+            MainActivity.show(this);
+        }
     }
 }

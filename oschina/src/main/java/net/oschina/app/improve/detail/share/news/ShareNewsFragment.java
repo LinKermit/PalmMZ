@@ -8,6 +8,7 @@ import net.oschina.app.R;
 import net.oschina.app.improve.bean.SubBean;
 import net.oschina.app.improve.bean.simple.Author;
 import net.oschina.app.improve.detail.share.ShareFragment;
+import net.oschina.app.improve.widget.PortraitView;
 import net.oschina.app.util.StringUtils;
 
 import butterknife.Bind;
@@ -28,7 +29,10 @@ public class ShareNewsFragment extends ShareFragment {
     @Bind(R.id.tv_author)
     TextView mTextAuthor;
 
-     static ShareFragment newInstance(SubBean bean) {
+    @Bind(R.id.iv_avatar)
+    PortraitView mPortraitView;
+
+    static ShareFragment newInstance(SubBean bean) {
         ShareNewsFragment fragment = new ShareNewsFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("bean", bean);
@@ -49,7 +53,9 @@ public class ShareNewsFragment extends ShareFragment {
         mTextPubDate.setText("发布于 " + StringUtils.formatYearMonthDay(mBean.getPubDate()));
         Author author = mBean.getAuthor();
         if (author != null) {
-            mTextAuthor.setText("@" + author.getName());
+            mTextAuthor.setText(author.getName());
         }
+        mPortraitView.setup(mBean.getAuthor());
+
     }
 }

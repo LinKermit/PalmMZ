@@ -1,5 +1,6 @@
 package net.oschina.app.improve.behavior;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.FragmentManager;
@@ -29,6 +30,7 @@ import net.oschina.app.emoji.OnEmojiClickListener;
  * 底部操作的抽取
  * Created by thanatos on 16/6/21.
  */
+@SuppressWarnings("all")
 public class KeyboardInputDelegation {
 
     private Context context;
@@ -71,6 +73,7 @@ public class KeyboardInputDelegation {
         ((CoordinatorLayout.LayoutParams) mWrapperView.getLayoutParams()).setBehavior(behavior);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     public void showEmoji(FragmentManager fragManager) {
         if (mKeyboardFrame == null)
             mKeyboardFrame = (FrameLayout) mWrapperView.findViewById(R.id.emoji_keyboard_fragment);
@@ -118,7 +121,7 @@ public class KeyboardInputDelegation {
         });
     }
 
-    public void hideSendButton() {
+    private void hideSendButton() {
         if (mBottomLayout == null) {
             mBottomLayout = (LinearLayout) mWrapperView.findViewById(R.id.ll_bottom);
 
@@ -127,7 +130,7 @@ public class KeyboardInputDelegation {
         mBtnSend.setVisibility(View.GONE);
     }
 
-    public void showSendButton() {
+    private void showSendButton() {
         if (mBottomLayout == null) {
             mBottomLayout = (LinearLayout) mWrapperView.findViewById(R.id.ll_bottom);
         }
@@ -271,12 +274,8 @@ public class KeyboardInputDelegation {
         FloatingAutoHideDownBehavior.showBottomLayout(mCoorLayout, mScrollerView, mWrapperView);
     }
 
-    public boolean onTurnBack() {
+    private boolean onTurnBack() {
         return mActionDelegation == null || mActionDelegation.onTurnBack();
-    }
-
-    public void onBackSpace() {
-
     }
 
     public static abstract class KeyboardInputAdapter {

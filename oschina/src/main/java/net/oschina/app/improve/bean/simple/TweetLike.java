@@ -1,6 +1,7 @@
 package net.oschina.app.improve.bean.simple;
 
 /**
+ * 点赞列表
  * Created by thanatos on 16/7/19.
  */
 public class TweetLike {

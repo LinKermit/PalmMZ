@@ -353,12 +353,13 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:visibility="visible"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <LinearLayout
-                        android:id="@+id/rl_data"
+                        android:id="@+id/rl_read"
                         style="@style/option_item_rl">
 
                         <ImageView
@@ -366,13 +367,13 @@
                             android:layout_height="wrap_content"
                             android:contentDescription="@null"
                             android:layout_marginLeft="6dp"
-                            android:layout_marginRight="@dimen/lay_14"
+                            android:layout_marginRight="16dp"
                             android:src="@mipmap/ic_my_profile" />
 
                         <TextView
                             android:layout_weight="1"
                             style="@style/option_item_text"
-                            android:text="@string/data"
+                            android:text="@string/read"
                             tools:ignore="InefficientWeight" />
 
 
@@ -510,6 +511,44 @@
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/rl_info_tags"
+                        style="@style/option_item_rl">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="12dp"
+                            android:contentDescription="@null"
+                            android:src="@mipmap/ic_my_tags" />
+
+                        <TextView
+                            style="@style/option_item_text"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="@string/actionbar_title_tags" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:contentDescription="@null"
+                            android:src="@mipmap/ic_arrow_right" />
+                    </LinearLayout>
+
+                    <View
+                        style="@style/h_line"
+                        android:layout_height="1px"
+                        android:layout_marginStart="52dp"
+                        android:background="@color/list_divider_color" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="vertical">
+
+                    <LinearLayout
                         android:id="@+id/rl_team"
                         style="@style/option_item_rl">
 
@@ -525,6 +564,46 @@
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:text="@string/team" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:contentDescription="@null"
+                            android:src="@mipmap/ic_arrow_right" />
+                    </LinearLayout>
+
+                    <View
+                        style="@style/h_line"
+                        android:layout_height="1px"
+                        android:layout_marginStart="52dp"
+                        android:background="@color/list_divider_color" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/rl_share"
+                        style="@style/option_item_rl">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="12dp"
+                            android:contentDescription="@null"
+                            android:src="@mipmap/ic_my_recommend"
+                            tools:ignore="TooManyViews" />
+
+                        <TextView
+                            style="@style/option_item_text"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:text="邀请好友"
+                            tools:ignore="HardcodedText" />
 
                         <ImageView
                             android:layout_width="wrap_content"

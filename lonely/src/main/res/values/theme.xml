@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Base.App.Theme.Light" parent="@style/Theme.AppCompat.Light">
+        <!-- Customize your theme here. 重写父类的主题-->
+        <!--color primary-->
+        <item name="colorPrimary">@color/day_colorPrimary</item>
+        <item name="colorPrimaryDark">@color/day_colorPrimaryDark</item>
+        <item name="colorAccent">@color/day_colorPrimary</item>
+
+        <!--text style-->
+        <item name="editTextColor">@color/gray</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorLink">#0b9a27</item>
+        <item name="android:editTextColor">@color/day_edit_color</item>
+        <item name="android:textColorHint">@color/day_edit_hit_color</item>
+
+        <!--action menu-->
+        <item name="actionMenuTextColor">@color/white</item>
+
+        <!--action mode-->
+        <item name="actionModeBackground">@color/day_colorPrimary</item>
+
+        <!--window style-->
+        <item name="elevation">0dp</item>
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+    <!-- 日间模式 -->
+    <style name="App.Theme.Light" parent="Base.App.Theme.Light" />
+
+    <!--启动界面主题-->
+    <style name="App.Theme.Launch" parent="Base.App.Theme.Light">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+</resources>

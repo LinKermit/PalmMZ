@@ -54,7 +54,6 @@ public class UserSendMessageActivity extends BaseRecyclerViewActivity<Message>
     private KeyboardInputDelegation mDelegation;
 
     EditText mViewInput;
-    private long authorId;
     private User mReceiver;
     private ProgressDialog mDialog;
     private boolean isFirstLoading = true;
@@ -74,6 +73,8 @@ public class UserSendMessageActivity extends BaseRecyclerViewActivity<Message>
     @Override
     protected void initWidget() {
         super.initWidget();
+        setStatusBarDarkMode();
+        setDarkToolBar();
         mAdapter.setOnItemLongClickListener(this);
     }
 
@@ -83,7 +84,6 @@ public class UserSendMessageActivity extends BaseRecyclerViewActivity<Message>
         mDialog = new ProgressDialog(this);
         mReceiver = (User) getIntent().getSerializableExtra("receiver");
         setTitle(mReceiver.getName());
-        authorId = AccountHelper.getUserId();
         init();
     }
 
@@ -144,12 +144,15 @@ public class UserSendMessageActivity extends BaseRecyclerViewActivity<Message>
         mViewInput = mDelegation.getInputView();
     }
 
+    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public void onItemClick(int position, long itemId) {
         Message message = mAdapter.getItem(position);
+        if(message==null)
+            return;
         if (Message.TYPE_IMAGE == message.getType()) {
             if (message.getId() == 0) {
-
+                // TODO: 2017/10/27
             } else if (message.getId() == -1) { //重新发送
                 message.setId(0);
                 mAdapter.updateItem(position);
@@ -274,6 +277,7 @@ public class UserSendMessageActivity extends BaseRecyclerViewActivity<Message>
         return filePath.substring(filePath.lastIndexOf("/") + 1);
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private void delete(String path) {
         File file = new File(path);
         if (file.exists())

@@ -9,7 +9,7 @@ import com.google.gson.reflect.TypeToken;
 import com.loopj.android.http.TextHttpResponseHandler;
 
 import net.oschina.app.R;
-import net.oschina.app.improve.base.activities.BaseBackActivity;
+import net.oschina.app.improve.base.activities.BackActivity;
 import net.oschina.app.improve.bean.base.ResultBean;
 import net.oschina.app.improve.git.api.API;
 import net.oschina.app.improve.git.bean.Project;
@@ -27,7 +27,7 @@ import cz.msebera.android.httpclient.Header;
  * on 2017/3/9.
  */
 
-public class ProjectDetailActivity extends BaseBackActivity implements ProjectDetailContract.EmptyView {
+public class ProjectDetailActivity extends BackActivity implements ProjectDetailContract.EmptyView {
 
     @Bind(R.id.emptyLayout)
     EmptyLayout mEmptyLayout;
@@ -42,9 +42,9 @@ public class ProjectDetailActivity extends BaseBackActivity implements ProjectDe
         API.getProjectDetail(pathWithNamespace + "%2F" + name, new TextHttpResponseHandler() {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                if(TDevice.hasInternet()){
+                if (TDevice.hasInternet()) {
                     UIHelper.openExternalBrowser(context, url);
-                }else {
+                } else {
                     show(context, pathWithNamespace, name);
                 }
             }
@@ -86,6 +86,8 @@ public class ProjectDetailActivity extends BaseBackActivity implements ProjectDe
     @Override
     protected void initWidget() {
         super.initWidget();
+        setStatusBarDarkMode();
+        setDarkToolBar();
         final Project project = (Project) getIntent()
                 .getExtras()
                 .getSerializable("project");

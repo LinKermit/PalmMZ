@@ -13,7 +13,7 @@ import com.loopj.android.http.TextHttpResponseHandler;
 
 import net.oschina.app.R;
 import net.oschina.app.api.remote.OSChinaApi;
-import net.oschina.app.improve.base.activities.BaseBackActivity;
+import net.oschina.app.improve.base.activities.BackActivity;
 import net.oschina.app.improve.base.adapter.BaseRecyclerAdapter;
 import net.oschina.app.improve.bean.User;
 import net.oschina.app.improve.bean.base.ResultBean;
@@ -31,7 +31,7 @@ import cz.msebera.android.httpclient.Header;
  * Created by huanghaibin on 2017/8/22.
  */
 
-public class ModifyFieldActivity extends BaseBackActivity {
+public class ModifyFieldActivity extends BackActivity {
 
     static final int TYPE_FIELD = 5;
 
@@ -53,6 +53,8 @@ public class ModifyFieldActivity extends BaseBackActivity {
     @Override
     protected void initWidget() {
         super.initWidget();
+        setStatusBarDarkMode();
+        setDarkToolBar();
         mRecyclerField.setLayoutManager(new GridLayoutManager(this, 2));
         mAdapter = new FieldAdapter(this);
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
@@ -142,6 +144,8 @@ public class ModifyFieldActivity extends BaseBackActivity {
                                 intent.putExtra("user_info", bean.getResult());
                                 setResult(RESULT_OK, intent);
                                 finish();
+                            }else {
+                                SimplexToast.show(ModifyFieldActivity.this,bean.getMessage());
                             }
 
                         } catch (Exception e) {

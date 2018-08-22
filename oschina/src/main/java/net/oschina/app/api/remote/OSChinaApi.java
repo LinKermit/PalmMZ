@@ -17,6 +17,7 @@ import net.oschina.app.improve.account.AccountHelper;
 import net.oschina.app.improve.bean.SignUpEventOptions;
 import net.oschina.app.improve.bean.simple.About;
 import net.oschina.app.improve.detail.sign.StringParams;
+import net.oschina.app.improve.tweet.service.YouPaiResult;
 import net.oschina.app.improve.write.Blog;
 import net.oschina.app.team.bean.Team;
 import net.oschina.app.util.StringUtils;
@@ -97,24 +98,6 @@ public class OSChinaApi {
         params.put("pageIndex", page);
         params.put("pageSize", AppContext.PAGE_SIZE);
         ApiHttpClient.get("action/api/post_list", params, handler);
-    }
-
-    @Deprecated
-    public static void getTweetList(int uid, int page, AsyncHttpResponseHandler handler) {
-        RequestParams params = new RequestParams();
-        params.put("uid", uid);
-        params.put("pageIndex", page);
-        params.put("pageSize", AppContext.PAGE_SIZE);
-        ApiHttpClient.get("action/api/tweet_list", params, handler);
-    }
-
-    @Deprecated
-    public static void getTweetTopicList(int page, String topic, AsyncHttpResponseHandler handler) {
-        RequestParams params = new RequestParams();
-        params.put("pageIndex", page);
-        params.put("title", topic);
-        params.put("pageSize", AppContext.PAGE_SIZE);
-        ApiHttpClient.get("action/api/tweet_topic_list", params, handler);
     }
 
     @Deprecated
@@ -1041,6 +1024,37 @@ public class OSChinaApi {
         post("action/apiv2/resource_image", params, handler);
     }
 
+
+    /**
+     * 上传图片接口
+     * http://doc.oschina.net/app_v2?t=105508
+     *
+     * @param token   上传口令，单次口令最多上传9张图片。
+     * @param url     图片地址
+     * @param handler 回调
+     */
+    public static void uploadImageForYouPai(String token, YouPaiResult result, AsyncHttpResponseHandler handler) {
+        RequestParams params = new RequestParams();
+        params.put("token", token);
+        String url = "http://oscimg.oschina.net/" + result.getUrl();
+        Log.e("url", url);
+        params.put("url", url);
+        params.put("h", result.getImageHeight());
+        params.put("w", result.getImageWidth());
+        post("action/apiv2/resource_image", params, handler);
+    }
+
+
+    /**
+     * 获取又拍云上传策略
+     *
+     * @param handler handler
+     */
+    public static void getYPToken(AsyncHttpResponseHandler handler) {
+        ApiHttpClient.get("action/apiv2/get_upyun_token", handler);
+    }
+
+
     /**
      * 发布动弹
      * 链接 http://doc.oschina.net/app_v2?t=105522
@@ -1304,7 +1318,9 @@ public class OSChinaApi {
      * @param handler TextHttpResponseHandler
      */
     public static void getNotice(TextHttpResponseHandler handler) {
-        ApiHttpClient.get("action/apiv2/notice?clear=false", handler);
+        RequestParams params = new RequestParams();
+        params.put("clear", false);
+        ApiHttpClient.get("action/apiv2/notice", params, handler);
     }
 
     /**
@@ -1540,7 +1556,7 @@ public class OSChinaApi {
     public static void getSubscription(String api, String pageToken, TextHttpResponseHandler handler) {
         RequestParams params = new RequestParams();
         params.put("pageToken", pageToken);
-        ApiHttpClient.getHttpClient().get(api, params, handler);
+        ApiHttpClient.get(api, params, handler);
     }
 
     /**
@@ -1550,7 +1566,7 @@ public class OSChinaApi {
      * @param handler handler
      */
     public static void getBanner(String api, TextHttpResponseHandler handler) {
-        ApiHttpClient.getHttpClient().get(api, handler);
+        ApiHttpClient.get(api, handler);
     }
 
     /**
@@ -1587,6 +1603,21 @@ public class OSChinaApi {
         if (!TextUtils.isEmpty(ident))
             params.put("ident", ident);
         ApiHttpClient.get("action/apiv2/detail", params, handler);
+    }
+
+
+    /**
+     * 英文翻译
+     *
+     * @param key     key
+     * @param type    type
+     * @param handler handler
+     */
+    public static void translate(String key, int type, TextHttpResponseHandler handler) {
+        RequestParams params = new RequestParams();
+        params.put("type", type);
+        params.put("key", key);
+        ApiHttpClient.get("action/apiv2/article_translate", params, handler);
     }
 
     /**
@@ -1673,7 +1704,12 @@ public class OSChinaApi {
      * @param memo     其他原因的描述字段
      * @param handler
      */
-    public static void report(long sourceId, int type, String href, int reason, String memo,
+    public static void report(long sourceId,
+                              int type,
+                              String href,
+                              int reason,
+                              String memo,
+                              String key,
                               TextHttpResponseHandler handler) {
         RequestParams params = new RequestParams();
         params.put("sourceId", sourceId);
@@ -1681,6 +1717,9 @@ public class OSChinaApi {
         params.put("href", href);
         params.put("reason", reason);
         params.put("memo", memo);
+        if (!TextUtils.isEmpty(key)) {
+            params.put("key", key);
+        }
         ApiHttpClient.post("action/apiv2/report", params, handler);
     }
 
@@ -1732,7 +1771,6 @@ public class OSChinaApi {
         params.put("objId", objId);
         params.put("money", Float.valueOf(money).intValue());
         params.put("payType", payType);
-        Log.e("getPayDonate", "  --  " + authorId + "  --  " + objId + " --  " + money + "  -- " + payType);
         ApiHttpClient.get("action/apiv2/blog_donate_prepare", params, handler);
     }
 
@@ -1830,5 +1868,361 @@ public class OSChinaApi {
         params.put("type", blog.getType());
         params.put("content", blog.getContent());
         ApiHttpClient.post("action/apiv2/pub_blog", params, handler);
+    }
+
+    /**
+     * 获取头条
+     *
+     * @param ident     手机唯一标示
+     * @param pageToken pageToken
+     * @param handler   handler
+     */
+    public static void getArticles(String ident, String pageToken, TextHttpResponseHandler handler) {
+        RequestParams params = new RequestParams();
+        params.put("ident", ident);
+        if (!TextUtils.isEmpty(pageToken)) {
+            params.put("pageToken", pageToken);
+        }
+        ApiHttpClient.get("action/apiv2/get_articles", params, handler);
+    }
+
+
+    /**
+     * 获取登陆用户标签
+     *
+     * @param handler handler
+     */
+    public static void getUserTags(TextHttpResponseHandler handler) {
+        ApiHttpClient.get("action/apiv2/user_tags", handler);
+    }
+
+    /**
+     * 提交用户标签
+     *
+     * @param handler handler
+     */
+    public static void putUserTags(String ids, String deleteIds, TextHttpResponseHandler handler) {
+        RequestParams params = new RequestParams();
+        if (!TextUtils.isEmpty(ids)) {
+            params.put("ids", ids);
+        }
+        if (!TextUtils.isEmpty(deleteIds)) {
+            params.put("deleteIds", deleteIds);
+        }
+        ApiHttpClient.post("action/apiv2/put_tags", params, handler);
+    }
+
+
+    /**
+     * 登陆用户搜索标签
+     *
+     * @param keyword keyword
+     * @param handler handler
+     */
+    public static void searchUserTags(String keyword, String pageToken, TextHttpResponseHandler handler) {
+        RequestParams params = new RequestParams();
+        params.put("keyword", keyword);
+        if (!TextUtils.isEmpty(pageToken)) {
+            params.put("pageToken", pageToken);
+            Log.e("pageToken", pageToken);
+        }
+        ApiHttpClient.post("action/apiv2/search_tags_by_name", params, handler);
+    }
+
+    /**
+     * 获取头条
+     *
+     * @param ident     手机唯一标示
+     * @param pageToken pageToken
+     * @param handler   handler
+     */
+    public static void getArticles(String ident, int type, String pageToken, TextHttpResponseHandler handler) {
+        RequestParams params = new RequestParams();
+        params.put("ident", ident);
+        params.put("type", type);
+        if (!TextUtils.isEmpty(pageToken)) {
+            params.put("pageToken", pageToken);
+        }
+        ApiHttpClient.get("action/apiv2/get_articles", params, handler);
+    }
+
+    /**
+     * 获取头条
+     *
+     * @param key     key
+     * @param ident   手机唯一标示
+     * @param handler handler
+     */
+    public static void getArticleDetail(String key, String ident, TextHttpResponseHandler handler) {
+        RequestParams params = new RequestParams();
+        params.put("ident", ident);
+        params.put("key", key);
+        ApiHttpClient.get("action/apiv2/get_article_detail", params, handler);
+    }
+
+    /**
+     * 获取头条
+     *
+     * @param key     key
+     * @param ident   手机唯一标示
+     * @param handler handler
+     */
+    public static void getArticleDetail(String key, String ident, int type, TextHttpResponseHandler handler) {
+        RequestParams params = new RequestParams();
+        params.put("ident", ident);
+        params.put("key", key);
+        params.put("type", type);
+        ApiHttpClient.get("action/apiv2/get_article_detail", params, handler);
+    }
+
+    /**
+     * 获取头条相关推荐
+     * recommend_article_es   get_article_recommends
+     *
+     * @param ident     手机唯一标示
+     * @param pageToken pageToken
+     * @param handler   handler
+     */
+    public static void getArticleRecommends(String key, String ident, String pageToken, TextHttpResponseHandler handler) {
+        RequestParams params = new RequestParams();
+        params.put("key", key);
+        params.put("ident", ident);
+        if (!TextUtils.isEmpty(pageToken)) {
+            params.put("pageToken", pageToken);
+        }
+        ApiHttpClient.get("action/apiv2/get_article_recommends", params, handler);
+    }
+
+    /**
+     * 获取头条相关推荐
+     * recommend_article_es   get_article_recommends
+     *
+     * @param ident     手机唯一标示
+     * @param pageToken pageToken
+     * @param handler   handler
+     */
+    public static void getArticleRecommends(String key, String ident, int type,
+                                            String pageToken, TextHttpResponseHandler handler) {
+        RequestParams params = new RequestParams();
+        params.put("key", key);
+        params.put("ident", ident);
+        params.put("type", type);
+        if (!TextUtils.isEmpty(pageToken)) {
+            params.put("pageToken", pageToken);
+        }
+        ApiHttpClient.get("action/apiv2/get_article_recommends", params, handler);
+    }
+
+    /**
+     * 获取头条评论
+     *
+     * @param key       key
+     * @param catalog   1:获取热门评论 2:最新所有评论
+     * @param pageToken catalog=1时不需要，catalog=2时按分页获取规则
+     * @param handler   回调
+     */
+    public static void getArticleComments(String key, int catalog, String pageToken, TextHttpResponseHandler handler) {
+        if (TextUtils.isEmpty(key)) return;
+        RequestParams params = new RequestParams();
+        params.put("key", key);
+        params.put("catalog", catalog);
+        if (!TextUtils.isEmpty(pageToken))
+            params.put("pageToken", pageToken);
+        ApiHttpClient.get("action/apiv2/get_article_comments", params, handler);
+    }
+
+
+    /**
+     * 头条评论点赞
+     *
+     * @param commentId       commentId
+     * @param commentAuthorId commentAuthorId
+     * @param handler         handler
+     */
+    public static void voteArticleComment(long commentId, long commentAuthorId, TextHttpResponseHandler handler) {
+        if (commentId <= 0) return;
+        RequestParams params = new RequestParams();
+        params.put("commentId", commentId);
+        params.put("commentAuthorId", commentAuthorId);
+        post("action/apiv2/comment_vote", params, handler);
+
+    }
+
+    /**
+     * 发布评论
+     */
+    public static void pubArticleComment(String key,
+                                         String content,
+                                         long referId,
+                                         long reAuthorId,
+                                         TextHttpResponseHandler handler) {
+        RequestParams params = new RequestParams();
+        params.put("key", key);
+
+        params.put("content", content);
+        if (referId > 0)
+            params.put("referId", referId);
+        if (reAuthorId > 0)
+            params.put("reAuthorId", reAuthorId);
+        post("action/apiv2/pub_article_comment", params, handler);
+    }
+
+
+    /**
+     * 发布评论
+     */
+    public static void pubArticleComment(String key,
+                                         String content,
+                                         int type,
+                                         long referId,
+                                         long reAuthorId,
+                                         TextHttpResponseHandler handler) {
+        RequestParams params = new RequestParams();
+        params.put("key", key);
+        params.put("type", type);
+        params.put("content", content);
+        if (referId > 0)
+            params.put("referId", referId);
+        if (reAuthorId > 0)
+            params.put("reAuthorId", reAuthorId);
+        post("action/apiv2/pub_article_comment", params, handler);
+    }
+
+
+    /**
+     * 收集阅读习惯
+     */
+    public static void pushReadRecord(String key,
+                                      TextHttpResponseHandler handler) {
+        RequestParams params = new RequestParams();
+        params.put("key", key);
+        post("action/apiv2/send_read_record", params, handler);
+    }
+
+
+    /**
+     * 获取启动页展示
+     *
+     * @param handler handler
+     */
+    public static void getLauncher(TextHttpResponseHandler handler) {
+        ApiHttpClient.get("action/apiv2/get_launcher", handler);
+    }
+
+    /**
+     * 统计点击数
+     *
+     * @param key     key
+     * @param handler handler
+     */
+    public static void addClickCount(String key, TextHttpResponseHandler handler) {
+        RequestParams params = new RequestParams();
+        params.put("key", key);
+        ApiHttpClient.get("action/apiv2/click_count", params, handler);
+    }
+
+    /**
+     * 收藏推荐
+     *
+     * @param json    json
+     * @param handler handler
+     */
+    public static void articleFav(String json, TextHttpResponseHandler handler) {
+        RequestParams params = new RequestParams();
+        params.put("article", json);
+        ApiHttpClient.post("action/apiv2/favorite_hot_article", params, handler);
+    }
+
+
+    /**
+     * 投递文章
+     *
+     * @param link    link
+     * @param handler handler
+     */
+    public static void putArticle(String link, TextHttpResponseHandler handler) {
+        RequestParams params = new RequestParams();
+        params.put("link", link);
+        ApiHttpClient.post("action/apiv2/post_link_article", params, handler);
+    }
+
+
+    /**
+     * 获取微信公众号解析规则
+     * @param handler handler
+     */
+    public static void getWXRule(TextHttpResponseHandler handler) {
+        ApiHttpClient.get("action/apiv2/wechat_title_rule", handler);
+    }
+
+    /**
+     * 阅读记录
+     *
+     * @param handler handler
+     */
+    public static void readHistory(String pageToken, TextHttpResponseHandler handler) {
+        RequestParams params = new RequestParams();
+        if (!TextUtils.isEmpty(pageToken)) {
+            params.put("pageToken", pageToken);
+        }
+        ApiHttpClient.get("action/apiv2/user_read_list", handler);
+    }
+
+    /**
+     * 搜索界面
+     *
+     * @param type      -1 | 不论搜索类型，默认为-1，全局搜索，authors控制数量，softwares也控制数量
+     *                  0  | 搜索article，只返回articles节点
+     *                  1  | 搜索软件，只返回softwares节点
+     *                  11 | 搜索用户，只返回authors节点
+     * @param order     0  | 按默认排序方式相关度
+     *                  1  | 相关度
+     *                  2  | 按热度排序（综合评论、阅读数）
+     *                  3  | 按最新时间排序
+     * @param keyword   关键字
+     * @param pageToken token
+     * @param handler   handler
+     */
+    public static void search(int type, int order, String keyword, String pageToken, TextHttpResponseHandler handler) {
+        RequestParams params = new RequestParams();
+        if (!TextUtils.isEmpty(pageToken)) {
+            params.put("pageToken", pageToken);
+        }
+        params.put("type", type);
+        params.put("order", order);
+        params.put("keyword", keyword);
+        ApiHttpClient.post("action/apiv2/search_articles", params, handler);
+    }
+
+    /**
+     * 搜索软件
+     *
+     * @param type      type
+     * @param keyword   keyword
+     * @param pageToken pageToken
+     * @param handler   handler
+     */
+    public static void searchSoftware(int type, String keyword, String pageToken, TextHttpResponseHandler handler) {
+        RequestParams params = new RequestParams();
+        if (!TextUtils.isEmpty(pageToken)) {
+            params.put("pageToken", pageToken);
+        }
+        params.put("type", type);
+        params.put("keyword", keyword);
+        ApiHttpClient.post("action/apiv2/search_articles", params, handler);
+    }
+
+    /**
+     * 去广告规则
+     *
+     * @param url     url
+     * @param handler handler
+     */
+    public static void getWebRule(String url, TextHttpResponseHandler handler) {
+        RequestParams params = new RequestParams();
+        if (!TextUtils.isEmpty(url)) {
+            params.put("url", url);
+        }
+        ApiHttpClient.get("action/apiv2/get_article_rules", params, handler);
     }
 }

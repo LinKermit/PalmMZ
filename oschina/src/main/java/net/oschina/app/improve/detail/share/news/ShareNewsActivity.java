@@ -10,6 +10,7 @@ import net.oschina.app.improve.bean.SubBean;
 import net.oschina.app.improve.bean.simple.Author;
 import net.oschina.app.improve.detail.share.ShareActivity;
 import net.oschina.app.improve.detail.share.ShareFragment;
+import net.oschina.app.improve.widget.PortraitView;
 import net.oschina.app.util.StringUtils;
 
 import butterknife.Bind;
@@ -29,6 +30,10 @@ public class ShareNewsActivity extends ShareActivity {
 
     @Bind(R.id.tv_author)
     TextView mTextAuthor;
+
+    @Bind(R.id.iv_avatar)
+    PortraitView mPortraitView;
+
 
     public static void show(Context context, SubBean bean) {
         Intent intent = new Intent(context, ShareNewsActivity.class);
@@ -51,8 +56,9 @@ public class ShareNewsActivity extends ShareActivity {
         mTextPubDate.setText("发布于 " + StringUtils.formatYearMonthDay(mBean.getPubDate()));
         Author author = mBean.getAuthor();
         if (author != null) {
-            mTextAuthor.setText("@" + author.getName());
+            mTextAuthor.setText(author.getName());
         }
+        mPortraitView.setup(mBean.getAuthor());
     }
 
     @Override

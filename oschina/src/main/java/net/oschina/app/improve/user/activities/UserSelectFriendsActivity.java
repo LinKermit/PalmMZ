@@ -26,7 +26,7 @@ import com.bumptech.glide.Glide;
 import net.oschina.app.AppContext;
 import net.oschina.app.R;
 import net.oschina.app.improve.app.ParentLinkedHolder;
-import net.oschina.app.improve.base.activities.BaseBackActivity;
+import net.oschina.app.improve.base.activities.BackActivity;
 import net.oschina.app.improve.bean.simple.Author;
 import net.oschina.app.improve.tweet.fragments.TweetPublishFragment;
 import net.oschina.app.improve.user.adapter.UserSearchFriendsAdapter;
@@ -51,7 +51,7 @@ import butterknife.Bind;
  *          <p>
  *          用户联系人列表
  */
-public class UserSelectFriendsActivity extends BaseBackActivity
+public class UserSelectFriendsActivity extends BackActivity
         implements RecentContactsView.OnSelectedChangeListener, ContactsCacheManager.OnSelectedChangeListener,
         IndexView.OnIndexTouchListener, SearchView.OnQueryTextListener {
 
@@ -131,10 +131,13 @@ public class UserSelectFriendsActivity extends BaseBackActivity
         return R.layout.activity_main_user_select_friends;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    @SuppressWarnings("all")
     @Override
     protected void initWidget() {
         super.initWidget();
-
+        setStatusBarDarkMode();
+        setDarkToolBar();
         // 初始化最近联系人
         mRecentView = new RecentContactsView(this);
         mRecentView.setListener(this);
@@ -162,6 +165,7 @@ public class UserSelectFriendsActivity extends BaseBackActivity
         });
 
         mRecyclerFriends.setLayoutManager(new LinearLayoutManager(this));
+
         mRecyclerFriends.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

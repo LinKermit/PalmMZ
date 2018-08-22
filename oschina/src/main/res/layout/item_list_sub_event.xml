@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    tools:ignore="RtlHardcoded"
+    tools:ignore="RtlHardcoded,RtlSymmetry,SmallSp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -41,12 +41,14 @@
                 android:layout_gravity="top"
                 android:layout_marginRight="16dp"
                 android:gravity="top"
-                android:lineSpacingExtra="4dp"
                 android:maxLines="2"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:letterSpacing="0.04"
+                android:lineSpacingExtra="4dp"
                 android:textColor="@color/text_title_color"
-                android:textSize="16sp"
-                tools:text="Large Text" />
+                android:textSize="15sp"
+                android:textStyle="bold"
+                tools:text="Large Text"
+                tools:ignore="UnusedAttribute" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -94,7 +96,7 @@
                 android:lines="1"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@color/text_secondary_color"
-                android:textSize="12sp"
+                android:textSize="10sp"
                 tools:text="2012-12-01 22:10" />
         </LinearLayout>
     </LinearLayout>

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.BitmapRequestBuilder;
+import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 
@@ -59,7 +60,7 @@ public class TweetPicturesLayout extends ViewGroup implements View.OnClickListen
     }
 
     private void init(AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-               final Context context = getContext();
+        final Context context = getContext();
         final Resources resources = getResources();
         final float density = resources.getDisplayMetrics().density;
 
@@ -137,8 +138,8 @@ public class TweetPicturesLayout extends ViewGroup implements View.OnClickListen
                 view.setTag(i);
                 view.setOnClickListener(this);
                 String path = image.getThumb();
-                BitmapRequestBuilder builder = requestManager.load(path)
-                        .asBitmap()
+                DrawableRequestBuilder builder = requestManager.load(path)
+                        //.asBitmap()
                         .centerCrop()
                         //.placeholder(R.color.grey_50)
                         .error(R.mipmap.ic_split_graph);

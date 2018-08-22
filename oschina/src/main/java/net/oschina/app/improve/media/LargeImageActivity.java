@@ -85,6 +85,7 @@ public class LargeImageActivity extends BaseActivity implements EasyPermissions.
     @Override
     protected void initData() {
         super.initData();
+        setSwipeBackEnable(false);
         mPath = getIntent().getStringExtra("image");
         getImageLoader()
                 .load(mPath)

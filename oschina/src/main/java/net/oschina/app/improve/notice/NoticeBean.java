@@ -17,6 +17,15 @@ public class NoticeBean implements Serializable {
     private int review;
     private int fans;
     private int like = 0;
+    private int newsCount;
+
+    public int getNewsCount() {
+        return newsCount;
+    }
+
+    public void setNewsCount(int newsCount) {
+        this.newsCount = newsCount;
+    }
 
     public int getMention() {
         return mention;
@@ -62,6 +71,10 @@ public class NoticeBean implements Serializable {
         return mention + letter + review + fans;
     }
 
+    public int getUserCount() {
+        return mention + letter + review + fans;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -73,7 +86,8 @@ public class NoticeBean implements Serializable {
                 && letter == that.letter
                 && review == that.review
                 && fans == that.fans
-                && like == that.like;
+                && like == that.like
+                && newsCount == that.newsCount;
 
     }
 
@@ -94,6 +108,7 @@ public class NoticeBean implements Serializable {
         this.review = 0;
         this.fans = 0;
         this.like = 0;
+        this.newsCount = 0;
     }
 
     NoticeBean set(NoticeBean bean) {
@@ -101,6 +116,7 @@ public class NoticeBean implements Serializable {
         this.letter = bean.letter;
         this.review = bean.review;
         this.fans = bean.fans;
+        this.newsCount = bean.newsCount;
         // 暂不累加点赞数据
         //this.like = bean.like;
         return this;
@@ -111,6 +127,7 @@ public class NoticeBean implements Serializable {
         this.letter += bean.letter;
         this.review += bean.review;
         this.fans += bean.fans;
+        this.newsCount += bean.newsCount;
         // 暂不累加点赞数据
         //this.like += bean.like;
         return this;

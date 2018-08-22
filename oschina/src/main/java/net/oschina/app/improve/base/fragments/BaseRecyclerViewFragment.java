@@ -199,6 +199,11 @@ public abstract class BaseRecyclerViewFragment<T> extends BaseFragment implement
         requestData();
     }
 
+    @Override
+    public void onScrollToBottom() {
+
+    }
+
     protected void requestData() {
     }
 

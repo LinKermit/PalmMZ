@@ -16,9 +16,10 @@ import net.oschina.app.AppContext;
 import net.oschina.app.Setting;
 import net.oschina.app.improve.account.AccountHelper;
 import net.oschina.app.improve.git.api.API;
+import net.oschina.app.improve.main.update.OSCSharedPreference;
+import net.oschina.app.improve.utils.MD5;
 import net.oschina.app.util.TDevice;
 import net.oschina.app.util.TLog;
-import net.oschina.common.verify.Verifier;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -90,6 +91,13 @@ public class ApiHttpClient {
     private ApiHttpClient() {
     }
 
+    public static void setHeaderNewsId() {
+        if (CLIENT == null)
+            return;
+        CLIENT.removeHeader("newsId");
+        CLIENT.addHeader("newsId", String.valueOf(OSCSharedPreference.getInstance().getLastNewsId()));
+    }
+
     /**
      * 初始化网络请求，包括Cookie的初始化
      *
@@ -102,9 +110,17 @@ public class ApiHttpClient {
         client.setResponseTimeout(7 * 1000);
         //client.setCookieStore(new PersistentCookieStore(context));
         // Set
-        ApiHttpClient.setHttpClient(client, context);
+        ApiHttpClient.setHttpClient(client);
         // Set Cookie
         setCookieHeader(AccountHelper.getCookie());
+    }
+
+    public static void cancelALL() {
+        try {
+            CLIENT.cancelAllRequests(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static AsyncHttpClient getHttpClient() {
@@ -112,22 +128,26 @@ public class ApiHttpClient {
     }
 
     public static void delete(String partUrl, AsyncHttpResponseHandler handler) {
+        setHeaderNewsId();
         CLIENT.delete(getAbsoluteApiUrl(partUrl), handler);
         log("DELETE " + partUrl);
     }
 
     public static void get(String partUrl, AsyncHttpResponseHandler handler) {
+        setHeaderNewsId();
         CLIENT.get(getAbsoluteApiUrl(partUrl), handler);
         log("GET " + partUrl);
     }
 
     public static void get(String partUrl, RequestParams params,
                            AsyncHttpResponseHandler handler) {
+        setHeaderNewsId();
         CLIENT.get(getAbsoluteApiUrl(partUrl), params, handler);
         log("GET " + partUrl + "?" + params);
     }
 
     public static String getAbsoluteApiUrl(String partUrl) {
+        setHeaderNewsId();
         String url = partUrl;
         if (!partUrl.startsWith("http:") && !partUrl.startsWith("https:")) {
             url = String.format(API_URL, partUrl);
@@ -137,6 +157,7 @@ public class ApiHttpClient {
     }
 
     public static void getDirect(String url, AsyncHttpResponseHandler handler) {
+        setHeaderNewsId();
         CLIENT.get(url, handler);
         log("GET " + url);
     }
@@ -146,40 +167,55 @@ public class ApiHttpClient {
     }
 
     public static void post(String partUrl, AsyncHttpResponseHandler handler) {
+        setHeaderNewsId();
         CLIENT.post(getAbsoluteApiUrl(partUrl), handler);
         log("POST " + partUrl);
     }
 
     public static void post(String partUrl, RequestParams params,
                             AsyncHttpResponseHandler handler) {
+        setHeaderNewsId();
         CLIENT.post(getAbsoluteApiUrl(partUrl), params, handler);
         log("POST " + partUrl + "?" + params);
     }
 
     public static void put(String partUrl, AsyncHttpResponseHandler handler) {
+        setHeaderNewsId();
         CLIENT.put(getAbsoluteApiUrl(partUrl), handler);
         log("PUT " + partUrl);
     }
 
     public static void put(String partUrl, RequestParams params,
                            AsyncHttpResponseHandler handler) {
+        setHeaderNewsId();
         CLIENT.put(getAbsoluteApiUrl(partUrl), params, handler);
         log("PUT " + partUrl + "?" + params);
     }
 
-    public static void setHttpClient(AsyncHttpClient c, Application application) {
+    private static String sessionKey = "";
+
+    public static void setHttpClient(AsyncHttpClient c) {
         c.addHeader("Accept-Language", Locale.getDefault().toString());
         c.addHeader("Host", HOST);
         c.addHeader("Connection", "Keep-Alive");
+        if (TextUtils.isEmpty(sessionKey)) {
+            sessionKey = MD5.get32MD5Str(OSCSharedPreference.getInstance().getDeviceUUID() + System.currentTimeMillis());
+        }
+        c.addHeader("sessionKey", sessionKey);
+        c.addHeader("uuid", OSCSharedPreference.getInstance().getDeviceUUID());
+
+        c.addHeader("Accept", "image/webp");
         //noinspection deprecation
         c.getHttpClient().getParams()
                 .setParameter(ClientPNames.ALLOW_CIRCULAR_REDIRECTS, true);
         // Set AppToken
-        c.addHeader("AppToken", Verifier.getPrivateToken(application));
+        //c.addHeader("AppToken", Verifier.getPrivateToken(application));
+        c.addHeader("AppToken", APIVerify.getVerifyString());
         //c.addHeader("AppToken", "123456");
         // setUserAgent
         c.setUserAgent(ApiClientHelper.getUserAgent(AppContext.getInstance()));
         CLIENT = c;
+        setHeaderNewsId();
         initSSL(CLIENT);
         initSSL(API.mClient);
     }

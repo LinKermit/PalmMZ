@@ -4,6 +4,8 @@ import net.oschina.app.bean.User;
 import net.oschina.app.improve.bean.Tweet;
 import net.oschina.app.improve.bean.simple.TweetComment;
 
+import java.util.List;
+
 /**
  * Created by thanatosx
  * on 16/5/28.
@@ -22,6 +24,8 @@ public interface TweetDetailContract {
 
     interface ICmnView {
         void onCommentSuccess(TweetComment comment);
+
+        List<TweetComment> getComments();
     }
 
     interface IThumbupView {

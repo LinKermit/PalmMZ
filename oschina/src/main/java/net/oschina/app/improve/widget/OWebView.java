@@ -19,11 +19,11 @@ import net.oschina.app.AppConfig;
 import net.oschina.app.AppContext;
 import net.oschina.app.improve.app.AppOperator;
 import net.oschina.app.improve.media.ImageGalleryActivity;
+import net.oschina.app.improve.utils.UIFormat;
 import net.oschina.app.interf.OnWebViewImageListener;
 import net.oschina.app.util.StringUtils;
 import net.oschina.app.util.TDevice;
 import net.oschina.app.util.TLog;
-import net.oschina.app.util.UIHelper;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -219,7 +219,7 @@ public class OWebView extends WebView {
         // 读取用户设置：是否加载文章图片--默认有wifi下始终加载图片
         if (AppContext.get(AppConfig.KEY_LOAD_IMAGE, true)
                 || TDevice.isWifiOpen()) {
-            content = content.replaceAll("<([u|o])l.*>", "<$1l style=\"padding-left:20px\">");
+            //content = content.replaceAll("<([u|o])l.*>", "<$1l style=\"padding-left:20px\">");
             // 过滤掉 img标签的width,height属性
             content = content.replaceAll("(<img[^>]*?)\\s+width\\s*=\\s*\\S+", "$1");
             content = content.replaceAll("(<img[^>]*?)\\s+height\\s*=\\s*\\S+", "$1");
@@ -298,7 +298,8 @@ public class OWebView extends WebView {
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            UIHelper.showUrlRedirect(view.getContext(), url);
+            //UIHelper.showUrlRedirect(view.getContext(), url);
+            UIFormat.show(view.getContext(), url);
             return true;
         }
 

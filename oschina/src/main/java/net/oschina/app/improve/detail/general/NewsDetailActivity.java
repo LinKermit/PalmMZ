@@ -15,6 +15,7 @@ import net.oschina.app.improve.detail.v2.DetailFragment;
  */
 
 public class NewsDetailActivity extends DetailActivity {
+
     public static void show(Context context, SubBean bean) {
         Intent intent = new Intent(context, NewsDetailActivity.class);
         Bundle bundle = new Bundle();
@@ -55,6 +56,14 @@ public class NewsDetailActivity extends DetailActivity {
         bundle.putSerializable("sub_bean", bean);
         intent.putExtras(bundle);
         context.startActivity(intent);
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    @Override
+    protected void initWidget() {
+        super.initWidget();
+        setStatusBarDarkMode();
+        setDarkToolBar();
     }
 
     @Override

@@ -84,7 +84,7 @@ public class StringUtils {
      * @param str YYYY-MM-DD HH:mm:ss格式字符串
      * @return {@link Calendar}
      */
-    public static Calendar parseCalendar(String str) {
+    private static Calendar parseCalendar(String str) {
         Matcher matcher = UniversalDatePattern.matcher(str);
         Calendar calendar = Calendar.getInstance();
         if (!matcher.find()) return null;

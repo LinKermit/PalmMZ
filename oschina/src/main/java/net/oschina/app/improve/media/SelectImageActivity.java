@@ -48,6 +48,8 @@ public class SelectImageActivity extends BaseBackActivity implements EasyPermiss
     @Override
     protected void initWidget() {
         super.initWidget();
+        setSwipeBackEnable(false);
+        setStatusBarDarkMode();
         requestExternalStorage();
     }
 

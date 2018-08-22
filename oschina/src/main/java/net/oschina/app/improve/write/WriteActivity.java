@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import net.oschina.app.R;
-import net.oschina.app.improve.base.activities.BaseBackActivity;
+import net.oschina.app.improve.base.activities.BackActivity;
 import net.oschina.app.improve.bean.SubBean;
 import net.oschina.app.improve.utils.DialogHelper;
 import net.oschina.app.improve.widget.SimplexToast;
@@ -28,7 +28,7 @@ import butterknife.OnClick;
  * Created by huanghaibin on 2017/8/3.
  */
 
-public class WriteActivity extends BaseBackActivity implements
+public class WriteActivity extends BackActivity implements
         View.OnClickListener, FontPopupWindow.OnFontChangeListener,
         AlignPopupWindow.OnAlignChangeListener, RichEditText.OnSectionChangeListener,
         HPopupWindow.OnHeaderChangeListener,
@@ -69,6 +69,8 @@ public class WriteActivity extends BaseBackActivity implements
     @Override
     protected void initWidget() {
         super.initWidget();
+        setStatusBarDarkMode();
+        setDarkToolBar();
         mEditView.setContentPanel(mFrameContent);
         mCategoryFragment = CategoryFragment.newInstance();
         addFragment(R.id.fl_content, mCategoryFragment);

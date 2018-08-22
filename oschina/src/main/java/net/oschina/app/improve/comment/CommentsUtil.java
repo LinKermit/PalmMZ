@@ -35,7 +35,7 @@ import net.oschina.common.widget.drawable.shape.BorderShape;
 public final class CommentsUtil {
 
     @SuppressWarnings("deprecation")
-    static View getReferLayout(LayoutInflater inflater, Refer[] refer, int count) {
+   public static View getReferLayout(LayoutInflater inflater, Refer[] refer, int count) {
         Context context = inflater.getContext();
         @SuppressLint("InflateParams")
         ViewGroup lay = (ViewGroup) inflater.inflate(R.layout.lay_comment_item_refer, null, false);

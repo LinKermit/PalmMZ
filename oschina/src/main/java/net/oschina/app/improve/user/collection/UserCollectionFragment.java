@@ -60,7 +60,7 @@ public class UserCollectionFragment extends BaseRecyclerFragment<UserCollectionC
                 NewsDetailActivity.show(mContext, item.getId(), true);
                 break;
             default:
-                UIHelper.showUrlRedirect(mContext, item.getHref());
+                UIHelper.showUrlRedirect(mContext, item.getUrl());
                 break;
         }
     }

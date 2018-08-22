@@ -33,7 +33,8 @@ public class ReportDialog {
     public static AlertDialog create(final Context context,
                                      final long id,
                                      final String href,
-                                     final byte type) {
+                                     final byte type,
+                                     final String key) {
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_report_view, null);
         TextView textLink = (TextView) view.findViewById(R.id.tv_link);
         final TextView textType = (TextView) view.findViewById(R.id.tv_report_type);
@@ -72,6 +73,7 @@ public class ReportDialog {
                                 href,
                                 Integer.parseInt(textType.getTag().toString()),
                                 editText.getText().toString(),
+                                key,
                                 new TextHttpResponseHandler() {
                                     @Override
                                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {

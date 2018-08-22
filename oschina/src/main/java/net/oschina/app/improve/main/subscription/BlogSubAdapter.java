@@ -21,6 +21,8 @@ import net.oschina.app.improve.bean.simple.Author;
 import net.oschina.app.util.StringUtils;
 import net.oschina.app.util.TDevice;
 
+import java.util.HashMap;
+
 /**
  * 新板博客栏目
  * Created by haibin
@@ -108,7 +110,7 @@ public class BlogSubAdapter extends BaseRecyclerAdapter<SubBean> implements Base
 
         String body = item.getBody();
         if (!TextUtils.isEmpty(body)) {
-            body = body.trim();
+            body = body.replaceFirst("\\s*|\t|\n", "");
             if (!TextUtils.isEmpty(body)) {
                 content.setText(body);
                 content.setVisibility(View.VISIBLE);
@@ -140,15 +142,26 @@ public class BlogSubAdapter extends BaseRecyclerAdapter<SubBean> implements Base
 
         see.setText(String.valueOf(item.getStatistics().getView()));
         answer.setText(String.valueOf(item.getStatistics().getComment()));
+        HashMap<String, Object> extra = item.getExtra();
+        if (extra != null && getExtraBool(extra.get("isPrivate"))) {
+            vh.tv_type.setVisibility(View.VISIBLE);
+        } else {
+            vh.tv_type.setVisibility(View.GONE);
+        }
+    }
+
+    private boolean getExtraBool(Object object) {
+        return object == null ? false : Boolean.valueOf(object.toString());
     }
 
     private static class BlogViewHolder extends RecyclerView.ViewHolder {
-        TextView tv_title, tv_description, tv_time, tv_comment_count, tv_view;
+        TextView tv_title, tv_description, tv_time, tv_comment_count, tv_view, tv_type;
         LinearLayout ll_title;
 
-         BlogViewHolder(View itemView) {
+        private BlogViewHolder(View itemView) {
             super(itemView);
             tv_title = (TextView) itemView.findViewById(R.id.tv_title);
+            tv_type = (TextView) itemView.findViewById(R.id.tv_type);
             tv_description = (TextView) itemView.findViewById(R.id.tv_description);
             tv_time = (TextView) itemView.findViewById(R.id.tv_time);
             tv_comment_count = (TextView) itemView.findViewById(R.id.tv_info_comment);

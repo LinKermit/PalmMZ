@@ -6,6 +6,7 @@
     android:id="@+id/layout_coordinator"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
     android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
@@ -75,9 +76,14 @@
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
+                android:titleTextColor="@color/black"
+                app:popupTheme="@style/ToolbarPopupBlackTheme"
+                app:navigationIcon="@mipmap/btn_back_dark_pressed"
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
-                app:layout_collapseMode="pin">
+                app:layout_collapseMode="pin"
+                android:background="@color/white"
+                tools:ignore="UnusedAttribute">
 
                 <TextView
                     android:id="@+id/tv_mix_title"
@@ -107,6 +113,6 @@
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 </android.support.design.widget.CoordinatorLayout>

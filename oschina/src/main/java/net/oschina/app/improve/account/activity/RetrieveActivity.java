@@ -357,7 +357,11 @@ public class RetrieveActivity extends AccountBaseActivity implements View.OnClic
                 startActivity(intent);
                 break;
             case R.id.lay_retrieve_container:
-                hideKeyBoard(getCurrentFocus().getWindowToken());
+                try {
+                    hideKeyBoard(getCurrentFocus().getWindowToken());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 break;
             default:
                 break;

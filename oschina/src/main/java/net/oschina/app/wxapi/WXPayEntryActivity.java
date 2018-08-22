@@ -43,11 +43,18 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler{
 
 	@Override
 	public void onResp(BaseResp resp) {
-		Log.e(TAG, "onPayFinish, errCode = " + resp.errCode + "  --  " + resp.errStr);
-		if(resp.errCode == ConstantsAPI.COMMAND_PAY_BY_WX){
-			SimplexToast.show(this,"支付成功");
-		}else {
-			SimplexToast.show(this,"支付失败");
+		if (resp.errCode == 0){
+			//显示充值成功的页面和需要的操作
+			SimplexToast.show(this,"打赏成功");
+		}
+		if (resp.errCode == -1){
+			//错误
+			SimplexToast.show(this,"打赏失败");
+		}
+
+		if (resp.errCode == -2){
+			SimplexToast.show(this,"取消支付");
+			//用户取消
 		}
 		finish();
 	}

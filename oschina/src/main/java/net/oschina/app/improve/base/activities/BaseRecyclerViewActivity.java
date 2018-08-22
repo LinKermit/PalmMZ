@@ -26,7 +26,7 @@ import cz.msebera.android.httpclient.Header;
  * Created by huanghaibin_dev
  * on 16-6-23.
  */
-public abstract class BaseRecyclerViewActivity<T> extends BaseBackActivity implements
+public abstract class BaseRecyclerViewActivity<T> extends BackActivity implements
         BaseRecyclerAdapter.OnItemClickListener,
         RecyclerRefreshLayout.SuperRefreshLayoutListener,
         BaseGeneralRecyclerAdapter.Callback {
@@ -129,6 +129,11 @@ public abstract class BaseRecyclerViewActivity<T> extends BaseBackActivity imple
     public void onLoadMore() {
         mAdapter.setState(mRefreshLayout.isRefreshing() ? BaseRecyclerAdapter.STATE_HIDE : BaseRecyclerAdapter.STATE_LOADING, true);
         requestData();
+    }
+
+    @Override
+    public void onScrollToBottom() {
+
     }
 
     protected void onItemClick(T item, int position) {

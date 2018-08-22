@@ -8,7 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import net.oschina.app.R;
-import net.oschina.app.improve.base.activities.BaseBackActivity;
+import net.oschina.app.improve.base.activities.BackActivity;
 import net.oschina.app.improve.git.bean.Branch;
 import net.oschina.app.improve.git.bean.Project;
 import net.oschina.app.improve.git.branch.BranchPopupWindow;
@@ -21,7 +21,7 @@ import butterknife.OnClick;
  * on 2017/3/13.
  */
 
-public class TreeActivity extends BaseBackActivity implements View.OnClickListener, BranchPopupWindow.Callback {
+public class TreeActivity extends BackActivity implements View.OnClickListener, BranchPopupWindow.Callback {
     private BranchPopupWindow mBranchPopupWindow;
 
     @Bind(R.id.ll_branch)
@@ -47,6 +47,8 @@ public class TreeActivity extends BaseBackActivity implements View.OnClickListen
     @Override
     protected void initWidget() {
         super.initWidget();
+        setStatusBarDarkMode();
+        setDarkToolBar();
         TreeFragment fragment = TreeFragment.newInstance();
         addFragment(R.id.fl_content, fragment);
         Project project = (Project) getIntent().getSerializableExtra("project");

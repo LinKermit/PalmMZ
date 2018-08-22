@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
+    tools:ignore="ContentDescription,RtlHardcoded"
     android:orientation="vertical">
 
     <LinearLayout
@@ -33,7 +34,8 @@
                 android:paddingRight="@dimen/lay_4"
                 android:paddingTop="@dimen/lay_2"
                 android:textColor="#9d9d9d"
-                tools:text="博客" />
+                android:text="博客"
+                tools:ignore="HardcodedText,RtlHardcoded" />
 
             <TextView
                 android:id="@+id/tv_title"
@@ -81,7 +83,8 @@
                     android:layout_width="14dp"
                     android:layout_height="14dp"
                     android:layout_marginTop="@dimen/lay_2"
-                    android:src="@mipmap/ic_fav_normal" />
+                    android:src="@mipmap/ic_fav_normal"
+                    tools:ignore="ContentDescription" />
 
                 <TextView
                     android:id="@+id/tv_fav_count"

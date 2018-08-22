@@ -10,7 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import net.oschina.app.R;
-import net.oschina.app.improve.base.activities.BaseBackActivity;
+import net.oschina.app.improve.base.activities.BackActivity;
 import net.oschina.app.improve.dialog.ShareDialog;
 import net.oschina.app.improve.git.bean.Project;
 import net.oschina.app.util.HTMLUtil;
@@ -21,7 +21,7 @@ import net.oschina.app.util.StringUtils;
  * on 2017/3/13.
  */
 
-public class CodeDetailActivity extends BaseBackActivity {
+public class CodeDetailActivity extends BackActivity {
     private ShareDialog mAlertDialog;
     private Project mProject;
     private CodeDetailPresenter mPresenter;
@@ -43,6 +43,8 @@ public class CodeDetailActivity extends BaseBackActivity {
     @Override
     protected void initWidget() {
         super.initWidget();
+        setStatusBarDarkMode();
+        setDarkToolBar();
         Intent intent = getIntent();
         CodeDetailFragment fragment = CodeDetailFragment.newInstance(intent.getStringExtra("path"));
         addFragment(R.id.fl_content, fragment);
@@ -76,7 +78,7 @@ public class CodeDetailActivity extends BaseBackActivity {
         }
     }
 
-    private boolean toShare() {
+    private void toShare() {
         String content = mProject.getDescription().trim();
         if (content.length() > 55) {
             content = HTMLUtil.delHTMLTag(content);
@@ -100,7 +102,6 @@ public class CodeDetailActivity extends BaseBackActivity {
         }
         mAlertDialog.show();
 
-        return true;
     }
 
     @Override

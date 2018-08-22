@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import net.oschina.app.R;
 import net.oschina.app.improve.account.AccountHelper;
+import net.oschina.app.improve.base.activities.BackActivity;
 import net.oschina.app.improve.base.activities.BaseActivity;
 import net.oschina.app.improve.bean.simple.TweetComment;
 import net.oschina.app.improve.behavior.CommentBar;
@@ -40,7 +41,7 @@ import butterknife.Bind;
  * Created by thanatosx on 2016/11/8.
  */
 
-public class TopicTweetActivity extends BaseActivity {
+public class TopicTweetActivity extends BackActivity {
 
     @Bind(R.id.layout_coordinator)
     CoordinatorLayout mLayoutCoordinator;
@@ -84,6 +85,8 @@ public class TopicTweetActivity extends BaseActivity {
     @Override
     protected void initWidget() {
         super.initWidget();
+        setStatusBarDarkMode();
+        setDarkToolBar();
         mToolbar.setTitle("");
         mToolbar.setSubtitle("");
         mToolbar.setNavigationIcon(R.mipmap.btn_back_normal);

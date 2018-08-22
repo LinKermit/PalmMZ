@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import net.oschina.app.R;
-import net.oschina.app.improve.base.activities.BaseBackActivity;
+import net.oschina.app.improve.base.activities.BackActivity;
 import net.oschina.app.ui.empty.EmptyLayout;
 
 import butterknife.Bind;
@@ -16,7 +16,7 @@ import butterknife.Bind;
  * on 2017/1/18.
  */
 
-public class UserEventActivity extends BaseBackActivity implements UserEventContract.EmptyView {
+public class UserEventActivity extends BackActivity implements UserEventContract.EmptyView {
     @Bind(R.id.lay_error)
     EmptyLayout mEmptyLayout;
 
@@ -38,6 +38,8 @@ public class UserEventActivity extends BaseBackActivity implements UserEventCont
     @Override
     protected void initWidget() {
         super.initWidget();
+        setStatusBarDarkMode();
+        setDarkToolBar();
         mEmptyLayout.setOnLayoutClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,12 +1,13 @@
 package net.oschina.app.improve.user.sign.in;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
 import net.oschina.app.R;
-import net.oschina.app.improve.base.activities.BaseBackActivity;
+import net.oschina.app.improve.base.activities.BackActivity;
 import net.oschina.app.improve.bean.EventSignIn;
 import net.oschina.app.improve.bean.SubBean;
 
@@ -17,7 +18,7 @@ import butterknife.Bind;
  * Created by haibin on 2017/4/12.
  */
 
-public class SignInInfoActivity extends BaseBackActivity {
+public class SignInInfoActivity extends BackActivity {
     @Bind(R.id.tv_event_name)
     TextView mTextEventName;
     @Bind(R.id.tv_cost)
@@ -41,6 +42,14 @@ public class SignInInfoActivity extends BaseBackActivity {
         return R.layout.activity_sign_in_info;
     }
 
+    @Override
+    protected void initWidget() {
+        super.initWidget();
+        setStatusBarDarkMode();
+        setDarkToolBar();
+    }
+
+    @SuppressLint("SetTextI18n")
     @Override
     protected void initData() {
         super.initData();

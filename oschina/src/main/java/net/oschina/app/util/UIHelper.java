@@ -31,7 +31,6 @@ import net.oschina.app.api.remote.OSChinaApi;
 import net.oschina.app.bean.Active;
 import net.oschina.app.bean.Banner;
 import net.oschina.app.bean.SimpleBackPage;
-import net.oschina.app.fragment.BrowserFragment;
 import net.oschina.app.fragment.QuestionTagFragment;
 import net.oschina.app.improve.account.activity.LoginActivity;
 import net.oschina.app.improve.app.AppOperator;
@@ -42,6 +41,7 @@ import net.oschina.app.improve.detail.general.EventDetailActivity;
 import net.oschina.app.improve.detail.general.NewsDetailActivity;
 import net.oschina.app.improve.detail.general.QuestionDetailActivity;
 import net.oschina.app.improve.detail.general.SoftwareDetailActivity;
+import net.oschina.app.improve.main.synthesize.web.WebActivity;
 import net.oschina.app.improve.media.ImageGalleryActivity;
 import net.oschina.app.improve.tweet.activities.TweetDetailActivity;
 import net.oschina.app.improve.user.activities.OtherUserHomeActivity;
@@ -366,15 +366,13 @@ public class UIHelper {
 
     /**
      * 打开内置浏览器
-     *
-     * @param context
-     * @param url
      */
     public static void openInternalBrowser(Context context, String url) {
         try {
-            Bundle bundle = new Bundle();
-            bundle.putString(BrowserFragment.BROWSER_KEY, url);
-            showSimpleBack(context, SimpleBackPage.BROWSER, bundle);
+//            Bundle bundle = new Bundle();
+//            bundle.putString(BrowserFragment.BROWSER_KEY, url);
+//            showSimpleBack(context, SimpleBackPage.BROWSER, bundle);
+            WebActivity.show(context,url);
         } catch (Exception e) {
             e.printStackTrace();
             openExternalBrowser(context, url);
@@ -383,9 +381,6 @@ public class UIHelper {
 
     /**
      * 打开外置的浏览器
-     *
-     * @param context
-     * @param url
      */
     public static void openExternalBrowser(Context context, String url) {
         Uri uri = Uri.parse(url);
@@ -586,7 +581,7 @@ public class UIHelper {
      * 清除app缓存
      */
     public static void clearAppCache(boolean showToast) {
-        final Handler handler = showToast ? new Handler() {
+        @SuppressLint("HandlerLeak") final Handler handler = showToast ? new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 if (msg.what == 1) {

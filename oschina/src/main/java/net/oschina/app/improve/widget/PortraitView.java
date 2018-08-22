@@ -54,6 +54,8 @@ public class PortraitView extends CircleImageView {
             public void onClick(View v) {
                 if (author == null || (author.getId() == 0 && TextUtils.isEmpty(author.getName())))
                     return;
+                if (author.getId() == 0)
+                    return;
                 OtherUserHomeActivity.show(getContext(), author);
             }
         });

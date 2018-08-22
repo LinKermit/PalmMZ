@@ -37,7 +37,6 @@ import net.oschina.app.improve.user.activities.UserSelectFriendsActivity;
 import net.oschina.app.improve.widget.IdentityView;
 import net.oschina.app.improve.widget.PortraitView;
 import net.oschina.app.improve.widget.RecyclerRefreshLayout;
-import net.oschina.app.improve.widget.adapter.OnKeyArrivedListenerAdapter;
 import net.oschina.app.improve.widget.adapter.OnKeyArrivedListenerAdapterV2;
 import net.oschina.app.util.TDevice;
 import net.oschina.app.util.UIHelper;
@@ -106,7 +105,7 @@ public class CommentExsActivity extends BaseBackActivity {
         });
 
         mDelegation.hideFav();
-        mDelegation.hideShare();
+        mDelegation.hideCommentCount();
 
         mDelegation.getBottomSheet().setMentionListener(new View.OnClickListener() {
             @Override
@@ -152,6 +151,11 @@ public class CommentExsActivity extends BaseBackActivity {
                 if (mPageBean != null)
                     token = mPageBean.getNextPageToken();
                 getData(false, token);
+            }
+
+            @Override
+            public void onScrollToBottom() {
+
             }
         });
 

@@ -55,13 +55,13 @@ class CommentPresenter implements CommentContract.Presenter {
                         if (list != null) {
                             mView.onRefreshSuccess(list);
                             if (list.size() < 20) {
-                                mView.showMoreMore();
+                                mView.showNotMore();
                             }
                         } else {
-                            mView.showMoreMore();
+                            mView.showNotMore();
                         }
                     } else {
-                        mView.showMoreMore();
+                        mView.showNotMore();
                     }
                     mView.onComplete();
                 } catch (Exception e) {
@@ -94,15 +94,15 @@ class CommentPresenter implements CommentContract.Presenter {
                         if (list != null && list.size() != 0) {
                             mView.onLoadMoreSuccess(list);
                         } else {
-                            mView.showMoreMore();
+                            mView.showNotMore();
                         }
                     } else {
-                        mView.showMoreMore();
+                        mView.showNotMore();
                     }
                     mView.onComplete();
                 } catch (Exception e) {
                     e.printStackTrace();
-                    mView.showMoreMore();
+                    mView.showNotMore();
                     mView.onComplete();
                 }
             }

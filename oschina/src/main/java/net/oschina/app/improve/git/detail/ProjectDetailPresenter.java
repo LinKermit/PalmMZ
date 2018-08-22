@@ -50,6 +50,7 @@ class ProjectDetailPresenter implements ProjectDetailContract.Presenter {
                     }.getType();
                     ResultBean<Project> bean = new Gson().fromJson(responseString, type);
                     if (bean != null && bean.isSuccess()) {
+                        mProject = bean.getResult();
                         mView.showGetDetailSuccess(bean.getResult(), R.string.get_project_detail_success);
                         mEmptyView.showGetDetailSuccess(EmptyLayout.HIDE_LAYOUT);
                     } else {
@@ -99,7 +100,7 @@ class ProjectDetailPresenter implements ProjectDetailContract.Presenter {
 
     @Override
     public String getShareUrl() {
-        return String.format("https://git.oschina.net/%s/",
+        return String.format("https://gitee.com/%s/",
                 mProject.getPathWithNamespace());
     }
 

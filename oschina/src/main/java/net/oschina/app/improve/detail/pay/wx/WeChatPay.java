@@ -22,6 +22,10 @@ public final class WeChatPay {
         msgApi.registerApp("wxa8213dc827399101");
     }
 
+    public boolean isWxAppInstalled() {
+        return msgApi.isWXAppInstalled();
+    }
+
     public void pay(PayResult result) {
         PayReq request = new PayReq();
         request.appId = "wxa8213dc827399101";

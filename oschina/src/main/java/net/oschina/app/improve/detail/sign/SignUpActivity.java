@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 import net.oschina.app.R;
+import net.oschina.app.improve.base.activities.BackActivity;
 import net.oschina.app.improve.base.activities.BaseBackActivity;
 import net.oschina.app.improve.widget.SimplexToast;
 import net.oschina.app.ui.empty.EmptyLayout;
@@ -18,7 +19,7 @@ import butterknife.Bind;
  * on 2016/12/5.
  */
 
-public class SignUpActivity extends BaseBackActivity implements SignUpContract.EmptyView {
+public class SignUpActivity extends BackActivity implements SignUpContract.EmptyView {
 
     @Bind(R.id.error_layout)
     EmptyLayout mEmptyLayout;
@@ -49,6 +50,8 @@ public class SignUpActivity extends BaseBackActivity implements SignUpContract.E
     @Override
     protected void initWidget() {
         super.initWidget();
+        setStatusBarDarkMode();
+        setDarkToolBar();
         mSourceId = getIntent().getLongExtra("sourceId", 0);
         mFragment = SignUpFragment.newInstance(mSourceId);
         addFragment(R.id.fl_content, mFragment);

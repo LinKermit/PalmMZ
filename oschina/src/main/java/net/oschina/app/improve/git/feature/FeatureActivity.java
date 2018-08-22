@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import net.oschina.app.R;
+import net.oschina.app.improve.base.activities.BackActivity;
 import net.oschina.app.improve.base.activities.BaseBackActivity;
 
 /**
@@ -11,7 +12,7 @@ import net.oschina.app.improve.base.activities.BaseBackActivity;
  * on 2017/3/9.
  */
 
-public class FeatureActivity extends BaseBackActivity {
+public class FeatureActivity extends BackActivity {
 
     public static void show(Context context) {
         context.startActivity(new Intent(context, FeatureActivity.class));
@@ -25,6 +26,8 @@ public class FeatureActivity extends BaseBackActivity {
     @Override
     protected void initWidget() {
         super.initWidget();
+        setStatusBarDarkMode();
+        setDarkToolBar();
         FeatureFragment fragment = FeatureFragment.newInstance();
         new FeaturePresenter(fragment);
         addFragment(R.id.fl_content, fragment);

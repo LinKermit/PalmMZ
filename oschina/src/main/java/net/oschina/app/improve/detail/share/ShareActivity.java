@@ -65,6 +65,13 @@ public abstract class ShareActivity extends BackActivity implements
     }
 
     @Override
+    protected void initWidget() {
+        super.initWidget();
+        setStatusBarDarkMode();
+        setDarkToolBar();
+    }
+
+    @Override
     protected void initData() {
         super.initData();
         mWebView = (OWebView) findViewById(R.id.webView);

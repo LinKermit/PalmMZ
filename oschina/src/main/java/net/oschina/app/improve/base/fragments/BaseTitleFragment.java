@@ -15,7 +15,7 @@ import net.oschina.app.improve.widget.TitleBar;
  */
 public abstract class BaseTitleFragment extends BaseFragment {
 
-    TitleBar mTitleBar;
+    protected TitleBar mTitleBar;
 
     @Override
     protected int getLayoutId() {
@@ -36,9 +36,11 @@ public abstract class BaseTitleFragment extends BaseFragment {
         super.initWidget(root);
         // not null
         mTitleBar = (TitleBar) root.findViewById(R.id.nav_title_bar);
-        mTitleBar.setTitle(getTitleRes());
-        mTitleBar.setIcon(getIconRes());
-        mTitleBar.setIconOnClickListener(getIconClickListener());
+        if (mTitleBar != null) {
+            mTitleBar.setTitle(getTitleRes());
+            mTitleBar.setIcon(getIconRes());
+            mTitleBar.setIconOnClickListener(getIconClickListener());
+        }
     }
 
     protected abstract

@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.google.gson.reflect.TypeToken;
 
 import net.oschina.app.R;
+import net.oschina.app.api.APIVerify;
 import net.oschina.app.api.remote.OSChinaApi;
 import net.oschina.app.improve.account.AccountHelper;
 import net.oschina.app.improve.account.activity.LoginActivity;
@@ -102,7 +103,7 @@ public class ShakePresentFragment extends BaseSensorFragment<ShakePresent> {
             return;
         }
         mCanAgain = false;
-        String appToken = Verifier.getPrivateToken(getActivity().getApplication());
+        String appToken = APIVerify.getVerifyString();
         long time = System.currentTimeMillis();
         String sign = Verifier.signStringArray(String.valueOf(time), String.valueOf(AccountHelper.getUserId()),
                 appToken);

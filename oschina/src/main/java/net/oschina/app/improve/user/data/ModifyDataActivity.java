@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.inputmethod.EditorInfo;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -13,7 +12,7 @@ import com.loopj.android.http.TextHttpResponseHandler;
 
 import net.oschina.app.R;
 import net.oschina.app.api.remote.OSChinaApi;
-import net.oschina.app.improve.base.activities.BaseBackActivity;
+import net.oschina.app.improve.base.activities.BackActivity;
 import net.oschina.app.improve.bean.User;
 import net.oschina.app.improve.bean.base.ResultBean;
 import net.oschina.app.improve.widget.BottomLineEditText;
@@ -29,7 +28,7 @@ import cz.msebera.android.httpclient.Header;
  * Created by huanghaibin on 2017/8/17.
  */
 
-public class ModifyDataActivity extends BaseBackActivity {
+public class ModifyDataActivity extends BackActivity {
 
     static final int TYPE_NICKNAME = 1;
     static final int TYPE_SIGNATURE = 2;
@@ -49,6 +48,13 @@ public class ModifyDataActivity extends BaseBackActivity {
     @Override
     protected int getContentView() {
         return R.layout.activity_modify_data;
+    }
+
+    @Override
+    protected void initWidget() {
+        super.initWidget();
+        setStatusBarDarkMode();
+        setDarkToolBar();
     }
 
     @Override

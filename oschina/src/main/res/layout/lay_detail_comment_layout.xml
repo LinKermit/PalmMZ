@@ -7,6 +7,7 @@
     android:orientation="vertical"
     tools:ignore="HardcodedText">
 
+    <View style="@style/h_line" />
     <TextView
         android:id="@+id/tv_blog_detail_comment"
         android:layout_width="match_parent"
