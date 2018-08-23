@@ -29,8 +29,13 @@
     <!-- 日间模式 -->
     <style name="App.Theme.Light" parent="Base.App.Theme.Light" />
 
+
+    <style name="Base.App.Theme" parent="Base.App.Theme.Light">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
     <!--启动界面主题-->
-    <style name="App.Theme.Launch" parent="Base.App.Theme.Light">
+    <style name="App.Theme.Launch" parent="Base.App.Theme">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>

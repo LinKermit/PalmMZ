@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Os</string>
+    <string name="title_activity_introduce">IntroduceActivity</string>
 </resources>
