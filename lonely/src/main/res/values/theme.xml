@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Base.App.Theme.Light" parent="@style/Theme.AppCompat.Light">
+    <style name="Base.App.Theme.Light" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. 重写父类的主题-->
         <!--color primary-->
         <item name="colorPrimary">@color/day_colorPrimary</item>

@@ -1,9 +1,11 @@
-package com.newland.lonely;
+package com.newland.lonely.splash;
 
 import android.os.SystemClock;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
+import com.newland.lonely.AppOperator;
+import com.newland.lonely.MainActivity;
+import com.newland.lonely.OSSharedPreference;
+import com.newland.lonely.R;
 import com.newland.lonely.base.BaseActivity;
 
 public class SplashActivity extends BaseActivity {
@@ -17,8 +19,13 @@ public class SplashActivity extends BaseActivity {
     protected void initData() {
         super.initData();
         // 完成后进行跳转操作
-        SystemClock.sleep(2000);
-        redirectTo();
+        AppOperator.runOnThread(new Runnable() {
+            @Override
+            public void run() {
+                SystemClock.sleep(1000);
+                redirectTo();
+            }
+        });
     }
 
     private void redirectTo() {

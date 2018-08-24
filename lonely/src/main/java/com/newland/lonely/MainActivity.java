@@ -18,4 +18,10 @@ public class MainActivity extends BaseActivity {
     public static void show(Context context) {
         context.startActivity(new Intent(context,MainActivity.class));
     }
+
+    @Override
+    protected void initWidget() {
+        super.initWidget();
+        setStatusBarDarkMode();
+    }
 }
