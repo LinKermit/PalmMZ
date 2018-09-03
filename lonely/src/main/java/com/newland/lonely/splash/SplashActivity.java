@@ -2,9 +2,9 @@ package com.newland.lonely.splash;
 
 import android.os.SystemClock;
 
-import com.newland.lonely.AppOperator;
+import com.newland.lonely.operator.AppOperator;
 import com.newland.lonely.MainActivity;
-import com.newland.lonely.OSSharedPreference;
+import com.newland.lonely.operator.OSSharedPreference;
 import com.newland.lonely.R;
 import com.newland.lonely.base.BaseActivity;
 

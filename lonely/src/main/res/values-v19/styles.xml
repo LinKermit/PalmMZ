@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="App.Theme.Main" parent="Base.App.Theme.NoTitle">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+    </style>
+
+    <style name="App.Theme.Tweet.Main" parent="Base.App.Theme.NoTitle">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/trans</item>
+        <item name="actionMenuTextColor">@color/black</item>
+        <item name="actionOverflowButtonStyle">@style/AppWidget.ActionButton.Overflow</item>
+    </style>
+
+</resources>

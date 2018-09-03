@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
-import com.newland.lonely.OSSharedPreference;
+import com.newland.lonely.operator.OSSharedPreference;
 import com.newland.lonely.R;
 import com.newland.lonely.base.BaseActivity;
 

@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">Os</string>
     <string name="title_activity_introduce">IntroduceActivity</string>
+
+    <!--主页-->
+    <string name="main_tab_name_news">综合</string>
+    <string name="main_tab_name_tweet">动弹</string>
+    <string name="main_tab_name_my">我的</string>
+    <string name="main_tab_name_explore">发现</string>
+
+
+    <!--网页-->
+    <string name="user_web_login">网页登录</string>
+    <string name="user_web_login_succ">网页登录成功</string>
+    <string name="user_web_user_error">获取用户信息出错</string>
+    <string name="main_net_error">网络错误</string>
+    <string name="user_web_entity_error">获取entity出错</string>
 </resources>

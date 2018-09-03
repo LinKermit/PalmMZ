@@ -1,4 +1,4 @@
-package com.newland.lonely;
+package com.newland.lonely.operator;
 
 import android.content.Context;
 import android.content.SharedPreferences;
