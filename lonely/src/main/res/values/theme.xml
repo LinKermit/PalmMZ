@@ -7,20 +7,16 @@
         <item name="colorPrimary">@color/day_colorPrimary</item>
         <item name="colorPrimaryDark">@color/day_colorPrimaryDark</item>
         <item name="colorAccent">@color/day_colorPrimary</item>
-
         <!--text style-->
         <item name="editTextColor">@color/gray</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorLink">#0b9a27</item>
         <item name="android:editTextColor">@color/day_edit_color</item>
         <item name="android:textColorHint">@color/day_edit_hit_color</item>
-
         <!--action menu-->
         <item name="actionMenuTextColor">@color/white</item>
-
         <!--action mode-->
         <item name="actionModeBackground">@color/day_colorPrimary</item>
-
         <!--window style-->
         <item name="elevation">0dp</item>
         <item name="android:windowBackground">@color/window_background</item>

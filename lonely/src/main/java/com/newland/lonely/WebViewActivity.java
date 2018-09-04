@@ -12,6 +12,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.newland.lonely.base.BackActivity;
 import com.newland.lonely.base.BaseActivity;
 import com.newland.lonely.data.bean.Entity;
 import com.newland.lonely.data.bean.User;
@@ -29,7 +30,7 @@ import retrofit2.Response;
  * @version 2018/5/21 0021
  */
 
-public class WebViewActivity extends BaseActivity {
+public class WebViewActivity extends BackActivity {
 
     private static final String TAG = "WebViewActivity";
     public static final String ACTION_ACCOUNT_LOGIN_SUCC = "com.account.login.success";
